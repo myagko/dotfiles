@@ -1,0 +1,63 @@
+env:
+  TERM: xterm-256color
+
+window:
+  padding:
+    x: 9
+    y: 9
+    dynamic_padding: false
+  opacity: 1.0
+  title: Alacritty
+  dynamic_title: true
+
+scrolling:
+  history: 1000
+
+font:
+  normal:
+    family: Iosevka
+    style: Regular
+  bold:
+    family: Iosevka
+    style: Regular
+  italic:
+   family: Iosevka
+   style: Regular
+  bold_italic:
+    family: Iosevka
+    style: Regular
+  size: 12
+  offset:
+    x: 0
+    y: 2
+  glyph_offset:
+    x: 0
+    y: 0
+
+draw_bold_text_with_bright_colors: false
+
+import:
+  - ~/.config/alacritty/nymph.yml
+
+cursor:
+  # Block, Underline, Beam
+   style: Block
+
+key_bindings:
+    # (Windows, Linux, and BSD only)
+  - { key: V,         mods: Control|Shift, action: Paste                       }
+  - { key: C,         mods: Control|Shift, action: Copy                        }
+  - { key: Insert,    mods: Shift,         action: PasteSelection              }
+  - { key: Key0,      mods: Control,       action: ResetFontSize               }
+  - { key: Equals,    mods: Control,       action: IncreaseFontSize            }
+  - { key: Plus,      mods: Control,       action: IncreaseFontSize            }
+  - { key: Minus,     mods: Control,       action: DecreaseFontSize            }
+  - { key: F11,       mods: None,          action: ToggleFullscreen            }
+  - { key: Paste,     mods: None,          action: Paste                       }
+  - { key: Copy,      mods: None,          action: Copy                        }
+  - { key: L,         mods: Control,       action: ClearLogNotice              }
+  - { key: L,         mods: Control,       chars: "\x0c"                       }
+  - { key: PageUp,    mods: None,          action: ScrollPageUp,   mode: ~Alt  }
+  - { key: PageDown,  mods: None,          action: ScrollPageDown, mode: ~Alt  }
+  - { key: Home,      mods: Shift,         action: ScrollToTop,    mode: ~Alt  }
+  - { key: End,       mods: Shift,         action: ScrollToBottom, mode: ~Alt  }
