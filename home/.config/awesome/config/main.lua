@@ -17,24 +17,29 @@ awful.screen.connect_for_each_screen(function(s)
 	awful.tag({ "1", "2", "3", "4" }, s, awful.layout.layouts[1])
 end)
 
+local Bar = require("ui.bar")
+local Walls = require("ui.walls")
+local Notifications = require("ui.notifications")
+local Titlebars = require("ui.titlebars")
+
 awful.screen.connect_for_each_screen(function(s)
-	require("ui.bar"):create_main(s)
+	Bar:create_main(s)
 end)
 
 screen.connect_signal("request::wallpaper", function(s)
-	require("ui.walls"):create(s)
+	Walls:create(s)
 end)
 
 ruled.notification.connect_signal('request::rules', function()
-	require("ui.notifications"):append_rules()
+	Notifications:append_rules()
 end)
 
 naughty.connect_signal("request::display", function(n)
-	require("ui.notifications"):display(n)
+	Notifications:display(n)
 end)
 
 client.connect_signal("request::titlebars", function(c)
-	require("ui.titlebars"):create(c)
+	Titlebars:create(c)
 end)
 
 ruled.client.connect_signal("request::rules", function()

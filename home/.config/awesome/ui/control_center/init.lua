@@ -1,6 +1,7 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
+local helpers = require("helpers")
 
 local Pulse = require("daemons.pulse")
 local Notifs_list = require("ui.control_center.notification_list")
@@ -12,11 +13,7 @@ local Weather = require("ui.control_center.weather_applet")
 
 local Control_center = {}
 
-local main_sep = wibox.widget {
-	widget = wibox.container.background,
-	bg = beautiful.background_urgent,
-	forced_height = beautiful.sep_width
-}
+local main_sep = helpers:create_sep("h", beautiful.sep_width)
 
 local controls = wibox.widget {
 	layout = wibox.layout.fixed.vertical,
@@ -119,7 +116,7 @@ function Control_center:open(mode)
 	self.popup_widget.visible = true
 	self:send_signal()
 	self.popup_widget.placement = function(d)
-		awful.placement.bottom_left(d, { honor_workarea = true, margins = beautiful.useless_gap*2 })
+		awful.placement.bottom_left(d, { honor_workarea = true, margins = beautiful.useless_gap * 2 })
 	end
 end
 

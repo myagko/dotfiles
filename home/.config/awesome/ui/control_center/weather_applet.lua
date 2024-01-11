@@ -20,11 +20,7 @@ local function to_direction(deg)
 	return directions[math.floor((deg%360)/22.5) + 1]
 end
 
-local sep = wibox.widget {
-	widget = wibox.container.background,
-	bg = beautiful.background_urgent,
-	forced_height = beautiful.sep_width
-}
+local sep = helpers:create_sep("h", beautiful.sep_width)
 
 Weather.curr_temp = wibox.widget {
 	widget = wibox.widget.textbox,

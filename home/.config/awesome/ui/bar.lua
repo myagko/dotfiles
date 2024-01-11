@@ -1,6 +1,7 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
+local helpers = require("helpers")
 
 local Launcher = require("ui.launcher")
 local Control_center = require("ui.control_center")
@@ -19,19 +20,6 @@ local function create_container(widget)
 		}
 	}
 	return box
-end
-
-local function create_sep()
-	local sep = wibox.widget {
-		widget = wibox.container.margin,
-		margins = { top = 4, bottom = 4 },
-		{
-			widget = wibox.container.background,
-			bg = beautiful.background_urgent,
-			forced_width = beautiful.sep_width
-		}
-	}
-	return sep
 end
 
 Bar.launcher = wibox.widget {
@@ -55,7 +43,7 @@ Bar.time = create_container(wibox.widget {
 		widget = wibox.widget.textclock,
 		format = "%B %d"
 	},
-	create_sep(),
+	helpers:create_sep("v", beautiful.sep_width, { top = 4, bottom = 4 }),
 	{
 		widget = wibox.widget.textclock,
 		format = "%H:%M",
@@ -88,7 +76,7 @@ Bar.stats = create_container(wibox.widget {
 	layout = wibox.layout.fixed.horizontal,
 	spacing = 10,
 	cpu_w,
-	create_sep(),
+	helpers:create_sep("v", beautiful.sep_width, { bottom = 4, top = 4 }),
 	ram_w
 })
 
