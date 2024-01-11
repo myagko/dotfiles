@@ -44,9 +44,11 @@ require('lualine').setup {
 					return msg
 				end
 			},
-			--'location',
 		},
-		lualine_z = { 'progress' }
+		lualine_z = {
+			'location',
+			'progress'
+		}
 	}
 }
 

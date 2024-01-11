@@ -151,7 +151,6 @@ function Notifs_list:create_notif(icon, n)
 					spacing = 5,
 					{
 						layout = wibox.layout.align.horizontal,
-						nil,
 						{
 							widget = wibox.container.background,
 							forced_width = 120,
@@ -162,6 +161,7 @@ function Notifs_list:create_notif(icon, n)
 								ntitle
 							}
 						},
+						nil,
 						ntime
 					},
 					nsep,

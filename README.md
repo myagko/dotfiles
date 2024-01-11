@@ -28,6 +28,16 @@ $ git clone --depth 1 https://github.com/myagko/dotfiles.git
 $ rsync -avhu ~/dotfiles/home/ ~/
 ```
 
+<h1></h1>
+</details>
+
+<details>
+<summary><b>Post-install setup</b></summary>
+<h1></h1>
+
+- Change preffered apps, autostart, openweathermap user data and other at
+`~/.config/awesome/user.lua`
+
 - Setup firefox css
 1. In the searchbar type `about:config`. A dialog will be shown to you. Press the `I accept the risk` button.
 2. Search for `toolkit.legacyUserProfileCustomizations.stylesheets`, `layers.acceleration.force-enabled`, `gfx.webrender.all`, and `svg.context-properties.content.enabled`. Change them to `True`
@@ -37,16 +47,6 @@ $ rsync -avhu ~/dotfiles/home/ ~/
 - Setup firefox startpage  \
 guide: <a href="https://peterries.net/blog/firefox-ubuntu-local-file/">here</a>  \
 folder: `~/dotfiles/extra/mozilla/startpage`
-
-<h1></h1>
-</details>
-
-<details>
-<summary><b>Post-install setup</b></summary>
-<h1></h1>
-
-Change preffered apps, autostart, openweathermap user data and other at
-`~/.config/awesome/user.lua`
 
 <h1></h1>
 </details>
