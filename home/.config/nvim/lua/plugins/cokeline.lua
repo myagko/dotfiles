@@ -22,7 +22,7 @@ require('cokeline').setup({
 			fg = get_hex('VertSplit', 'fg')
 		},
 		{
-			text = function(buffer) return '   '..buffer.index..': '..buffer.filename end,
+			text = function(buffer) return '   '..buffer.index..': '..buffer.unique_prefix..buffer.filename end,
 		},
 		{
 			text = function(buffer) return buffer.is_modified and ' • ' or '   ' end,

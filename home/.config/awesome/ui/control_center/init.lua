@@ -116,7 +116,7 @@ function Control_center:open(mode)
 	self.popup_widget.visible = true
 	self:send_signal()
 	self.popup_widget.placement = function(d)
-		awful.placement.bottom_left(d, { honor_workarea = true, margins = beautiful.useless_gap * 2 })
+		awful.placement.bottom_right(d, { honor_workarea = true, margins = beautiful.useless_gap * 2 })
 	end
 end
 
@@ -127,6 +127,12 @@ function Control_center:toggle(mode)
 		self:close()
 	end
 end
+
+awesome.connect_signal("launcher:state", function(state)
+	if state then
+		Control_center:close()
+	end
+end)
 
 awesome.connect_signal("powermenu:state", function(state)
 	if state then

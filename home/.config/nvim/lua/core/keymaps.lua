@@ -1,24 +1,34 @@
+local map = vim.keymap.set
 vim.g.mapleader = " "
 
 -- tree
-vim.keymap.set("n", "<leader>tt", ":NvimTreeToggle<CR>")
-vim.keymap.set("n", "<leader>tf", ":NvimTreeFocus<CR>")
+map("n", "<leader>tt", ":NvimTreeToggle<CR>")
+map("n", "<leader>tf", ":NvimTreeFocus<CR>")
 
 -- buffer
-vim.keymap.set("n", "<S-Tab>", "<Plug>(cokeline-focus-prev)", { silent = true })
-vim.keymap.set("n", "<Tab>", "<Plug>(cokeline-focus-next)", { silent = true })
-vim.keymap.set("n", "<leader>x", ":bp<bar>sp<bar>bn<bar>bd<CR>")
+map("n", "<S-Tab>", "<Plug>(cokeline-focus-prev)", { silent = true })
+map("n", "<Tab>", "<Plug>(cokeline-focus-next)", { silent = true })
+map("n", "<leader>x", ":bp<bar>sp<bar>bn<bar>bd<CR>")
+
+for i = 1, 9 do
+	map(
+		"n",
+		("<leader>%s"):format(i),
+		("<Plug>(cokeline-focus-%s)"):format(i),
+		{ silent = true }
+	)
+end
 
 -- other
-vim.keymap.set("n", "<leader>Q", ":qall<CR>")
-vim.keymap.set("n", "<leader>u", ":u<CR>")
-vim.keymap.set("n", "<leader>r", ":redo<CR>")
+map("n", "<leader>Q", ":qall<CR>")
+map("n", "<leader>u", ":undo<CR>")
+map("n", "<leader>r", ":redo<CR>")
 
 -- LSP
-vim.keymap.set('n', '<leader>df', vim.diagnostic.open_float)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist)
+map('n', '<leader>df', vim.diagnostic.open_float)
+map('n', '[d', vim.diagnostic.goto_prev)
+map('n', ']d', vim.diagnostic.goto_next)
+map('n', '<leader>dl', vim.diagnostic.setloclist)
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -30,21 +40,21 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		-- Buffer local mappings.
 		-- See `:help vim.lsp.*` for documentation on any of the below functions
 		local opts = { buffer = ev.buf }
-		vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-		vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-		vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-		vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-		vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-		vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
-		vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
-		vim.keymap.set('n', '<space>wl', function()
+		map('n', 'gD', vim.lsp.buf.declaration, opts)
+		map('n', 'gd', vim.lsp.buf.definition, opts)
+		map('n', 'K', vim.lsp.buf.hover, opts)
+		map('n', 'gi', vim.lsp.buf.implementation, opts)
+		map('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+		map('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+		map('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+		map('n', '<space>wl', function()
 			print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 		end, opts)
-		vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
-		vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
-		vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
-		vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-		vim.keymap.set('n', '<space>f', function()
+		map('n', '<space>D', vim.lsp.buf.type_definition, opts)
+		map('n', '<space>rn', vim.lsp.buf.rename, opts)
+		map({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+		map('n', 'gr', vim.lsp.buf.references, opts)
+		map('n', '<space>f', function()
 			vim.lsp.buf.format { async = true }
 		end, opts)
 	end,
@@ -53,13 +63,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Telescope
 --[[
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
-vim.keymap.set('n', '<leader>gb', builtin.git_branches, {})
-vim.keymap.set('n', '<leader>gc', builtin.git_commits, {})
-vim.keymap.set('n', '<leader>gs', builtin.git_status, {})
-vim.keymap.set('n', '<leader>ls', builtin.lsp_document_symbols, {})
-vim.keymap.set('n', 'gr', builtin.lsp_references, { noremap = true, silent = true })
-vim.keymap.set('n', 'gd', builtin.lsp_definitions, { noremap = true, silent = true })
---]]
+map('n', '<leader>ff', builtin.find_files, {})
+map('n', '<leader>fb', builtin.buffers, {})
+map('n', '<leader>fh', builtin.help_tags, {})
+map('n', '<leader>gb', builtin.git_branches, {})
+map('n', '<leader>gc', builtin.git_commits, {})
+map('n', '<leader>gs', builtin.git_status, {})
+map('n', '<leader>ls', builtin.lsp_document_symbols, {})
+map('n', 'gr', builtin.lsp_references, { noremap = true, silent = true })
+map('n', 'gd', builtin.lsp_definitions, { noremap = true, silent = true })
+]]

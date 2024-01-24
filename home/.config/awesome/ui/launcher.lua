@@ -56,6 +56,24 @@ Sidebar.poweroff_button = create_hover_button(
 	beautiful.red, beautiful.red
 )
 
+Sidebar.control_center_button.buttons = {
+	awful.button({}, 1, function()
+		Control_center:open()
+	end)
+}
+
+Sidebar.restart_button.buttons = {
+	awful.button({}, 1, function()
+		awesome.restart()
+	end)
+}
+
+Sidebar.poweroff_button.buttons = {
+	awful.button({}, 1, function()
+		Powermenu:open()
+	end)
+}
+
 Sidebar.m_widget = wibox.widget {
 	widget = wibox.container.background,
 	bg = beautiful.background_alt,
@@ -336,32 +354,16 @@ function Launcher:toggle()
 	end
 end
 
-awesome.connect_signal("wifi:passbox_keygrabber", function()
-	Launcher.prompt.markup = "<span foreground='" .. beautiful.foreground_alt .. "'>Launch:</span>"
-end)
-
 awesome.connect_signal("powermenu:state", function(state)
 	if state then
 		Launcher:close()
 	end
 end)
 
-Sidebar.control_center_button.buttons = {
-	awful.button({}, 1, function()
-		Control_center:open()
-	end)
-}
-
-Sidebar.restart_button.buttons = {
-	awful.button({}, 1, function()
-		awesome.restart()
-	end)
-}
-
-Sidebar.poweroff_button.buttons = {
-	awful.button({}, 1, function()
-		Powermenu:open()
-	end)
-}
+awesome.connect_signal("control_center:state", function(state)
+	if state then
+		Launcher:close()
+	end
+end)
 
 return Launcher

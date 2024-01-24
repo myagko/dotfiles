@@ -1,6 +1,7 @@
 ----------------------------------------
 -- @author https://github.com/myagko
 ----------------------------------------
+
 local awful = require("awful")
 local User = require("user")
 local sink = User.pa_sink or "@DEFAULT_SINK@"

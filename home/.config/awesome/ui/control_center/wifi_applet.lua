@@ -257,7 +257,6 @@ function Wifi_applet:enter_passwd(ssid, bssid, security)
 			self:refresh()
 		end
 	}
-	awesome.emit_signal("wifi:passbox_keygrabber")
 end
 
 function Wifi_applet:close_passbox()

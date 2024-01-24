@@ -8,19 +8,27 @@ function T.set_colors(p)
 		SignColumn = { fg = p.bg },
 		FoldColumn = { fg = p.fg_alt },
 		VertSplit = { fg = p.bg_alt },
+		WinSeparator = { fg = p.bg_alt },
 		Folded = { fg = p.fg },
 		EndOfBuffer = { fg = p.bg_alt },
 		ColorColumn = { bg = p.bg_alt },
 		Conceal = { fg = p.fg_alt },
 		QuickFixLine = { bg = p.bg },
 		Terminal = { fg = p.fg, bg = p.bg },
-
+		Directory = { fg = p.blue },
+		ErrorMsg = { fg = p.red },
+		WarningMsg = { fg = p.yellow },
+		ModeMsg = { fg = p.fg },
+		MoreMsg = { fg = p.fg },
+		MsgArea = { fg = p.fg, bg = p.bg },
+		MsgSeparator = { fg = p.bg_alt, bg = p.bg },
+		Title = { fg = p.cyan },
+		Question = { fg = p.cyan },
 		IncSearch = { fg = p.bg, bg = p.orange },
 		Search = { fg = p.bg, bg = p.yellow },
 		Visual = { fg = p.bg, bg = p.cyan },
 		Substitute = { fg = p.bg, bg = p.magenta },
 		VisualNOS = { fg = p.bg, bg = p.fg },
-
 		Cursor = { fg = p.fg, bg = p.fg },
 		CursorColumn = { bg = p.bg_alt },
 		CursorIM = { fg = p.fg, bg = p.fg },
@@ -30,44 +38,31 @@ function T.set_colors(p)
 		LineNr = { fg = p.fg_alt },
 		TermCursor = { fg = p.fg, bg = p.fg },
 		TermCursorNC = { fg = p.fg, bg = p.fg },
-
 		DiffAdd = { fg = p.green },
 		DiffChange = { fg = p.yellow },
 		DiffDelete = { fg = p.red },
 		DiffText = { fg = p.fg },
-
-		Directory = { fg = p.blue },
-		ErrorMsg = { fg = p.red },
-		WarningMsg = { fg = p.yellow },
-		ModeMsg = { fg = p.fg },
-		MoreMsg = { fg = p.fg },
-		MsgArea = { fg = p.fg, bg = p.bg },
-		MsgSeparator = { fg = p.bg_urgent, bg = p.bg },
-		Title = { fg = p.cyan },
-		Question = { fg = p.cyan },
-
 		MatchParen = { fg = p.yellow, bg = p.bg_urgent },
 		NonText = { fg = p.fg_alt },
 		SpecialKey = { fg = p.fg_alt },
 		Whitespace = { fg = p.bg_alt },
-
 		Pmenu = { fg = p.fg, bg = p.bg_alt },
 		PmenuSbar = { bg = p.bg_urgent },
 		PmenuSel = { fg = p.bg, bg = p.cyan },
 		PmenuThumb = { bg = p.cyan },
 		WildMenu = { fg = p.fg, bg = p.bg_alt },
 		NormalFloat = { fg = p.fg, bg = p.bg_alt },
-
 		TabLine = { fg = p.fg, bg = p.bg },
 		TabLineFill = { fg = p.fg, bg = p.bg },
 		TabLineSel = { fg = p.cyan, bg = p.bg },
 		StatusLine = { fg = p.fg, bg = p.bg },
 		StatusLineNC = { bg = p.bg, fg = p.bg },
-
 		SpellBad = { fg = p.red },
 		SpellCap = { fg = p.blue },
 		SpellLocal = { fg = p.cyan },
 		SpellRare = { fg = p.magenta },
+		FloatShadow = { fg = p.none, bg = p.none },
+		FloatShadowThrough = { fg = p.none, bg = p.none },
 
 		-- syntax
 		Boolean = { fg = p.orange },
@@ -101,7 +96,6 @@ function T.set_colors(p)
 		Type = { fg = p.blue },
 		Typedef = { fg = p.blue },
 		Variable = { fg = p.blue },
-
 		Comment = { fg = p.fg_alt },
 		SpecialComment = { fg = p.fg_alt },
 		Todo = { fg = p.fg_alt },
@@ -119,6 +113,7 @@ function T.set_colors(p)
 		DiagnosticHint = { fg = p.cyan },
 		DiagnosticInfo = { fg = p.blue },
 		DiagnosticWarn = { fg = p.yellow },
+		DiagnosticOk = { fg = p.green },
 
 		-- diff
 		diffAdded = { fg = p.blue },
@@ -156,7 +151,7 @@ function T.set_colors(p)
 		NvimTreeSpecialFile = { fg = p.red },
 		NvimTreeStatusLineNC = { bg = p.bg, fg = p.bg },
 		NvimTreeSymlink = { fg = p.blue },
-		NvimTreeVertSplit = { fg = p.bg, bg = p.bg },
+		NvimTreeVertSplit = { fg = p.fg_alt, bg = p.bg },
 		NvimTreeWindowPicker = { fg = p.red, bg = p.bg_alt },
 
 		-- nvim-treesitter: https://github.com/nvim-treesitter/nvim-treesitter

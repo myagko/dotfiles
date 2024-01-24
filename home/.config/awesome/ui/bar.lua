@@ -64,11 +64,11 @@ local cpu_w = wibox.widget {
 	widget = wibox.widget.textbox
 }
 
-awesome.connect_signal("signal::ram", function (value)
+awesome.connect_signal("stats::ram", function (value)
 	ram_w.text = " " .. value .. "%"
 end)
 
-awesome.connect_signal("signal::cpu", function (value)
+awesome.connect_signal("stats::cpu", function (value)
 	cpu_w.text = " " .. value .. "%"
 end)
 
@@ -267,8 +267,8 @@ function Bar:create_main(s)
 				layout = wibox.layout.fixed.horizontal,
 				spacing = 7,
 				self.tray,
-				self.layoutbox,
 				self.kblayout,
+				self.layoutbox,
 				self.stats,
 				self.time,
 				self.launcher
