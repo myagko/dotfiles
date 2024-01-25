@@ -1,10 +1,6 @@
-:root {
-	--background: #1A2023;
-	--background_alt: #252B2E;
-	--accent: #89B7B0;
-	--foreground: #BCC4C9;
-	--border: #373D40;
+@import url("nymph_theme.css");
 
+:root {
 	--arrowpanel-border-radius: 0px !important;
 	--arrowpanel-border-color: none !important;
 }
@@ -15,11 +11,9 @@
 	scrollbar-color: var(--accent) var(--background) !important;
 }
 
-/*
 .urlbarView {
 	display: none !important;
 }
-*/
 
 #urlbar:is([focused="true"], [open]) > #urlbar-background, #searchbar:focus-within {
 	background-color: var(--background) !important;
