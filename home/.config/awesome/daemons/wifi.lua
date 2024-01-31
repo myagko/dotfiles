@@ -1,7 +1,3 @@
-----------------------------------------
--- @author https://github.com/myagko
-----------------------------------------
-
 local awful = require("awful")
 local gears = require("gears")
 local naughty = require("naughty")
@@ -38,7 +34,7 @@ function Wifi_daemon:scan()
 	local wifi_list = {}
 	local nmcli = "nmcli -t -f 'SSID, BSSID, SECURITY, SIGNAL, ACTIVE' device wifi list"
 	local delayed_call = gears.timer {
-		timeout = 2,
+		timeout = 3,
 		single_shot = true,
 		callback = function()
 			awful.spawn.easy_async_with_shell(nmcli, function(stdout, stderr, reason, code)

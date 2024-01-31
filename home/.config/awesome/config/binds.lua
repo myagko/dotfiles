@@ -52,6 +52,8 @@ awful.keyboard.append_global_keybindings({
 	}
 })
 
+--[[
+-- tiling keys
 awful.keyboard.append_global_keybindings({
 	awful.key({ modkey, "Shift" }, "l", function()
 		awful.client.swap.byidx(1)
@@ -87,6 +89,7 @@ awful.keyboard.append_global_keybindings({
 		awful.layout.inc(1)
 	end),
 })
+--]]
 
 client.connect_signal("request::default_mousebindings", function()
 	awful.mouse.append_client_mousebindings({

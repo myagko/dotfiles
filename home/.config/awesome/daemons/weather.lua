@@ -1,12 +1,8 @@
-----------------------------------------
--- @author https://github.com/myagko
-----------------------------------------
-
 local json = require("modules.json")
 local helpers = require("helpers")
 local User = require("user")
 
-local api_key = User.key
+local api_key = User.OWM_key
 local lat = User.coords[1]
 local lon = User.coords[2]
 local update_interval = 1600

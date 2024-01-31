@@ -1,7 +1,3 @@
-----------------------------------------
--- @author https://github.com/myagko
-----------------------------------------
-
 local awful = require("awful")
 -- timeout 5 bluetoothctl scan on ; bluetoothctl devices
 

@@ -41,7 +41,7 @@ Bar.time = create_container(wibox.widget {
 	spacing = 10,
 	{
 		widget = wibox.widget.textclock,
-		format = "%B %d"
+		format = "%b %d, %a"
 	},
 	helpers:create_sep("v", beautiful.sep_width, { top = 4, bottom = 4 }),
 	{
@@ -115,12 +115,6 @@ tray_rev:buttons {
 		end
 	end)
 }
-
-Bar.layoutbox = create_container(awful.widget.layoutbox {
-	buttons = {
-		awful.button({ }, 1, function() awful.layout.inc(1) end)
-	}
-})
 
 Bar.kblayout = create_container(awful.widget.keyboardlayout {})
 Bar.kblayout.widget.margins = { left = 0, right = 0 }
@@ -268,7 +262,6 @@ function Bar:create_main(s)
 				spacing = 7,
 				self.tray,
 				self.kblayout,
-				self.layoutbox,
 				self.stats,
 				self.time,
 				self.launcher

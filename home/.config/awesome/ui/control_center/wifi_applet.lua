@@ -2,7 +2,7 @@ local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local helpers = require("helpers")
-local wifi_daemon = require("daemons.wifi")
+local Wifi_daemon = require("daemons.wifi")
 
 local Wifi_applet = {}
 
@@ -253,7 +253,7 @@ function Wifi_applet:enter_passwd(ssid, bssid, security)
 			self.m_layout:add(self.active_ap_container, self.ap_container)
 		end,
 		exe_callback = function(input)
-			wifi_daemon:connect(ssid, bssid, security, input)
+			Wifi_daemon:connect(ssid, bssid, security, input)
 			self:refresh()
 		end
 	}
@@ -269,7 +269,7 @@ end
 function Wifi_applet:refresh()
 	self.ap_container:reset()
 	self.active_ap_container:reset()
-	wifi_daemon:get_status()
+	Wifi_daemon:get_status()
 end
 
 awesome.connect_signal("wifi:status", function(status)
@@ -301,13 +301,13 @@ end)
 
 Wifi_applet.b_toggle_button:buttons {
 	awful.button({}, 1, function()
-		wifi_daemon:toggle()
+		Wifi_daemon:toggle()
 	end)
 }
 
 Wifi_applet.m_button_label:buttons {
 	awful.button({}, 1, function()
-		wifi_daemon:toggle()
+		Wifi_daemon:toggle()
 	end)
 }
 

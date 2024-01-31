@@ -2,7 +2,7 @@ local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local helpers = require("helpers")
-local bluetooth_daemon = require("daemons.bluetooth")
+local Bluetooth_daemon = require("daemons.bluetooth")
 
 local Bluetooth_applet = {}
 
@@ -129,13 +129,13 @@ end)
 
 Bluetooth_applet.b_toggle_button:buttons {
 	awful.button({}, 1, function()
-		bluetooth_daemon:toggle()
+		Bluetooth_daemon:toggle()
 	end)
 }
 
 Bluetooth_applet.m_button_label:buttons {
 	awful.button({}, 1, function()
-		bluetooth_daemon:toggle()
+		Bluetooth_daemon:toggle()
 	end)
 }
 
