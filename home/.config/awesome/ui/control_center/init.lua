@@ -10,7 +10,6 @@ local Sliders = require("ui.control_center.audio_sliders")
 local Bluetooth = require("ui.control_center.bluetooth_applet")
 local Calendar = require("ui.control_center.calendar")
 local Weather = require("ui.control_center.weather_applet")
-local Sensors = require("ui.control_center.sensors_applet")
 
 local Control_center = {}
 

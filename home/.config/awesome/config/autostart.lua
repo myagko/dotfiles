@@ -10,7 +10,6 @@ Pulse:mic_get()
 Bluetooth:get_status()
 Wifi:get_status()
 
-require("daemons.stats")
 require("daemons.weather")
 
 if User.autostart then
