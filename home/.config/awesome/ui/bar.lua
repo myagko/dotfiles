@@ -64,11 +64,11 @@ local cpu_w = wibox.widget {
 	widget = wibox.widget.textbox
 }
 
-awesome.connect_signal("stats::ram", function (value)
+awesome.connect_signal("stats::ram_usage", function (value)
 	ram_w.text = " " .. value .. "%"
 end)
 
-awesome.connect_signal("stats::cpu", function (value)
+awesome.connect_signal("stats::cpu_usage", function (value)
 	cpu_w.text = " " .. value .. "%"
 end)
 
@@ -79,6 +79,12 @@ Bar.stats = create_container(wibox.widget {
 	helpers:create_sep("v", beautiful.sep_width, { bottom = 4, top = 4 }),
 	ram_w
 })
+
+Bar.stats.buttons = {
+	awful.button({}, 1, function()
+		Control_center:open("sensors")
+	end)
+}
 
 local tray_rev = wibox.widget {
 	widget = wibox.widget.textbox,

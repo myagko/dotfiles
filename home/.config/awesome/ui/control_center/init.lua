@@ -10,6 +10,7 @@ local Sliders = require("ui.control_center.audio_sliders")
 local Bluetooth = require("ui.control_center.bluetooth_applet")
 local Calendar = require("ui.control_center.calendar")
 local Weather = require("ui.control_center.weather_applet")
+local Sensors = require("ui.control_center.sensors_applet")
 
 local Control_center = {}
 
@@ -73,7 +74,6 @@ Control_center.popup_widget = awful.popup {
 			{
 				widget = wibox.container.background,
 				bg = beautiful.background,
-				forced_width = 500 - 4,
 				{
 					widget = wibox.container.margin,
 					margins = 20,
@@ -112,6 +112,9 @@ function Control_center:open(mode)
 		self.main_widget:reset()
 		Calendar:set(os.date("*t"))
 		self.main_widget:add(Weather.main_widget, Calendar.main_widget)
+	elseif mode == "sensors" then
+		self.main_widget:reset()
+		self.main_widget:add(Sensors.main_widget)
 	end
 	self.popup_widget.visible = true
 	self:send_signal()
