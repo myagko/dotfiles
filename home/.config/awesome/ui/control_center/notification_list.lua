@@ -45,6 +45,7 @@ Notifs_list.m_layout = wibox.widget {
 Notifs_list.main_widget = wibox.widget {
 	widget = wibox.container.background,
 	forced_height = 50 + 120*4 + 10*(4 - 1) + 20,
+	forced_width = 450,
 	{
 		layout = wibox.layout.fixed.vertical,
 		spacing = 20,

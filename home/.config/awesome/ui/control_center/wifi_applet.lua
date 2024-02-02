@@ -187,6 +187,7 @@ Wifi_applet.main_widget = wibox.widget {
 		{
 			widget = wibox.container.background,
 			forced_height = 9*50,
+			forced_width = 400,
 			Wifi_applet.m_layout
 		},
 		Wifi_applet.bottombar

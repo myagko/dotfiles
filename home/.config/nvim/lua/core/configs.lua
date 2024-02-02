@@ -76,4 +76,4 @@ vim.diagnostic.config({
 
 -- Colors --
 vim.opt.termguicolors = true
-vim.cmd.colorscheme('nymph')
+vim.cmd.colorscheme('satyr')

@@ -107,7 +107,12 @@ Bluetooth_applet.m_button = wibox.widget {
 
 Bluetooth_applet.main_widget = wibox.widget {
 	layout = wibox.layout.fixed.vertical,
-	Bluetooth_applet.nt_container,
+	{
+		widget = wibox.container.background,
+		forced_height = 9*50,
+		forced_width = 400,
+		Bluetooth_applet.nt_container
+	},
 	Bluetooth_applet.bottombar
 }
 

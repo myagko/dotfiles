@@ -143,6 +143,9 @@ awful.keyboard.append_global_keybindings({
 	awful.key({ modkey }, "f", function()
 		Control_center:toggle()
 	end),
+	awful.key({ modkey }, "g", function()
+		Control_center:open("daily")
+	end),
 	awful.key({}, "Print", function()
 		Screenshot:full()
 	end),
