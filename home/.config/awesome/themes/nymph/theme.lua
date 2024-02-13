@@ -6,7 +6,7 @@ local icons_path = theme_path .. "icons/"
 
 local theme = {}
 
-theme.wallpaper = theme_path .. "walls/05.png"
+theme.wallpaper = theme_path .. "wall.png"
 
 theme.font_name = "Iosevka"
 theme.font_size = 13.5

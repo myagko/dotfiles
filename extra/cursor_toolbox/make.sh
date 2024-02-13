@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Set the name of your cursor theme
-themetitle='Sharp_cursors_nymph_accent'
+themetitle='Sharp_cursors_satyr_accent'
 
 
 # For the folder name: Replace forbidden charakters with “-”

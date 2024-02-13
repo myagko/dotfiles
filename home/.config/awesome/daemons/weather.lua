@@ -5,7 +5,7 @@ local User = require("user")
 local api_key = User.OWM_key
 local lat = User.coords[1]
 local lon = User.coords[2]
-local update_interval = 1600
+local update_interval = 800
 local units = "metric"
 local tmp_file = "/tmp/awesomewm_weather_json"
 

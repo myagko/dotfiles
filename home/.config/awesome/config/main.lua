@@ -52,7 +52,7 @@ ruled.client.connect_signal("request::rules", function()
 			raise = true,
 			size_hints_honor = false,
 			placement = function(d)
-				awful.placement.no_offscreen(d)
+				awful.placement.centered(d)
 			end,
 		}
 	}
