@@ -129,7 +129,6 @@ function Notifs_list:create_notif(icon, n)
 	}
 
 	local nwidget = wibox.widget {
-		expanded = false,
 		widget = wibox.container.background,
 		bg = beautiful.background_alt,
 		forced_height = 120,
@@ -183,14 +182,6 @@ function Notifs_list:create_notif(icon, n)
 				self.count_t.text = ""
 			else
 				self.count_t.text = "(" .. #self.m_layout.children .. ")"
-			end
-		end),
-		awful.button({}, 1, function()
-			nwidget.expaned = not nwidget.expaned
-			if nwidget.expaned then
-				nwidget.forced_height = 120*2
-			else
-				nwidget.forced_height = 120
 			end
 		end)
 	}

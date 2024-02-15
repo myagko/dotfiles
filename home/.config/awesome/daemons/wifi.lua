@@ -5,9 +5,9 @@ local naughty = require("naughty")
 local Wifi_daemon = {}
 
 function Wifi_daemon:get_status()
-	awful.spawn.easy_async_with_shell("nmcli g | sed 1d | awk '{print $4}'", function(stdout)
-		local rd = stdout:match("(%w+)")
-		if rd == "enabled" then
+	awful.spawn.easy_async_with_shell("nmcli g | sed 1d | awk '{print $3, $4}'", function(stdout)
+		local hw, rd = stdout:match("(%w+)%s+(%w+)")
+		if hw ~= "missing" and rd == "enabled" then
 			self.status = true
 			self:scan()
 		else
