@@ -6,7 +6,6 @@
 
 <details>
 <summary><b>Installation</b></summary>
-<h1></h1>
 
 - Install dependencies
 ```
@@ -33,29 +32,52 @@ $ rsync -avhu ~/dotfiles/home/ ~/
 
 <details>
 <summary><b>Post-install setup</b></summary>
-<h1></h1>
 
-- Change preffered apps, autostart, openweathermap user data and other at
-`~/.config/awesome/user.lua`
+- Change `~/.config/awesome/user.lua`
 
-- Setup firefox css
-1. In the searchbar type `about:config`. A dialog will be shown to you. Press the `I accept the risk` button.
-2. Search for `toolkit.legacyUserProfileCustomizations.stylesheets`, `layers.acceleration.force-enabled`, `gfx.webrender.all`, and `svg.context-properties.content.enabled`. Change them to `True`
-3. Go to your Firefox profile: `~/.mozilla/firefox/XXXXXXX.default-release/`
-4. Copy the `~/dotfiles/extra/mozilla/chrome` folder into the directory.
+- Cursors
+```
+$ cd ~/dotfiles/extra/cursor_toolbox
+$ ~/dotfiles/extra/cursor_toolbox/render-pngs.py ~/dotfiles/extra/cursor_toolbox/Sharp_custom.svg
+$ ~/dotfiles/extra/cursor_toolbox/make.sh
+```
 
-- Setup firefox startpage  \
-guide: <a href="https://peterries.net/blog/firefox-ubuntu-local-file/">here</a>  \
-folder: `~/dotfiles/extra/mozilla/startpage`
+- Papirus icons
+```
+$ cd ~/dotfiles/extra/papirus_folder_icon_creator
+$ ~/dotfiles/extra/papirus_folder_icon_creator/change_folders_colors.sh
+$ ~/dotfiles/extra/papirus_folder_icon_creator/add_folders.sh
+$ ~/tihon/dotfiles/extra/papirus_folder_icon_creator/apply_folders.sh -C satyr_cyan -t Papirus-Dark
+```
+
+- Firefox css
+1. Search `about:config`.
+2. `toolkit.legacyUserProfileCustomizations.stylesheets`, `layers.acceleration.force-enabled`, `gfx.webrender.all`, `svg.context-properties.content.enabled` change to `True`.
+3. Copy `~/dotfiles/extra/mozilla/chrome` to `~/.mozilla/firefox/XXXXXXX.default-release/`.
+
+- Firefox startpage
+1. Edit /usr/lib/firefox/autoconfig.cfg
+```
+var {classes:Cc,interfaces:Ci,utils:Cu} = Components;
+try {
+  Cu.import("resource:///modules/AboutNewTab.jsm");
+  var newTabURL = "file:///home/username/yourfile.html";
+  AboutNewTab.newTabURL = newTabURL;
+} catch(e){Cu.reportError(e);}
+```
+2. Edit /usr/lib/firefox/defaults/pref/autoconfig.js
+```
+pref("general.config.filename", "autoconfig.cfg");
+pref("general.config.obscure_value", 0);
+pref("general.config.sandbox_enabled", false);
+```
+3. Set homepage at firefox settings
 
 <h1></h1>
 </details>
 
 <details>
 <summary><b>Keybindings</b></summary>
-<h1></h1>
-
-All keybinds configuration are placed at `~/.config/awesome/config/binds.lua`
 
 | Keybinding            | Description                              |
 | --------------------- | ---------------------------------------- |
@@ -87,6 +109,3 @@ All keybinds configuration are placed at `~/.config/awesome/config/binds.lua`
 
 <h1></h1>
 </details>
-
-## See also
-- <a href="https://github.com/Sinomor/dotfiles">Sinomor</a>
