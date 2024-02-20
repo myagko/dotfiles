@@ -56,16 +56,16 @@ $ ~/tihon/dotfiles/extra/papirus_folder_icon_creator/apply_folders.sh -C satyr_c
 3. Copy `~/dotfiles/extra/mozilla/chrome` to `~/.mozilla/firefox/XXXXXXX.default-release/`.
 
 - Firefox startpage
-1. Edit /usr/lib/firefox/autoconfig.cfg
+1. Edit `/usr/lib/firefox/autoconfig.cfg`
 ```
 var {classes:Cc,interfaces:Ci,utils:Cu} = Components;
 try {
   Cu.import("resource:///modules/AboutNewTab.jsm");
-  var newTabURL = "file:///home/username/yourfile.html";
+  var newTabURL = "file:///home/username/yourfile.html";t
   AboutNewTab.newTabURL = newTabURL;
 } catch(e){Cu.reportError(e);}
 ```
-2. Edit /usr/lib/firefox/defaults/pref/autoconfig.js
+2. Edit `/usr/lib/firefox/defaults/pref/autoconfig.js`
 ```
 pref("general.config.filename", "autoconfig.cfg");
 pref("general.config.obscure_value", 0);
