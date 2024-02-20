@@ -35,14 +35,14 @@ $ rsync -avhu ~/dotfiles/home/ ~/
 
 - Change `~/.config/awesome/user.lua`
 
-- Cursors
+- Cursors [guide](https://github.com/charakterziffer/cursor-toolbox)
 ```
 $ cd ~/dotfiles/extra/cursor_toolbox
 $ ~/dotfiles/extra/cursor_toolbox/render-pngs.py ~/dotfiles/extra/cursor_toolbox/Sharp_custom.svg
 $ ~/dotfiles/extra/cursor_toolbox/make.sh
 ```
 
-- Papirus icons
+- Papirus icons [guide](https://github.com/Adapta-Projects/Papirus-Folder-Icon-Creator)
 ```
 $ cd ~/dotfiles/extra/papirus_folder_icon_creator
 $ ~/dotfiles/extra/papirus_folder_icon_creator/change_folders_colors.sh
