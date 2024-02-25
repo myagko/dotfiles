@@ -14,8 +14,8 @@ local function create_hover_button(widget, color, fg)
 		widget = wibox.container.background,
 		bg = beautiful.background_alt,
 		fg = fg or beautiful.foreground,
-		forced_width = 55,
-		forced_height = 55,
+		forced_width = beautiful.launcher_item_size,
+		forced_height = beautiful.launcher_item_size,
 		widget
 	}
 	box:connect_signal("mouse::enter", function()
@@ -77,7 +77,7 @@ Sidebar.poweroff_button.buttons = {
 Sidebar.m_widget = wibox.widget {
 	widget = wibox.container.background,
 	bg = beautiful.background_alt,
-	forced_width = 55,
+	forced_width = beautiful.launcher_item_size,
 	{
 		layout = wibox.layout.align.vertical,
 		Sidebar.control_center_button,
@@ -97,8 +97,8 @@ Launcher.prompt = wibox.widget {
 Launcher.promptbox = wibox.widget {
 	widget = wibox.container.background,
 	bg = beautiful.border_color,
-	forced_height = 55,
-	forced_width = 290,
+	forced_height = beautiful.launcher_item_size,
+	forced_width = beautiful.launcher_width,
 	buttons = {
 		awful.button({}, 1, function()
 			Launcher:run_prompt()
@@ -112,7 +112,7 @@ Launcher.promptbox = wibox.widget {
 			bg = beautiful.background,
 			{
 				widget = wibox.container.margin,
-				margins = { left = 10, right = 10 },
+				margins = { left = beautiful.launcher_spacing, right = beautiful.launcher_spacing },
 				Launcher.prompt
 			}
 		}
@@ -121,23 +121,23 @@ Launcher.promptbox = wibox.widget {
 
 Launcher.entries_container = wibox.widget {
 	layout = wibox.layout.fixed.vertical,
-	forced_width = 290
+	forced_width = beautiful.launcher_width
 }
 
 Launcher.main_widget = wibox.widget {
 	widget = wibox.container.margin,
-	forced_width = 290 + 55 + 10*3,
-	margins = 10,
+	forced_width = beautiful.launcher_width + beautiful.launcher_item_size + beautiful.launcher_spacing*3,
+	margins = beautiful.launcher_spacing,
 	{
 		widget = wibox.container.background,
-		forced_height = (55 * (6 + 1)) + 10,
+		forced_height = (beautiful.launcher_item_size * (beautiful.launcher_rows + 1)) + beautiful.launcher_spacing,
 		{
 			layout = wibox.layout.fixed.horizontal,
-			spacing = 10,
+			spacing = beautiful.launcher_spacing,
 			fill_space = true,
 			{
 				layout = wibox.layout.fixed.vertical,
-				spacing = 10,
+				spacing = beautiful.launcher_spacing,
 				Launcher.promptbox,
 				Launcher.entries_container
 			},
@@ -167,7 +167,7 @@ Launcher.popup_widget = awful.popup {
 function Launcher:next()
 	if self.index_entry ~= #self.filtered and #self.filtered > 1 then
 		self.index_entry = self.index_entry + 1
-		if self.index_entry > self.index_start + 6 - 1 then
+		if self.index_entry > self.index_start + beautiful.launcher_rows - 1 then
 			self.index_start = self.index_start + 1
 		end
 	else
@@ -184,10 +184,10 @@ function Launcher:back()
 		end
 	else
 		self.index_entry = #self.filtered
-		if #self.filtered < 6 then
+		if #self.filtered < beautiful.launcher_rows then
 			self.index_start = 1
 		else
-			self.index_start = #self.filtered - 6 + 1
+			self.index_start = #self.filtered - beautiful.launcher_rows + 1
 		end
 	end
 end
@@ -236,7 +236,7 @@ function Launcher:add_entries()
 
 	for i, entry in ipairs(self.filtered) do
 		local entry_widget = wibox.widget {
-			forced_height = 55,
+			forced_height = beautiful.launcher_item_size,
 			buttons = {
 				awful.button({}, 1, function()
 					if self.index_entry == i then
@@ -261,7 +261,7 @@ function Launcher:add_entries()
 			},
 			widget = wibox.container.background,
 			{
-				margins = 10,
+				margins = beautiful.launcher_spacing,
 				widget = wibox.container.margin,
 				{
 					markup = entry.name,
@@ -270,7 +270,7 @@ function Launcher:add_entries()
 			}
 		}
 
-		if self.index_start <= i and i <= self.index_start + 6 - 1 then
+		if self.index_start <= i and i <= self.index_start + beautiful.launcher_rows - 1 then
 			self.entries_container:add(entry_widget)
 		end
 

@@ -11,7 +11,8 @@ local function create_hover_button(widget)
 		widget = wibox.container.background,
 		bg = beautiful.background_alt,
 		fg = beautiful.foreground,
-		forced_width = 55,
+		forced_width = beautiful.wifi_item_size,
+		forced_height = beautiful.wifi_item_size,
 		widget
 	}
 	box:connect_signal("mouse::enter", function()
@@ -38,7 +39,7 @@ Wifi_applet.m_button = wibox.widget {
 	widget = wibox.container.background,
 	bg = beautiful.background_alt,
 	fg = beautiful.foreground,
-	forced_height = 55,
+	forced_height = beautiful.wifi_item_size,
 	{
 		widget = wibox.container.margin,
 		margins = { left = 15, right = 15 },
@@ -74,7 +75,7 @@ Wifi_applet.b_toggle_button = create_hover_button(wibox.widget {
 Wifi_applet.massage = wibox.widget {
 	widget = wibox.container.background,
 	fg = beautiful.foreground_alt,
-	forced_height = 9*50,
+	forced_height = beautiful.wifi_rows*beautiful.wifi_item_size,
 	{
 		widget = wibox.widget.textbox,
 		align = "center",
@@ -92,7 +93,7 @@ Wifi_applet.passbox_title = wibox.widget {
 
 Wifi_applet.passbox = wibox.widget {
 	widget = wibox.container.background,
-	forced_height = 9*50,
+	forced_height = beautiful.wifi_rows*beautiful.wifi_item_size,
 	{
 		layout = wibox.layout.fixed.vertical,
 		spacing = 20,
@@ -155,7 +156,7 @@ Wifi_applet.ap_container = wibox.widget {
 Wifi_applet.bottombar = wibox.widget {
 	widget = wibox.container.background,
 	bg = beautiful.background_alt,
-	forced_height = 55,
+	forced_height = beautiful.wifi_item_size,
 	{
 		layout = wibox.layout.align.horizontal,
 		Wifi_applet.b_toggle_button,
@@ -186,8 +187,8 @@ Wifi_applet.main_widget = wibox.widget {
 		spacing = 20,
 		{
 			widget = wibox.container.background,
-			forced_height = 9*50,
-			forced_width = 400,
+			forced_height = beautiful.wifi_rows*beautiful.wifi_item_size,
+			forced_width = beautiful.wifi_width,
 			Wifi_applet.m_layout
 		},
 		Wifi_applet.bottombar
@@ -205,7 +206,7 @@ function Wifi_applet:add_entries(list)
 		}
 		local wifi_entry = wibox.widget {
 			widget = wibox.container.background,
-			forced_height = 50,
+			forced_height = beautiful.wifi_item_size,
 			{
 				widget = wibox.container.margin,
 				margins = 10,

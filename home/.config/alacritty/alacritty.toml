@@ -1,4 +1,4 @@
-import = ["/home/tihon/.config/alacritty/nymph.toml"]
+import = ["/home/tihon/.config/alacritty/placid.toml"]
 
 [colors]
 draw_bold_text_with_bright_colors = false

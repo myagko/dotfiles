@@ -31,7 +31,7 @@ Powermenu.elements = {
 
 Powermenu.elements_container = wibox.widget {
 	layout = wibox.layout.fixed.horizontal,
-	spacing = 10
+	spacing = beautiful.powermenu_spacing
 }
 
 Powermenu.prompt = wibox.widget {
@@ -42,11 +42,11 @@ Powermenu.prompt = wibox.widget {
 Powermenu.main_widget = wibox.widget {
 	widget = wibox.container.background,
 	bg = beautiful.background,
-	forced_width = 120*3 + 20 + 30,
-	forced_height = 120 + 30,
+	forced_width = beautiful.powermenu_item_size*3 + beautiful.powermenu_spacing*5,
+	forced_height = beautiful.powermenu_item_size + beautiful.powermenu_spacing*3,
 	{
 		widget = wibox.container.margin,
-		margins = 15,
+		margins = beautiful.powermenu_spacing*1.5,
 		{
 			layout = wibox.layout.fixed.vertical,
 			Powermenu.prompt,
@@ -95,8 +95,8 @@ function Powermenu:add_elements()
 	for i, element in ipairs(self.elements) do
 		local element_widget = wibox.widget {
 			widget = wibox.container.background,
-			forced_width = 120,
-			forced_height = 120,
+			forced_width = beautiful.powermenu_item_size,
+			forced_height = beautiful.powermenu_item_size,
 			buttons = {
 				awful.button({}, 1, function()
 					if self.index_element == i then
@@ -110,7 +110,7 @@ function Powermenu:add_elements()
 			{
 				widget = wibox.widget.textbox,
 				align = "center",
-				font = helpers:inc_fontsize(12.5),
+				font = helpers:inc_fontsize(beautiful.powermenu_icon_size),
 				markup = element.icon
 			}
 		}

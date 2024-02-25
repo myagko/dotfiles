@@ -24,7 +24,7 @@ Notifs_list.clear_button = wibox.widget {
 }
 
 Notifs_list.empty_massage = wibox.widget {
-	forced_height = 120*4 + 10*(4 - 1),
+	forced_height = beautiful.notif_list_height,
 	widget = wibox.container.background,
 	fg = beautiful.foreground_alt,
 	{
@@ -44,8 +44,8 @@ Notifs_list.m_layout = wibox.widget {
 
 Notifs_list.main_widget = wibox.widget {
 	widget = wibox.container.background,
-	forced_height = 50 + 120*4 + 10*(4 - 1) + 20,
-	forced_width = 450,
+	forced_height = beautiful.notif_list_header_height + beautiful.notif_list_height,
+	forced_width = beautiful.notif_list_width,
 	{
 		layout = wibox.layout.fixed.vertical,
 		spacing = 20,
@@ -54,7 +54,7 @@ Notifs_list.main_widget = wibox.widget {
 			margins = { left = 20, right = 20 },
 			{
 				widget = wibox.container.background,
-				forced_height = 50,
+				forced_height = beautiful.notif_list_header_height,
 				{
 					layout = wibox.layout.align.horizontal,
 					{
@@ -87,8 +87,8 @@ Notifs_list.clear_button:buttons {
 	end)
 }
 
-function Notifs_list:remove_notif(box)
-	self.m_layout:remove_widgets(box)
+function Notifs_list:remove_notif(index)
+	self.m_layout:remove_widgets(index)
 
 	if #self.m_layout.children == 0 then
 		self.m_layout:insert(1, self.empty_massage)
@@ -131,7 +131,7 @@ function Notifs_list:create_notif(icon, n)
 	local nwidget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.background_alt,
-		forced_height = 120,
+		forced_height = beautiful.notif_list_item_height,
 		{
 			widget = wibox.container.margin,
 			margins = 20,
@@ -153,7 +153,6 @@ function Notifs_list:create_notif(icon, n)
 						layout = wibox.layout.align.horizontal,
 						{
 							widget = wibox.container.background,
-							forced_width = 120,
 							{
 								widget = wibox.container.scroll.horizontal,
 								step_function = wibox.container.scroll.step_functions.waiting_nonlinear_back_and_forth,

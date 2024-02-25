@@ -1,5 +1,5 @@
 local M = {}
-M.theme = "satyr"
+M.theme = "placid"
 
 M.terminal = "alacritty"
 M.webbrowser = "firefox"

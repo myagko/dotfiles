@@ -42,13 +42,9 @@ $ ~/dotfiles/extra/cursor_toolbox/render-pngs.py ~/dotfiles/extra/cursor_toolbox
 $ ~/dotfiles/extra/cursor_toolbox/make.sh
 ```
 
-- Papirus icons ([guide](https://github.com/Adapta-Projects/Papirus-Folder-Icon-Creator))
-```
-$ cd ~/dotfiles/extra/papirus_folder_icon_creator
-$ ~/dotfiles/extra/papirus_folder_icon_creator/change_folders_colors.sh
-$ ~/dotfiles/extra/papirus_folder_icon_creator/add_folders.sh
-$ ~/tihon/dotfiles/extra/papirus_folder_icon_creator/apply_folders.sh -C satyr_cyan -t Papirus-Dark
-```
+- Icons and themes
+1. Install `themix-full-git` from aur
+2. Export icons and theme from user presets
 
 - Firefox css
 1. Search `about:config`.

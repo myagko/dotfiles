@@ -11,8 +11,8 @@ local function create_hover_button(widget)
 		widget = wibox.container.background,
 		bg = beautiful.background_alt,
 		fg = beautiful.foreground,
-		forced_width = 55,
-		forced_height = 55,
+		forced_width = beautiful.bluetooth_item_size,
+		forced_height = beautiful.bluetooth_item_size,
 		widget
 	}
 	box:connect_signal("mouse::enter", function()
@@ -49,7 +49,7 @@ Bluetooth_applet.b_toggle_button = create_hover_button(wibox.widget {
 Bluetooth_applet.massage = wibox.widget {
 	widget = wibox.container.background,
 	fg = beautiful.foreground_alt,
-	forced_height = 450,
+	forced_height = beautiful.bluetooth_item_size*beautiful.bluetooth_rows,
 	{
 		widget = wibox.widget.textbox,
 		align = "center",
@@ -60,7 +60,7 @@ Bluetooth_applet.massage = wibox.widget {
 Bluetooth_applet.bottombar = wibox.widget {
 	widget = wibox.container.background,
 	bg = beautiful.background_alt,
-	forced_height = 55,
+	forced_height = beautiful.bluetooth_item_size,
 	{
 		layout = wibox.layout.align.horizontal,
 		Bluetooth_applet.b_toggle_button,
@@ -92,7 +92,7 @@ Bluetooth_applet.m_button = wibox.widget {
 	widget = wibox.container.background,
 	bg = beautiful.background_alt,
 	fg = beautiful.foreground,
-	forced_height = 55,
+	forced_height = beautiful.bluetooth_item_size,
 	{
 		widget = wibox.container.margin,
 		margins = { left = 15, right = 15 },
@@ -109,8 +109,8 @@ Bluetooth_applet.main_widget = wibox.widget {
 	layout = wibox.layout.fixed.vertical,
 	{
 		widget = wibox.container.background,
-		forced_height = 9*50,
-		forced_width = 400,
+		forced_height = beautiful.bluetooth_rows*beautiful.bluetooth_item_size,
+		forced_width = beautiful.bluetooth_width,
 		Bluetooth_applet.nt_container
 	},
 	Bluetooth_applet.bottombar

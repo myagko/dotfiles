@@ -51,8 +51,8 @@ awesome.connect_signal("audio:vol_mute", function(mute)
 		vol_sli.handle_color = beautiful.foreground_alt
 		vol_ico.markup = ""
 	else
-		vol_sli.bar_active_color = beautiful.green
-		vol_sli.handle_color = beautiful.green
+		vol_sli.bar_active_color = beautiful.accent
+		vol_sli.handle_color = beautiful.accent
 		vol_ico.markup = ""
 	end
 end)
@@ -102,8 +102,8 @@ awesome.connect_signal("audio:mic_mute", function(mute)
 		mic_sli.handle_color = beautiful.foreground_alt
 		mic_ico.markup = ""
 	else
-		mic_sli.bar_active_color = beautiful.yellow
-		mic_sli.handle_color = beautiful.yellow
+		mic_sli.bar_active_color = beautiful.accent
+		mic_sli.handle_color = beautiful.accent
 		mic_ico.markup = ""
 	end
 end)

@@ -17,11 +17,11 @@ local main_sep = helpers:create_sep("h", beautiful.sep_width)
 
 local controls = wibox.widget {
 	layout = wibox.layout.fixed.vertical,
-	spacing = 10,
+	spacing = beautiful.ctrl_center_spacing,
 	Sliders,
 	{
 		layout = wibox.layout.flex.horizontal,
-		spacing = 10,
+		spacing = beautiful.ctrl_center_spacing,
 		Wifi.m_button,
 		Bluetooth.m_button
 	}
@@ -29,7 +29,7 @@ local controls = wibox.widget {
 
 Control_center.main_widget = wibox.widget {
 	layout = wibox.layout.fixed.vertical,
-	spacing = 10,
+	spacing = beautiful.ctrl_center_spacing,
 }
 
 Wifi.m_button_revealer:buttons {
@@ -75,7 +75,7 @@ Control_center.popup_widget = awful.popup {
 				bg = beautiful.background,
 				{
 					widget = wibox.container.margin,
-					margins = 20,
+					margins = beautiful.ctrl_center_spacing*2,
 					Control_center.main_widget
 				}
 			}
@@ -111,9 +111,6 @@ function Control_center:open(mode)
 		self.main_widget:reset()
 		Calendar:set(os.date("*t"))
 		self.main_widget:add(Weather.main_widget, Calendar.main_widget)
-	elseif mode == "sensors" then
-		self.main_widget:reset()
-		self.main_widget:add(Sensors.main_widget)
 	end
 	self.popup_widget.visible = true
 	self:send_signal()
