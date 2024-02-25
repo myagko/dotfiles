@@ -61,6 +61,5 @@ require("lazy").setup({
 	},
 
 	-- colorschemes
-	{ dir = '~/.config/nvim/colorschemes/nymph' },
-	{ dir = '~/.config/nvim/colorschemes/satyr' }
+	{ dir = '~/.config/nvim/colorschemes/placid' }
 })

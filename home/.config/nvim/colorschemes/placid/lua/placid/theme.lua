@@ -33,7 +33,7 @@ function T.set_colors(p)
 		CursorColumn = { bg = p.bg_alt },
 		CursorIM = { fg = p.fg, bg = p.fg },
 		CursorLine = { bg = p.bg_alt },
-		CursorLineNr = { fg = p.cyan },
+		CursorLineNr = { fg = p.fg },
 		lCursor = { fg = p.fg, bg = p.fg },
 		LineNr = { fg = p.fg_alt },
 		TermCursor = { fg = p.fg, bg = p.fg },
@@ -48,13 +48,13 @@ function T.set_colors(p)
 		Whitespace = { fg = p.bg_alt },
 		Pmenu = { fg = p.fg, bg = p.bg_alt },
 		PmenuSbar = { bg = p.bg_urgent },
-		PmenuSel = { fg = p.bg, bg = p.cyan },
-		PmenuThumb = { bg = p.cyan },
+		PmenuSel = { fg = p.bg, bg = p.fg },
+		PmenuThumb = { bg = p.fg },
 		WildMenu = { fg = p.fg, bg = p.bg_alt },
 		NormalFloat = { fg = p.fg, bg = p.bg_alt },
 		TabLine = { fg = p.fg, bg = p.bg },
 		TabLineFill = { fg = p.fg, bg = p.bg },
-		TabLineSel = { fg = p.cyan, bg = p.bg },
+		TabLineSel = { fg = p.fg, bg = p.bg },
 		StatusLine = { fg = p.fg, bg = p.bg },
 		StatusLineNC = { bg = p.bg, fg = p.bg },
 		SpellBad = { fg = p.red },
@@ -106,7 +106,7 @@ function T.set_colors(p)
 
 		-- bufferline.nvim: https://github.com/akinsho/bufferline.nvim
 		BufferLineFill = { fg = p.bg, bg = p.bg },
-		BufferLineIndicatorSelected = { fg = p.cyan },
+		BufferLineIndicatorSelected = { fg = p.fg },
 
 		-- Diagnostic
 		DiagnosticError = { fg = p.red },

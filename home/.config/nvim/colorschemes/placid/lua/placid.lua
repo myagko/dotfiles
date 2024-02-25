@@ -6,12 +6,12 @@ function M.colorscheme()
 	end
 
 	vim.opt.termguicolors = true
-	vim.g.colors_name = 'satyr'
+	vim.g.colors_name = 'placid'
 
-	local theme = require('satyr.theme').set_colors(require('satyr.palette'))
+	local theme = require('placid.theme').set_colors(require('placid.palette'))
 
 	for group, color in pairs(theme) do
-		require('satyr.util').highlight(group, color)
+		require('placid.util').highlight(group, color)
 	end
 end
 

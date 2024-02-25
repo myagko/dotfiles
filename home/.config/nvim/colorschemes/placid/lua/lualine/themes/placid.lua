@@ -1,4 +1,4 @@
-local p = require('nymph.palette')
+local p = require('placid.palette')
 
 return {
 	normal = {
