@@ -4,10 +4,10 @@
 :root {
 	--font: "Iosevka", monospace;
 
-	--background: #1A2023;
-	--background_alt: #252B2E;
-	--foreground: #BCC4C9;
-	--accent: #89B7B0;
+	--background: #1F1F1F;
+	--background_alt: #292929;
+	--foreground: #BBBBBB;
+	--accent: #BBBBBB;
 
 	--grid_columns: 3;
 	--grid_rows: 2;
