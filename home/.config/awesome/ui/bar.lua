@@ -15,7 +15,10 @@ local function create_container(widget)
 		fg = beautiful.foreground,
 		{
 			widget = wibox.container.margin,
-			margins = { left = 8, right = 8 },
+			margins = {
+				left = beautiful.bar_module_margins,
+				right = beautiful.bar_module_margins
+			},
 			widget
 		}
 	}
@@ -24,26 +27,35 @@ end
 
 Bar.launcher = wibox.widget {
 	widget = wibox.container.background,
+	bg = beautiful.accent,
+	fg = beautiful.background,
 	buttons = {
 		awful.button({}, 1, function()
 			Launcher:open()
 		end)
 	},
 	{
-		widget = wibox.widget.imagebox,
-		scaling_quality = "nearest",
-		image = beautiful.theme_assets.awesome_icon(20, beautiful.accent, beautiful.background)
+		widget = wibox.container.margin,
+		margins = {
+			left = beautiful.bar_module_margins - 1,
+			right = beautiful.bar_module_margins - 1
+		},
+		{
+			widget = wibox.widget.textbox,
+			align = "center",
+			text = ""
+		}
 	}
 }
 
 Bar.time = create_container(wibox.widget {
 	layout = wibox.layout.fixed.horizontal,
-	spacing = 10,
+	spacing = beautiful.bar_module_margins,
 	{
 		widget = wibox.widget.textclock,
 		format = "%b %d, %a"
 	},
-	helpers:create_sep("v", beautiful.sep_width, { top = 4, bottom = 4 }),
+	helpers:create_sep("v", beautiful.sep_width, { top = beautiful.bar_module_margins/2, bottom = beautiful.bar_module_margins/2 }),
 	{
 		widget = wibox.widget.textclock,
 		format = "%H:%M",
@@ -63,7 +75,7 @@ local tray_rev = wibox.widget {
 
 local tray_w = wibox.widget {
 	widget = wibox.container.margin,
-	margins = { top = 4, bottom = 4 },
+	margins = { top = beautiful.bar_module_margins/2, bottom = beautiful.bar_module_margins/2 },
 	{
 		widget = wibox.widget.systray,
 	}
@@ -71,7 +83,7 @@ local tray_w = wibox.widget {
 
 local tray_layout = wibox.widget {
 	layout = wibox.layout.fixed.horizontal,
-	spacing = 8,
+	spacing = beautiful.bar_module_margins,
 	tray_rev
 }
 
@@ -93,7 +105,7 @@ tray_rev:buttons {
 }
 
 Bar.kblayout = create_container(awful.widget.keyboardlayout {})
-Bar.kblayout.widget.margins = { left = 0, right = 0 }
+Bar.kblayout.widget.margins = { left = beautiful.bar_module_margins - 8, right = beautiful.bar_module_margins - 8 }
 
 function Bar:create_taglist(s)
 	local taglist_w = awful.widget.taglist {
@@ -105,13 +117,13 @@ function Bar:create_taglist(s)
 			end)
 		},
 		layout = {
-			spacing = 9,
+			spacing = beautiful.taglist_margins,
 			layout = wibox.layout.fixed.horizontal
 		},
 		widget_template = {
 			id = "t_container",
 			widget = wibox.container.background,
-			forced_width = 15
+			forced_width = beautiful.taglist_item_size
 		}
 	}
 
@@ -144,7 +156,12 @@ function Bar:create_taglist(s)
 		bg = beautiful.background_alt,
 		{
 			widget = wibox.container.margin,
-			margins = { left = 9, right = 9, top = 8, bottom = 8 },
+			margins = {
+				left = beautiful.taglist_margins,
+				right = beautiful.taglist_margins,
+				top = beautiful.taglist_margins - 1,
+				bottom = beautiful.taglist_margins - 1
+			},
 			taglist_w
 		}
 	}
@@ -165,7 +182,7 @@ function Bar:create_tasklist(s)
 			end),
 		},
 		layout = {
-			spacing = 7,
+			spacing = beautiful.bar_spacing,
 			layout = wibox.layout.fixed.horizontal,
 		},
 		widget_template = {
@@ -177,7 +194,12 @@ function Bar:create_tasklist(s)
 				nil,
 				{
 					widget = wibox.container.margin,
-					margins = { left = 8, right = 8, top = 4, bottom = 4 },
+					margins = {
+						left = beautiful.tasklist_margins,
+						right = beautiful.tasklist_margins,
+						top = beautiful.tasklist_margins/2,
+						bottom = beautiful.tasklist_margins/2
+					},
 					{
 						widget = wibox.widget.textbox,
 						id = "c_name"
@@ -186,7 +208,7 @@ function Bar:create_tasklist(s)
 				{
 					widget = wibox.container.background,
 					id = "c_selection",
-					forced_height = 2
+					forced_height = beautiful.tasklist_selection_size
 				}
 			}
 		}
@@ -222,20 +244,25 @@ function Bar:create_main(s)
 		nil,
 		{
 			widget = wibox.container.margin,
-			margins = 7,
+			margins = beautiful.bar_spacing,
 			{
 				layout = wibox.layout.fixed.horizontal,
-				spacing = 8,
+				spacing = beautiful.bar_spacing + 1,
 				self:create_taglist(s),
 				self:create_tasklist(s),
 			}
 		},
 		{
 			widget = wibox.container.margin,
-			margins = { top = 7, bottom = 7, left = 0, right = 7 },
+			margins = {
+				top = beautiful.bar_spacing,
+				bottom = beautiful.bar_spacing,
+				left = 0,
+				right = beautiful.bar_spacing
+			},
 			{
 				layout = wibox.layout.fixed.horizontal,
-				spacing = 7,
+				spacing = beautiful.bar_spacing,
 				self.tray,
 				self.kblayout,
 				self.time,
@@ -247,7 +274,7 @@ function Bar:create_main(s)
 	self.wibar = awful.wibar {
 		position = "bottom",
 		screen = s,
-		height = 45 + beautiful.border_width,
+		height = beautiful.bar_height + beautiful.border_width,
 		widget = {
 			widget = wibox.container.background,
 			bg = beautiful.background_urgent,

@@ -112,7 +112,7 @@ Launcher.promptbox = wibox.widget {
 			bg = beautiful.background,
 			{
 				widget = wibox.container.margin,
-				margins = { left = beautiful.launcher_spacing, right = beautiful.launcher_spacing },
+				margins = { left = beautiful.launcher_margins, right = beautiful.launcher_margins },
 				Launcher.prompt
 			}
 		}
@@ -126,18 +126,18 @@ Launcher.entries_container = wibox.widget {
 
 Launcher.main_widget = wibox.widget {
 	widget = wibox.container.margin,
-	forced_width = beautiful.launcher_width + beautiful.launcher_item_size + beautiful.launcher_spacing*3,
-	margins = beautiful.launcher_spacing,
+	forced_width = beautiful.launcher_width + beautiful.launcher_item_size + beautiful.launcher_margins*3,
+	margins = beautiful.launcher_margins,
 	{
 		widget = wibox.container.background,
-		forced_height = (beautiful.launcher_item_size * (beautiful.launcher_rows + 1)) + beautiful.launcher_spacing,
+		forced_height = (beautiful.launcher_item_size * (beautiful.launcher_rows + 1)) + beautiful.launcher_margins,
 		{
 			layout = wibox.layout.fixed.horizontal,
-			spacing = beautiful.launcher_spacing,
+			spacing = beautiful.launcher_margins,
 			fill_space = true,
 			{
 				layout = wibox.layout.fixed.vertical,
-				spacing = beautiful.launcher_spacing,
+				spacing = beautiful.launcher_margins,
 				Launcher.promptbox,
 				Launcher.entries_container
 			},
@@ -261,7 +261,7 @@ function Launcher:add_entries()
 			},
 			widget = wibox.container.background,
 			{
-				margins = beautiful.launcher_spacing,
+				margins = beautiful.launcher_margins,
 				widget = wibox.container.margin,
 				{
 					markup = entry.name,

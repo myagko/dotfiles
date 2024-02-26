@@ -17,11 +17,11 @@ local main_sep = helpers:create_sep("h", beautiful.sep_width)
 
 local controls = wibox.widget {
 	layout = wibox.layout.fixed.vertical,
-	spacing = beautiful.ctrl_center_spacing,
+	spacing = beautiful.ctrl_center_margins,
 	Sliders,
 	{
 		layout = wibox.layout.flex.horizontal,
-		spacing = beautiful.ctrl_center_spacing,
+		spacing = beautiful.ctrl_center_margins,
 		Wifi.m_button,
 		Bluetooth.m_button
 	}
@@ -29,7 +29,7 @@ local controls = wibox.widget {
 
 Control_center.main_widget = wibox.widget {
 	layout = wibox.layout.fixed.vertical,
-	spacing = beautiful.ctrl_center_spacing,
+	spacing = beautiful.ctrl_center_margins,
 }
 
 Wifi.m_button_revealer:buttons {
@@ -75,7 +75,7 @@ Control_center.popup_widget = awful.popup {
 				bg = beautiful.background,
 				{
 					widget = wibox.container.margin,
-					margins = beautiful.ctrl_center_spacing*2,
+					margins = beautiful.ctrl_center_margins*2,
 					Control_center.main_widget
 				}
 			}

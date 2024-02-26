@@ -31,7 +31,7 @@ Powermenu.elements = {
 
 Powermenu.elements_container = wibox.widget {
 	layout = wibox.layout.fixed.horizontal,
-	spacing = beautiful.powermenu_spacing
+	spacing = beautiful.powermenu_margins
 }
 
 Powermenu.prompt = wibox.widget {
@@ -42,11 +42,11 @@ Powermenu.prompt = wibox.widget {
 Powermenu.main_widget = wibox.widget {
 	widget = wibox.container.background,
 	bg = beautiful.background,
-	forced_width = beautiful.powermenu_item_size*3 + beautiful.powermenu_spacing*5,
-	forced_height = beautiful.powermenu_item_size + beautiful.powermenu_spacing*3,
+	forced_width = beautiful.powermenu_item_size*3 + beautiful.powermenu_margins*5,
+	forced_height = beautiful.powermenu_item_size + beautiful.powermenu_margins*3,
 	{
 		widget = wibox.container.margin,
-		margins = beautiful.powermenu_spacing*1.5,
+		margins = beautiful.powermenu_margins*1.5,
 		{
 			layout = wibox.layout.fixed.vertical,
 			Powermenu.prompt,

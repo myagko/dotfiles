@@ -6,6 +6,20 @@ local icons_path = theme_path .. "icons/"
 
 local theme = {}
 
+theme.red = "#CB6F65"
+theme.green = "#A7B163"
+theme.yellow = "#CCB175"
+theme.blue = "#759AA4"
+theme.magenta = "#B18293"
+theme.cyan = "#86AB9D"
+theme.orange = "#D39867"
+
+theme.background = "#1F1F1F"
+theme.background_alt = "#292929"
+theme.background_urgent = "#393939"
+theme.foreground_alt = "#686868"
+theme.foreground = "#BBBBBB"
+
 theme.wallpaper = theme_path .. "wall.png"
 
 theme.font_name = "Iosevka"
@@ -16,20 +30,7 @@ theme.useless_gap = 3
 theme.border_width = 2
 theme.sep_width = 2
 
-theme.cyan = "#86AB9D"
-theme.red = "#CB6F65"
-theme.yellow = "#CCB175"
-theme.green = "#A7B163"
-theme.blue = "#759AA4"
-theme.magenta = "#B18293"
-theme.orange = "#D39867"
-theme.background = "#1F1F1F"
-theme.background_alt = "#292929"
-theme.background_urgent = "#393939"
-theme.foreground_alt = "#686868"
-theme.foreground = "#BBBBBB"
-theme.accent = theme.foreground
-
+theme.accent = theme.cyan
 theme.bg_normal = theme.background
 theme.fg_normal = theme.foreground
 theme.border_color = theme.background_urgent
@@ -68,19 +69,26 @@ theme.menu_border_color = theme.border_color
 theme.systray_icon_spacing = 6
 theme.bg_systray = theme.background_alt
 
-theme.bar_height = 0
-theme.bar_spacing = 10
+theme.bar_height = 45
+theme.bar_spacing = 7
+theme.bar_module_margins = 8
+
+theme.taglist_margins = 8
+theme.taglist_item_size = 16
+
+theme.tasklist_margins = 8
+theme.tasklist_selection_size = theme.border_width
 
 theme.launcher_rows = 6
 theme.launcher_item_size = 55
 theme.launcher_width = 290
-theme.launcher_spacing = 10
+theme.launcher_margins = 10
 
 theme.powermenu_item_size = 120
 theme.powermenu_icon_size = 12.5
-theme.powermenu_spacing = 10
+theme.powermenu_margins = 10
 
-theme.ctrl_center_spacing = 10
+theme.ctrl_center_margins = 10
 
 theme.notif_list_height = 530
 theme.notif_list_width = 450
