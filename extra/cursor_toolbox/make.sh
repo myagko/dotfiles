@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Set the name of your cursor theme
-themetitle='Sharp_cursors_placid'
+themetitle='Sharp_cursors'
 
 
 # For the folder name: Replace forbidden charakters with “-”

@@ -1,17 +1,13 @@
-<div align="center">
-    <img src="./src/12.png"> 
-</div>
-
-## Guide
-
-<details>
-<summary><b>Installation</b></summary>
+## Instalation
 
 - Install dependencies
 ```
-$ sudo pacman -S xorg-server xorg-xinit xorg-xrandr xorg-xcursorgen \
-pulseaudio networkmanager bluez bluez-utils rsync \
-alacritty picom maim imagemagick lxappearance firefox ttf-iosevka-nerd
+$ sudo pacman -S xorg xorg-xinit \
+util-linux pulseaudio networkmanager bluez bluez-utils mtpfs rsync \
+alacritty picom maim eom nemo nemo-fileroller \
+firefox imagemagick krita inkscape gimp discord \
+neovim lxappearance pavucontrol leafpad htop \
+mpv libreoffice-fresh
 ```
 
 - Install `awesome-git` package from aur (pikaur for example)
@@ -20,6 +16,36 @@ $ pikaur -S awesome-git
 ```
 
 - Start & enable `network manager` & `bluez` services
+```
+$ systemctl start NetworkManager.service
+$ systemctl enable NetworkManager.service
+$ systemctl start bluetooth
+$ systemctl enable bluetooth
+```
+
+- Enable fstrim (for nvme)
+```
+$ sudo systemctl start fstrim.timer
+$ sudo systemctl enable fstrim.timer
+```
+
+- Keyboard layouts, edit `/etc/X11/xorg.conf.d/00-keyboard.conf`
+```
+Section "InputClass"
+    Identifier "system-keyboard"
+    MatchIsKeyboard "on"
+    Option "XkbLayout" "us,ru"
+    Option "XkbModel" "pc105"
+    Option "XkbOptions" "grp:alt_shift_toggle"
+EndSection
+```
+
+- Mouse debounce, edit `/etc/libinput/local-overrides.quirks`
+```
+[Never Debounce]
+MatchUdevType=mouse
+ModelBouncingKeys=1
+```
 
 - Setup home dir
 ```
@@ -27,24 +53,19 @@ $ git clone --depth 1 https://github.com/myagko/dotfiles.git
 $ rsync -avhu ~/dotfiles/home/ ~/
 ```
 
-<h1></h1>
-</details>
-
-<details>
-<summary><b>Post-install setup</b></summary>
-
 - Change `~/.config/awesome/user.lua`
+
+- Icons and themes
+1. Install `themix-full-git` from aur
+2. Export icons and theme from user presets
 
 - Cursors ([guide](https://github.com/charakterziffer/cursor-toolbox))
 ```
 $ cd ~/dotfiles/extra/cursor_toolbox
 $ ~/dotfiles/extra/cursor_toolbox/render-pngs.py ~/dotfiles/extra/cursor_toolbox/Sharp_custom.svg
 $ ~/dotfiles/extra/cursor_toolbox/make.sh
+$ cp -r Sharp_cursors ~/.icons
 ```
-
-- Icons and themes
-1. Install `themix-full-git` from aur
-2. Export icons and theme from user presets
 
 - Firefox css
 1. Search `about:config`.
@@ -57,7 +78,7 @@ $ ~/dotfiles/extra/cursor_toolbox/make.sh
 var {classes:Cc,interfaces:Ci,utils:Cu} = Components;
 try {
   Cu.import("resource:///modules/AboutNewTab.jsm");
-  var newTabURL = "file:///home/username/yourfile.html";t
+  var newTabURL = "file:///home/username/yourfile.html";
   AboutNewTab.newTabURL = newTabURL;
 } catch(e){Cu.reportError(e);}
 ```
@@ -69,8 +90,7 @@ pref("general.config.sandbox_enabled", false);
 ```
 3. Set homepage at firefox settings
 
-<h1></h1>
-</details>
+- Apply cursor, icon, gtk themes with `lxappearance`
 
 <details>
 <summary><b>Keybindings</b></summary>

@@ -6,19 +6,19 @@ local icons_path = theme_path .. "icons/"
 
 local theme = {}
 
-theme.red = "#CB6F65"
-theme.green = "#A7B163"
-theme.yellow = "#CCB175"
-theme.blue = "#759AA4"
-theme.magenta = "#B18293"
-theme.cyan = "#86AB9D"
-theme.orange = "#D39867"
+theme.red = "#DA4F2E"
+theme.green = "#53B948"
+theme.yellow = "#E8C93A"
+theme.blue = "#4E7DB1"
+theme.magenta = "#B7639F"
+theme.cyan = "#60B5A9"
+theme.orange = "#E08C33"
 
-theme.background = "#1F1F1F"
-theme.background_alt = "#292929"
-theme.background_urgent = "#393939"
-theme.foreground_alt = "#686868"
-theme.foreground = "#BBBBBB"
+theme.background = "#1A1A1A"
+theme.background_alt = "#262626"
+theme.background_urgent = "#383838"
+theme.foreground_alt = "#535353"
+theme.foreground = "#CCCCCC"
 
 theme.wallpaper = theme_path .. "wall.png"
 
