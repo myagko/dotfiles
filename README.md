@@ -54,7 +54,7 @@ $ git clone --depth 1 https://github.com/myagko/dotfiles.git
 $ rsync -avhu ~/dotfiles/home/ ~/
 ```
 
-- Change `~/.config/awesome/user.lua`
+- Edit `~/.config/awesome/user.lua` as you need
 
 - Icons and themes
 1. Install `themix-full-git` from aur
@@ -91,7 +91,7 @@ pref("general.config.sandbox_enabled", false);
 ```
 3. Set homepage at firefox settings
 
-- Apply cursor, icon, gtk themes with `lxappearance`
+- Apply cursor, icons and gtk themes with `lxappearance`
 
 <details>
 <summary><b>Keybindings</b></summary>
