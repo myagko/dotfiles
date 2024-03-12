@@ -1,5 +1,10 @@
 ## Instalation
 
+<img src=".src/1.png" alt="img" align="center">
+<img src=".src/2.png" alt="img" align="center">
+<img src=".src/3.png" alt="img" align="center">
+<img src=".src/4.png" alt="img" align="center">
+
 - Install dependencies
 ```
 $ sudo pacman -S xorg xorg-xinit \
@@ -21,12 +26,6 @@ $ systemctl start NetworkManager.service
 $ systemctl enable NetworkManager.service
 $ systemctl start bluetooth
 $ systemctl enable bluetooth
-```
-
-- Enable fstrim (for nvme)
-```
-$ sudo systemctl start fstrim.timer
-$ sudo systemctl enable fstrim.timer
 ```
 
 - Keyboard layouts, edit `/etc/X11/xorg.conf.d/00-keyboard.conf`
@@ -59,7 +58,7 @@ $ rsync -avhu ~/dotfiles/home/ ~/
 1. Install `themix-full-git` from aur
 2. Export icons and theme from user presets
 
-- Cursors ([guide](https://github.com/charakterziffer/cursor-toolbox))
+- Cursors ([source](https://github.com/charakterziffer/cursor-toolbox))
 ```
 $ cd ~/dotfiles/extra/cursor_toolbox
 $ ~/dotfiles/extra/cursor_toolbox/render-pngs.py ~/dotfiles/extra/cursor_toolbox/Sharp_custom.svg
