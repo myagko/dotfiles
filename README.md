@@ -1,9 +1,11 @@
-## Instalation
+## Preview
 
-<img src=".src/1.png" alt="img" align="center">
-<img src=".src/2.png" alt="img" align="center">
-<img src=".src/3.png" alt="img" align="center">
-<img src=".src/4.png" alt="img" align="center">
+<img src="src/1.png" alt="img" align="center">
+<img src="src/2.png" alt="img" align="center">
+<img src="src/3.png" alt="img" align="center">
+<img src="src/4.png" alt="img" align="center">
+
+## Instalation
 
 - Install dependencies
 ```
