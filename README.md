@@ -41,13 +41,6 @@ Section "InputClass"
 EndSection
 ```
 
-- Mouse debounce, edit `/etc/libinput/local-overrides.quirks`
-```
-[Never Debounce]
-MatchUdevType=mouse
-ModelBouncingKeys=1
-```
-
 - Setup home dir
 ```
 $ git clone --depth 1 https://github.com/myagko/dotfiles.git
