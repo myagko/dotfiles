@@ -56,9 +56,9 @@ $ rsync -avhu ~/dotfiles/home/ ~/
 - Cursors ([source](https://github.com/charakterziffer/cursor-toolbox))
 ```
 $ cd ~/dotfiles/extra/cursor_toolbox
-$ ~/dotfiles/extra/cursor_toolbox/render-pngs.py ~/dotfiles/extra/cursor_toolbox/Sharp_custom.svg
-$ ~/dotfiles/extra/cursor_toolbox/make.sh
-$ cp -r Sharp_cursors ~/.icons
+$ ~/dotfiles/extra/cursor_toolbox/render-pngs.py ~/dotfiles/extra/cursor_toolbox/sharp_dark.svg
+$ ~/dotfiles/extra/cursor_toolbox/make_dark.sh
+$ cp -r sharp_cursors_dark ~/.icons
 ```
 
 - Firefox css
