@@ -14,7 +14,7 @@ local eu_wday_format = {
 	[7] = 6
 }
 
-local function create_month_widget(month, color)
+local function create_wday_widget(wday, color)
 	local fg_color = color or beautiful.foreground
 	return wibox.widget {
 		widget = wibox.container.background,
@@ -24,7 +24,7 @@ local function create_month_widget(month, color)
 			margins = 10,
 			{
 				widget = wibox.widget.textbox,
-				text = month
+				text = wday
 			}
 		}
 	}
@@ -109,32 +109,28 @@ Calendar.top_widget = wibox.widget {
 function Calendar:set(date)
 	Calendar.m_layout:reset()
 	self.date = date
-	local curr_date = os.date("*t")
 
+	local curr_date = os.date("*t")
 	local firstday = os.date("*t", os.time({ year = date.year, month = date.month, day = 1 }))
 	local lastday = os.date("*t", os.time({ year = date.year, month = date.month + 1, day = 0 }))
 
 	local month_count = lastday.day
 	local month_start = eu_wday_format[firstday.wday]
-
 	local rows = math.max(5, math.min(6, 5 - (36 - (month_start + month_count))))
 
 	local month_prev_lastday = os.date("*t", os.time({ year = date.year, month = date.month, day = 0 })).day
-
-	local month_prev_count = eu_wday_format[firstday.wday] - 1
+	local month_prev_count = month_start - 1
 	local month_next_count = rows*7 - lastday.day - month_prev_count
 
 	self.monthtitle.text = os.date("%B, %Y", os.time(date))
 
-	self.m_layout:add(
-		create_month_widget("Mon"),
-		create_month_widget("Tue"),
-		create_month_widget("Wed"),
-		create_month_widget("Thu"),
-		create_month_widget("Fri"),
-		create_month_widget("Sat", beautiful.red),
-		create_month_widget("Sun", beautiful.red)
-	)
+	for i = 1, 7 do
+		if i <= 5 then
+			self.m_layout:add(create_wday_widget(os.date("%a", os.time({year = 1, month = 1, day = i}))))
+		else
+			self.m_layout:add(create_wday_widget(os.date("%a", os.time({year = 1, month = 1, day = i})), beautiful.red))
+		end
+	end
 
 	for day = month_prev_lastday - (month_prev_count - 1), month_prev_lastday, 1 do
 		self.m_layout:add(create_day_widget(day, false, true))
