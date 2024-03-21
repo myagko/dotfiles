@@ -59,17 +59,3 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		end, opts)
 	end,
 })
-
--- Telescope
---[[
-local builtin = require('telescope.builtin')
-map('n', '<leader>ff', builtin.find_files, {})
-map('n', '<leader>fb', builtin.buffers, {})
-map('n', '<leader>fh', builtin.help_tags, {})
-map('n', '<leader>gb', builtin.git_branches, {})
-map('n', '<leader>gc', builtin.git_commits, {})
-map('n', '<leader>gs', builtin.git_status, {})
-map('n', '<leader>ls', builtin.lsp_document_symbols, {})
-map('n', 'gr', builtin.lsp_references, { noremap = true, silent = true })
-map('n', 'gd', builtin.lsp_definitions, { noremap = true, silent = true })
-]]
