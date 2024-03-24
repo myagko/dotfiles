@@ -3,6 +3,7 @@ local gears = require("gears")
 local theme_name = "placid"
 local theme_path = "~/.config/awesome/themes/" .. theme_name .. "/"
 local icons_path = theme_path .. "icons/"
+local wall_path = theme_path .. "walls/"
 
 local theme = {}
 
@@ -20,7 +21,7 @@ theme.background_urgent = "#383838"
 theme.foreground_alt = "#535353"
 theme.foreground = "#CCCCCC"
 
-theme.wallpaper = theme_path .. "wall.png"
+theme.wallpaper = wall_path .. "01.png"
 
 theme.font_name = "Iosevka"
 theme.font_size = 13.5
