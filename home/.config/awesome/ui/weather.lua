@@ -9,7 +9,7 @@ function weather:create_current(w)
     local curr_temp = wibox.widget {
         widget = wibox.widget.textbox,
         align = "left",
-        font = helpers.ui.font(dpi(25)),
+        font = helpers.ui.font(beautiful.font_size + dpi(12)),
         text = w.current.weather_icon .. " " .. string.gsub(tostring(math.floor(w.current.temp)), "%-0", "0") .. "°C "
     }
 
@@ -99,7 +99,7 @@ function weather:create_daily(w)
         local icon = wibox.widget {
             widget = wibox.widget.textbox,
             align = "center",
-            font = helpers.ui.font(dpi(25)),
+            font = helpers.ui.font(beautiful.font_size + dpi(12)),
             text = v.weather_icon
         }
 

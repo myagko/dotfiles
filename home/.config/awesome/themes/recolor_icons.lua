@@ -12,9 +12,8 @@ local function recolor_image(image, color)
 end
 
 return function()
-    recolor_image(beautiful.icon_bell, beautiful.foreground)
-    recolor_image(beautiful.icon_bell_off, beautiful.foreground)
-    recolor_image(beautiful.icon_photo, beautiful.foreground)
-    recolor_image(beautiful.icon_alert, beautiful.red)
+    recolor_image(beautiful.notification_icon_bell, beautiful.foreground)
+    recolor_image(beautiful.notification_icon_camera, beautiful.foreground)
+    recolor_image(beautiful.notification_icon_alert, beautiful.red)
 end
 

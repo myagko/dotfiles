@@ -112,7 +112,7 @@ function powermenu:add_elements()
             {
                 widget = wibox.widget.textbox,
                 align = "center",
-                font = helpers.ui.font(dpi(28)),
+                font = helpers.ui.font(beautiful.font_size + dpi(15)),
                 text = element.icon
             }
         }

@@ -58,7 +58,7 @@ wifi_applet.refresh_button = helpers.ui.create_hover_button {
 wifi_applet.toggle_button = helpers.ui.create_hover_button {
     forced_width = dpi(55),
     forced_height = dpi(55),
-    font = helpers.ui.font(dpi(18)),
+    font = helpers.ui.font(beautiful.font_size + dpi(5)),
     buttons = {
         awful.button({}, 1, function()
             Wifi_daemon:toggle()
@@ -69,7 +69,7 @@ wifi_applet.toggle_button = helpers.ui.create_hover_button {
 wifi_applet.massage_textbox = wibox.widget {
     widget = wibox.widget.textbox,
     align = "center",
-    font = helpers.ui.font(dpi(18))
+    font = helpers.ui.font(beautiful.font_size + dpi(5))
 }
 
 wifi_applet.massage = wibox.widget {

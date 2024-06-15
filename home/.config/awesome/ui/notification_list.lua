@@ -50,7 +50,7 @@ notification_list.empty_massage = wibox.widget {
     {
         widget = wibox.widget.textbox,
         align = "center",
-        font = helpers.ui.font(dpi(18)),
+        font = helpers.ui.font(beautiful.font_size + dpi(5)),
         text = "No notifications"
     }
 }

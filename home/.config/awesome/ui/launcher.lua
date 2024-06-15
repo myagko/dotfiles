@@ -183,7 +183,7 @@ function launcher.get_apps()
 end
 
 function launcher:filter()
-    local clear_input = self.input:gsub("[%(%)%[%]%%]", "")
+    local clear_input = self.input:gsub("%(", "%%("):gsub("%)", "%%)"):gsub("%[", "%%["):gsub("%]", "%%]")
 
     self.filtered = {}
     self.filtered_any = {}

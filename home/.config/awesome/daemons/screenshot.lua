@@ -7,7 +7,9 @@ local screenshot_daemon = {}
 
 function screenshot_daemon:take(args)
     local name = os.date("%F-%H%M%S") .. ".png"
-    local dir = default.shotdir
+    local shot_dir = default.shot_dir
+
+    local dir = string.match(shot_dir, "%/$") and shot_dir or shot_dir .. "/"
 
     awful.spawn.easy_async_with_shell("maim " .. args .. " " .. dir .. name, function()
         awful.spawn.easy_async_with_shell("ls " .. dir .. " | grep -i " .. name, function(stdout)

@@ -44,7 +44,7 @@ theme.tooltip_border_color = theme.border_color
 
 theme.useless_gap = dpi(3)
 theme.border_width = dpi(1)
-theme.comp_border_width = dpi(0)
+theme.comp_border_width = dpi(1)
 theme.sep_width = dpi(1)
 
 theme.snap_border_width = theme.border_width*4

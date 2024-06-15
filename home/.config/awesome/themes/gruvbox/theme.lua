@@ -1,0 +1,118 @@
+local beautiful = require("beautiful")
+local gears = require("gears")
+local dpi = beautiful.xresources.apply_dpi
+
+local theme_name = "gruvbox"
+local theme_path = "~/.config/awesome/themes/" .. theme_name .. "/"
+local icons_path = theme_path .. "icons/"
+
+local theme = {}
+
+theme.wallpaper = "~/.config/awesome/themes/gruvbox/walls/01.png"
+
+theme.font_name = "Jetbrains Mono"
+theme.font_size = dpi(13)
+theme.font = theme.font_name .. " " .. tostring(theme.font_size)
+
+theme.red = "#ea6962"
+theme.green = "#a9b665"
+theme.yellow = "#d8a657"
+theme.blue = "#7daea3"
+theme.magenta = "#d3869b"
+theme.cyan = "#89b482"
+theme.orange = "#e78a4e"
+
+theme.background = "#1b1b1b"
+theme.background_alt = "#282828"
+theme.background_urgent = "#32302f"
+theme.foreground_alt = "#45403d"
+theme.foreground = "#ddc7a1"
+
+theme.accent = theme.cyan
+theme.bg_normal = theme.background
+theme.fg_normal = theme.foreground
+theme.border_color = theme.background_urgent
+
+theme.titlebar_bg_normal = theme.background
+theme.titlebar_bg_focus = theme.background
+theme.titlebar_bg_urgent = theme.background
+
+theme.tooltip_bg = theme.background
+theme.tooltip_fg = theme.foreground
+theme.tooltip_border_width = theme.border_width
+theme.tooltip_border_color = theme.border_color
+
+theme.useless_gap = dpi(3)
+theme.border_width = dpi(1)
+theme.comp_border_width = dpi(1)
+theme.sep_width = dpi(1)
+
+theme.snap_border_width = theme.border_width*4
+theme.snap_bg = theme.accent
+theme.snapper_gap = dpi(6)
+theme.snap_shape = gears.shape.rectangle
+
+theme.notification_spacing = theme.useless_gap*4.5
+theme.notification_position = "top_right"
+theme.notification_timeout = 5
+theme.notification_max_width = dpi(380)
+theme.notification_min_width = dpi(300)
+theme.notification_max_height = dpi(150)
+theme.notification_min_height = dpi(50)
+
+theme.notification_icon_bell = icons_path .. "bell.png"
+theme.notification_icon_camera = icons_path .. "camera.png"
+theme.notification_icon_alert = icons_path .. "alert.png"
+
+theme.menu_submenu = ">  "
+theme.menu_height = dpi(32)
+theme.menu_width = dpi(150)
+theme.menu_bg_normal = theme.background
+theme.menu_fg_normal = theme.foreground
+theme.menu_bg_focus = theme.accent
+theme.menu_fg_focus = theme.background
+theme.menu_border_width = theme.border_width
+theme.menu_border_color = theme.border_color
+
+theme.systray_icon_spacing = dpi(6)
+theme.bg_systray = theme.background_alt
+
+theme.text_icons = {
+    poweroff = "",
+    reboot = "",
+    exit = "",
+    arrow_left = "",
+    arrow_right = "",
+    arrow_up = "",
+    arrow_down = "",
+    close = "",
+    switch_on = "",
+    switch_off = "",
+    gear = "",
+    calendar = "",
+    wifi_on = "",
+    wifi_off = "",
+    bluetooth_on = "",
+    bluetooth_off = "",
+    vol_on = "",
+    vol_off = "",
+    mic_on = "",
+    mic_off = "",
+    bell_on = "",
+    bell_off = "",
+    lock = "",
+    unlock = "",
+    apps = "",
+    trash = "",
+    selected = "",
+    sun = "",
+    moon = "",
+    cloud = "",
+    rain = "",
+    shower_rain = "",
+    thunder = "",
+    snow = "",
+    mist = ""
+}
+
+return theme
