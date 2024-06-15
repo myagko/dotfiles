@@ -19,11 +19,11 @@ end
 
 function wifi_daemon:toggle()
     if self.status then
-        awful.spawn.easy_async_with_shell("nmcli radio wifi off", function()
+        awful.spawn.easy_async_with_shell("LANG=C nmcli radio wifi off", function()
             self:get_status()
         end)
     else
-        awful.spawn.easy_async_with_shell("nmcli radio wifi on", function()
+        awful.spawn.easy_async_with_shell("LANG=C nmcli radio wifi on", function()
             self:get_status()
         end)
     end
