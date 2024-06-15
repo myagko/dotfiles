@@ -1,7 +1,5 @@
 ## Instalation
 
-- It's important your system language to be set to english, otherwise some scripts not gonna work
-
 - Install dependencies
 ```
 $ sudo pacman -S xorg xorg-xinit pulseaudio networkmanager bluez bluez-utils \
@@ -48,44 +46,7 @@ $ chmod +x ~/.config/awesome/autostart.sh
 xrandr --output DisplayPort-0 --mode 1920x1080 --rate 165.00 &
 ```
 
-- Edit `~/.config/awesome/user.lua` as you need, you can set theme, wallpapers, choose default apps, and set data for weather widget
-
-- Icons and themes
-1. Install `themix-full-git` from aur
-2. Export icons and theme from user presets
-
-- Cursors (`inkscape` required) ([source](https://github.com/charakterziffer/cursor-toolbox))
-```
-$ cd ~/dotfiles/extra/cursor_toolbox
-$ ~/dotfiles/extra/cursor_toolbox/render-pngs.py ~/dotfiles/extra/cursor_toolbox/sharp_dark.svg
-$ ~/dotfiles/extra/cursor_toolbox/make_dark.sh
-$ cp -r sharp_cursors_dark ~/.icons
-```
-
-- Firefox css
-1. Search `about:config`.
-2. `toolkit.legacyUserProfileCustomizations.stylesheets`, `layers.acceleration.force-enabled`, `gfx.webrender.all`, `svg.context-properties.content.enabled` change to `True`.
-3. Copy `~/dotfiles/extra/mozilla/chrome` to `~/.mozilla/firefox/XXXXXXX.default-release/`.
-
-- Firefox startpage
-1. Edit `/usr/lib/firefox/autoconfig.cfg`
-```
-var {classes:Cc,interfaces:Ci,utils:Cu} = Components;
-try {
-  Cu.import("resource:///modules/AboutNewTab.jsm");
-  var newTabURL = "file:///home/username/yourfile.html";
-  AboutNewTab.newTabURL = newTabURL;
-} catch(e){Cu.reportError(e);}
-```
-2. Edit `/usr/lib/firefox/defaults/pref/autoconfig.js`
-```
-pref("general.config.filename", "autoconfig.cfg");
-pref("general.config.obscure_value", 0);
-pref("general.config.sandbox_enabled", false);
-```
-3. Set homepage at firefox settings
-
-- Apply cursor, icons and gtk themes with `lxappearance`
+- Edit `~/.config/awesome/user.lua` as you need, you can set theme, choose default apps, and set data for weather widget
 
 <details>
 <summary><b>Keybindings</b></summary>
@@ -123,3 +84,42 @@ pref("general.config.sandbox_enabled", false);
 | `Mod+Space`           | switch layout                            |
 
 </details>
+
+## Additional customization
+
+- Icons and themes
+1. Install `themix-full-git` from aur
+2. Export icons and theme from user presets
+
+- Cursors (`inkscape` required) ([source](https://github.com/charakterziffer/cursor-toolbox))
+```
+$ cd ~/dotfiles/extra/cursor_toolbox
+$ ~/dotfiles/extra/cursor_toolbox/render-pngs.py ~/dotfiles/extra/cursor_toolbox/sharp_dark.svg
+$ ~/dotfiles/extra/cursor_toolbox/make_dark.sh
+$ cp -r sharp_cursors_dark ~/.icons
+```
+
+- Firefox css
+1. Search `about:config`.
+2. `toolkit.legacyUserProfileCustomizations.stylesheets`, `layers.acceleration.force-enabled`, `gfx.webrender.all`, `svg.context-properties.content.enabled` change to `True`.
+3. Copy `~/dotfiles/extra/mozilla/chrome` to `~/.mozilla/firefox/XXXXXXX.default-release/`.
+
+- Firefox startpage
+1. Edit `/usr/lib/firefox/autoconfig.cfg`
+```
+var {classes:Cc,interfaces:Ci,utils:Cu} = Components;
+try {
+  Cu.import("resource:///modules/AboutNewTab.jsm");
+  var newTabURL = "file:///home/username/yourfile.html";
+  AboutNewTab.newTabURL = newTabURL;
+} catch(e){Cu.reportError(e);}
+```
+2. Edit `/usr/lib/firefox/defaults/pref/autoconfig.js`
+```
+pref("general.config.filename", "autoconfig.cfg");
+pref("general.config.obscure_value", 0);
+pref("general.config.sandbox_enabled", false);
+```
+3. Set homepage at firefox settings
+
+- Apply cursor, icons and gtk themes with `lxappearance`
