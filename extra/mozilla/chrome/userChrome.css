@@ -155,7 +155,7 @@ nav-bar:not([tabs-hidden='true']) {
     background: var(--background) !important;
     border: 1px solid var(--border) !important;
     margin-top: 10px !important;
-    margin-inline: none !important;
+    margin-inline: 0 !important;
     width: auto !important;
 }
 
@@ -169,6 +169,14 @@ nav-bar:not([tabs-hidden='true']) {
 
 .urlbarView-body-inner {
     border: none !important;
+}
+
+.urlbarView > .search-one-offs:not([hidden]) {
+  padding: 10px !important;
+}
+
+.urlbarView:not([noresults]) > .search-one-offs:not([hidden]) {
+  border-top: 1px solid var(--border) !important;
 }
 
 /*-------------------------------------*/
