@@ -37,8 +37,6 @@
     scrollbar-color: var(--accent) var(--background) !important;
 }
 
-/*-------------------------------------*/
-
 #tabbrowser-tabs:not([movingtab])
     > #tabbrowser-arrowscrollbox
     > .tabbrowser-tab
@@ -124,12 +122,15 @@
 .tabbrowser-tab {
     margin: 0 !important;
     padding: 0 !important;
+    color: var(--foreground) !important;
 }
-
-/*-------------------------------------*/
 
 toolbar {
     border: none !important;
+}
+
+.toolbarbutton-1 {
+    color: var(--foreground) !important;
 }
 
 #nav-bar {
@@ -173,6 +174,7 @@ nav-bar:not([tabs-hidden='true']) {
 }
 
 .urlbarView {
+    color: var(--foreground) !important;
     background: var(--background) !important;
     border: 1px solid var(--border) !important;
     margin-top: 10px !important;
@@ -200,7 +202,23 @@ nav-bar:not([tabs-hidden='true']) {
   border-top: 1px solid var(--border) !important;
 }
 
-/*-------------------------------------*/
+.urlbarView-row {
+    &[selected] {
+        color: var(--background) !important;
+        background: var(--accent) !important;
+    }
+}
+
+.urlbarView-url {
+    .urlbarView-row:not([selected]) & {
+        color: var(--accent) !important;
+    }
+}
+
+.searchbar-engine-one-off-item[selected] {
+    background-color: var(--accent) !important;
+    color: var(--background) !important;
+}
 
 panel {
     margin-top: 8px !important;
@@ -225,7 +243,24 @@ panel {
 
 menuitem:hover {
     color: var(--background) !important;
-    background: var(--foreground) !important;
+    background: var(--accent) !important;
+}
+
+menu, menuitem {
+    &:where([_moz-menuactive]:not([disabled="true"])) {
+        color: -moz-menuhovertext;
+        background-color: var(--accent) !important;
+    }
+}
+
+:is(panelview .toolbarbutton-1, toolbarbutton.subviewbutton,
+.widget-overflow-list .toolbarbutton-1,
+.toolbaritem-combined-buttons:is(:not([cui-areatype="toolbar"]),
+[overflowedItem="true"]) > toolbarbutton) {
+    &:not([disabled]):hover {
+        color: var(--background) !important;
+        background: var(--accent) !important;
+    }
 }
 
 #editBookmarkPanel > .panel-header,
@@ -233,7 +268,9 @@ menuitem:hover {
     display: none !important;
 }
 
-/*-------------------------------------*/
+.unified-extensions-item-menu-button.subviewbutton {
+    padding: 0 !important;
+}
 
 #statuspanel-label {
     color: var(--foreground) !important;
@@ -247,16 +284,18 @@ findbar {
     background-color: var(--background) !important;
 }
 
-.findbar-textbox {
+.findbar-textbox, #editBMPanel_namePicker,
+#report-broken-site-popup-url, #report-broken-site-popup-description {
+    color: var(--foreground) !important;
     background-color: var(--background) !important;
-    border: 1px solid var(--background_alt) !important;
+    border: 1px solid var(--border) !important;
     outline: none !important;
-}
 
-.findbar-textbox:focus {
-    background-color: var(--background) !important;
-    border: 1px solid var(--accent) !important;
-    outline: none !important;
+    &:focus {
+        background-color: var(--background) !important;
+        border: 1px solid var(--accent) !important;
+        outline: none !important;
+    }
 }
 
 #sidebar-box,
@@ -318,4 +357,21 @@ findbar {
 
 #downloads-indicator-progress-inner {
     background: conic-gradient(var(--accent) var(--download-progress-pcent), transparent var(--download-progress-pcent)) !important;
+}
+
+.footer-button {
+    &:not([disabled]) {
+        &[default], &.primary {
+        color: var(--background) !important;
+        background-color: var(--accent) !important;
+        }
+    }
+}
+
+.pointerlockfswarning {
+    color: var(--foreground) !important;
+    background: var(--background) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
 }
