@@ -4,6 +4,23 @@
     --arrowpanel-border-radius: 0 !important;
     --arrowpanel-border-color: none !important;
 
+    --arrowpanel-color: var(--foreground) !important;
+    --default-arrowpanel-color: var(--foreground) !important;
+    --autocomplete-popup-color: var(--foreground) !important;
+    --default-arrowpanel-color: var(--foreground) !important;
+    --lwt-text-color: var(--foreground) !important;
+    --toolbar-color: var(--foreground) !important;
+    --toolbar-non-lwt-textcolor: var(--foreground) !important;
+    --urlbar-popup-action-color: var(--foreground) !important;
+    --urlbar-popup-url-color: var(--foreground) !important;
+    --urlbar-separator-color: var(--foreground) !important;
+    --sidebar-text-color: var(--foreground) !important;
+    --autocomplete-popup-color: var(--foreground) !important;
+    --card-outline-color: var(--foreground) !important;
+
+    --chrome-content-separator-color: var(--border) !important;
+    --panel-separator-color: var(--border) !important;
+
     --toolbar-bgcolor: var(--background_alt) !important;
     --tabs-border-color: var(--background_alt) !important;
     --lwt-sidebar-background-color: var(--background) !important;
@@ -18,7 +35,6 @@
     border-radius: 0 !important;
     box-shadow: none !important;
     scrollbar-color: var(--accent) var(--background) !important;
-    scrollbar-background: @transparent;
 }
 
 /*-------------------------------------*/
@@ -106,8 +122,8 @@
 }
 
 .tabbrowser-tab {
-  margin: 0 !important;
-  padding: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /*-------------------------------------*/
@@ -118,6 +134,7 @@ toolbar {
 
 #nav-bar {
     box-shadow: none !important;
+    border-bottom: 1px solid var(--border) !important;
     border-bottom: 1px solid var(--border) !important;
 }
 
@@ -149,6 +166,10 @@ nav-bar:not([tabs-hidden='true']) {
 #urlbar-input-container {
     background-color: var(--background_alt) !important;
     border: 1px solid rgba(0, 0, 0, 0) !important;
+}
+
+#urlbar:is([focused="true"], [open]), #searchbar:focus-within {
+    color: var(--foreground) !important;
 }
 
 .urlbarView {
@@ -198,6 +219,15 @@ panel {
     border: 1px solid var(--border) !important;
 }
 
+.menupopup-arrowscrollbox {
+    color: var(--foreground) !important;
+}
+
+menuitem:hover {
+    color: var(--background) !important;
+    background: var(--foreground) !important;
+}
+
 #editBookmarkPanel > .panel-header,
 #editBookmarkPanel > #editBookmarkHeaderSeparator {
     display: none !important;
@@ -206,6 +236,7 @@ panel {
 /*-------------------------------------*/
 
 #statuspanel-label {
+    color: var(--foreground) !important;
     background: var(--background) !important;
     border-top: 1px solid var(--border) !important;
     border-right: 1px solid var(--border) !important;
