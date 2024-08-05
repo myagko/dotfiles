@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Iosevka:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jetbrains+Mono:wght@400;500&display=swap');
+
+:root {
+    --font: "Iosevka", monospace;
+
+    --background: #1A1A1A;
+    --background_alt: #262626;
+    --foreground: #CCCCCC;
+    --accent: #2FADC1;
+
+    --grid_columns: 3;
+    --grid_rows: 2;
+}

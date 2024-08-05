@@ -1,0 +1,395 @@
+@import url("themes/nymph_theme.css");
+
+:root {
+    --arrowpanel-border-radius: 0 !important;
+    --arrowpanel-border-color: none !important;
+
+    --arrowpanel-color: var(--foreground) !important;
+    --default-arrowpanel-color: var(--foreground) !important;
+    --autocomplete-popup-color: var(--foreground) !important;
+    --default-arrowpanel-color: var(--foreground) !important;
+    --lwt-text-color: var(--foreground) !important;
+    --toolbar-color: var(--foreground) !important;
+    --toolbar-non-lwt-textcolor: var(--foreground) !important;
+    --urlbar-popup-action-color: var(--foreground) !important;
+    --urlbar-popup-url-color: var(--foreground) !important;
+    --urlbar-separator-color: var(--foreground) !important;
+    --sidebar-text-color: var(--foreground) !important;
+    --autocomplete-popup-color: var(--foreground) !important;
+    --card-outline-color: var(--foreground) !important;
+
+    --chrome-content-separator-color: var(--border) !important;
+    --panel-separator-color: var(--border) !important;
+
+    --toolbar-bgcolor: var(--background_alt) !important;
+    --tabs-border-color: var(--background_alt) !important;
+    --lwt-sidebar-background-color: var(--background) !important;
+    --lwt-toolbar-field-focus: var(--background_alt) !important;
+
+    --toolbarbutton-border-radius: 0 !important;
+    --tab-border-radius: 0 !important;
+    --tab-block-margin: 0 !important;
+}
+
+* {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    scrollbar-color: var(--accent) var(--background) !important;
+}
+
+#tabbrowser-tabs:not([movingtab])
+    > #tabbrowser-arrowscrollbox
+    > .tabbrowser-tab
+    > .tab-stack
+    > .tab-background[multiselected='true'],
+#tabbrowser-tabs:not([movingtab])
+    > #tabbrowser-arrowscrollbox
+    > .tabbrowser-tab
+    > .tab-stack
+    > .tab-background[selected='true'] {
+    background-image: none !important;
+    background-color: var(--toolbar-bgcolor) !important;
+}
+
+#TabsToolbar {
+    background-color: var(--background) !important;
+}
+
+.tab-close-button {
+    display: none !important;
+}
+
+.tabbrowser-tab:not([pinned]) .tab-icon-image {
+    display: none !important;
+}
+
+#tabbrowser-tabs[haspinnedtabs]:not([positionpinnedtabs])
+    > #tabbrowser-arrowscrollbox
+    > .tabbrowser-tab[first-visible-unpinned-tab] {
+    margin-inline-start: 0 !important;
+}
+
+.tabbrowser-tab:is([visuallyselected='true'], [multiselected])
+    > .tab-stack
+    > .tab-background {
+    box-shadow: none !important;
+}
+
+.tabbrowser-tab[last-visible-tab='true'] {
+    padding-inline-end: 0 !important;
+}
+
+#tabs-newtab-button {
+    margin-left: 1px !important;
+}
+
+#tabs-newtab-button:hover {
+    margin-left: 1px !important;
+}
+
+.tab-icon-overlay:not([pinned], [sharing], [crashed]):is([soundplaying], [muted]) {
+    display: none !important;
+}
+
+.tab-icon-sound-label {
+    display: none !important;
+}
+
+.tab-close-button[pinned],
+#tabbrowser-tabs[closebuttons="activetab"] > #tabbrowser-arrowscrollbox > .tabbrowser-tab > .tab-stack > .tab-content > .tab-close-button:not([selected="true"]),
+.tab-icon-pending:not([pendingicon]),
+.tab-icon-pending[busy],
+.tab-icon-pending[pinned],
+.tab-icon-image:not([src]):not([pinned]):not([crashed])[selected],
+.tab-icon-image:not([src]):not([pinned]):not([crashed]):not([sharing]),
+.tab-icon-image[busy],
+.tab-throbber:not([busy]),
+.tab-icon-sound:not([soundplaying]):not([muted]):not([activemedia-blocked]):not([pictureinpicture]),
+.tab-icon-sound[pinned],
+.tab-sharing-icon-overlay,
+.tab-icon-overlay {
+    display: none !important;
+}
+
+.tab-sharing-icon-overlay[sharing]:not([selected]),
+.tab-icon-overlay[soundplaying][pinned],
+.tab-icon-overlay[muted][pinned],
+.tab-icon-overlay[activemedia-blocked][pinned],
+.tab-icon-overlay[crashed] {
+    display: -moz-box !important;
+}
+
+.tabbrowser-tab {
+    margin: 0 !important;
+    padding: 0 !important;
+    color: var(--foreground) !important;
+}
+
+toolbar {
+    border: none !important;
+}
+
+.toolbarbutton-1 {
+    color: var(--foreground) !important;
+}
+
+#nav-bar {
+    box-shadow: none !important;
+    border-bottom: 1px solid var(--border) !important;
+    border-bottom: 1px solid var(--border) !important;
+}
+
+#navigator-toolbox {
+    border: none !important;
+}
+
+nav-bar:not([tabs-hidden='true']) {
+    box-shadow: none !important;
+}
+
+#nav-bar-customization-target > :is(toolbarbutton, toolbaritem),
+#nav-bar-customization-target > toolbarpaletteitem > :is(toolbarbutton, toolbaritem) {
+    padding: 0 !important;
+}
+
+#nav-bar-customization-target {
+    spacing: 5px !important;
+    padding: 5px !important;
+}
+
+#PanelUI-menu-button {
+    padding-left: 0 !important;
+    padding-right: 5px !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+#urlbar-input-container {
+    background-color: var(--background_alt) !important;
+    border: 1px solid rgba(0, 0, 0, 0) !important;
+}
+
+#urlbar:is([focused="true"], [open]), #searchbar:focus-within {
+    color: var(--foreground) !important;
+}
+
+.urlbarView {
+    color: var(--foreground) !important;
+    background: var(--background) !important;
+    border: 1px solid var(--border) !important;
+    margin-top: 10px !important;
+    margin-inline: 0 !important;
+    width: auto !important;
+}
+
+.urlbarView-results {
+    padding: 5px !important;
+}
+
+#urlbar-background {
+    display: none !important;
+}
+
+.urlbarView-body-inner {
+    border: none !important;
+}
+
+.urlbarView > .search-one-offs:not([hidden]) {
+  padding: 10px !important;
+}
+
+.urlbarView:not([noresults]) > .search-one-offs:not([hidden]) {
+  border-top: 1px solid var(--border) !important;
+}
+
+.urlbarView-row {
+    &[selected] {
+        color: var(--background) !important;
+        background: var(--accent) !important;
+    }
+}
+
+.urlbarView-url {
+    .urlbarView-row:not([selected]) & {
+        color: var(--accent) !important;
+    }
+}
+
+.searchbar-engine-one-off-item[selected] {
+    background-color: var(--accent) !important;
+    color: var(--background) !important;
+}
+
+#PopupSearchAutoComplete {
+    display: none !important;
+}
+
+#searchbar {
+    background: var(--background_alt) !important;
+    border: 1px solid var(--border) !important;
+
+    &:focus-within {
+        background-color: var(--background_alt) !important;
+        border: 1px solid var(--accent) !important;
+        outline: none !important;
+    }
+}
+
+panel {
+    margin-top: 8px !important;
+}
+
+#appMenu-popup, #customizationui-widget-panel,
+#protections-popup, #identity-popup,
+#unified-extensions-panel, #downloadsPanel, #notification-popup {
+    background: none !important;
+    border: none !important;
+}
+
+.PanelUI-subView, .cui-widget-panelview, .menupopup-arrowscrollbox,
+#permission-popup-multiView, #editBookmarkPanel > .panel-subview-body,
+#downloadsPanel-multiView, #geolocation-notification {
+    background: var(--background) !important;
+    border: 1px solid var(--border) !important;
+}
+
+.menupopup-arrowscrollbox {
+    color: var(--foreground) !important;
+}
+
+menu, menuitem {
+    &:where([_moz-menuactive]:not([disabled="true"])) {
+        color: var(--background) !important;
+        background-color: var(--accent) !important;
+    }
+}
+
+menuitem, richlistitem,
+:is(panelview .toolbarbutton-1, toolbarbutton.subviewbutton,
+.widget-overflow-list .toolbarbutton-1,
+.toolbaritem-combined-buttons:is(:not([cui-areatype="toolbar"]),
+[overflowedItem="true"]) > toolbarbutton),
+#unified-extensions-area > toolbaritem {
+    &:hover {
+        color: var(--background) !important;
+        background: var(--accent) !important;
+    }
+}
+
+#editBookmarkPanel > .panel-header,
+#editBookmarkPanel > #editBookmarkHeaderSeparator {
+    display: none !important;
+}
+
+.unified-extensions-item-menu-button.subviewbutton {
+    padding: 0 !important;
+}
+
+#unified-extensions-panel .unified-extensions-item {
+    margin-block: 0 !important;
+    padding: 2px 10px 2px 5px !important;
+}
+
+#statuspanel-label {
+    color: var(--foreground) !important;
+    background: var(--background) !important;
+    border-top: 1px solid var(--border) !important;
+    border-right: 1px solid var(--border) !important;
+}
+
+findbar {
+    border-top: 1px solid var(--border) !important;
+    background-color: var(--background) !important;
+}
+
+.findbar-textbox, #editBMPanel_namePicker,
+#report-broken-site-popup-url, #report-broken-site-popup-description {
+    color: var(--foreground) !important;
+    background-color: var(--background) !important;
+    border: 1px solid var(--border) !important;
+    outline: none !important;
+
+    &:focus {
+        background-color: var(--background) !important;
+        border: 1px solid var(--accent) !important;
+        outline: none !important;
+    }
+}
+
+#sidebar-box,
+.sidebar-placesTree {
+    background-color: var(--background) !important;
+}
+
+#sidebar-header {
+    border-bottom: 1px solid var(--border) !important;
+}
+
+.sidebar-splitter {
+    border: none !important;
+    background-color: var(--border) !important;
+    max-width: 1px !important;
+}
+
+.toggle-button {
+    background: var(--background_alt) !important;
+    border: none !important;
+    --toggle-border-radius: 0 !important;
+    --toggle-dot-background-color: var(--border) !important;
+    --toggle-dot-background-color-on-pressed: var(--accent) !important;
+}
+
+.downloadProgress {
+    background-color: var(--background_alt) !important;
+    border-radius: 0 !important;
+}
+
+.downloadProgress::-moz-progress-bar {
+    background-color: var(--accent) !important;
+    border-radius: 0 !important;
+}
+
+.downloadProgress[paused]::-moz-progress-bar {
+    background-color: var(--foreground) !important;
+    border-radius: 0 !important;
+}
+
+.checkbox-check {
+    color: var(--foreground) !important;
+    background-color: var(--background_alt) !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.checkbox-check:hover {
+    color: var(--foreground) !important;
+    background-color: var(--border) !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.checkbox-check[checked] {
+    background-color: var(--accent) !important;
+    color: var(--background) !important;
+}
+
+#downloads-indicator-progress-inner {
+    background: conic-gradient(var(--accent) var(--download-progress-pcent), transparent var(--download-progress-pcent)) !important;
+}
+
+.footer-button {
+    &:not([disabled]) {
+        &[default], &.primary {
+        color: var(--background) !important;
+        background-color: var(--accent) !important;
+        }
+    }
+}
+
+.pointerlockfswarning {
+    color: var(--foreground) !important;
+    background: var(--background) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
