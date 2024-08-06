@@ -6,8 +6,8 @@ local dpi = beautiful.xresources.apply_dpi
 
 local Notification_list = require("ui.notification_list")
 local Audio_sliders = require("ui.audio_sliders")
---local Wifi_applet = require("ui.wifi")
---local Bluetooth_applet = require("ui.bluetooth")
+local Wifi_applet = require("ui.wifi")
+local Bluetooth_applet = require("ui.bluetooth")
 local Pulse = require("daemons.pulse")
 
 local control = {}
@@ -40,7 +40,6 @@ control.popup_widget = awful.popup {
 	}
 }
 
---[[
 Wifi_applet.control_button:get_revealer():buttons {
 	awful.button({}, 1, function()
 		control.main_layout:reset()
@@ -66,20 +65,19 @@ Bluetooth_applet.bottombar_close_button:buttons {
 		control:restore_widgets()
 	end)
 }
-]]
 
 function control:restore_widgets()
 	self.main_layout:reset()
 	self.main_layout:add(
 		Notification_list.main_widget,
 		helpers.ui.create_sep { orientation = "h", size = beautiful.sep_width },
-		Audio_sliders.main_widget--,
-		--wibox.widget {
-		--	layout = wibox.layout.flex.horizontal,
-		--	spacing = dpi(10),
-		--	Wifi_applet.control_button,
-		--	Bluetooth_applet.control_button
-		--}
+		Audio_sliders.main_widget,
+		wibox.widget {
+			layout = wibox.layout.flex.horizontal,
+			spacing = dpi(10),
+			Wifi_applet.control_button,
+			Bluetooth_applet.control_button
+		}
 	)
 end
 
@@ -98,7 +96,7 @@ end
 function control:close()
 	if not self.state then return end
 
-	--Wifi_applet:close_ap_menu()
+	Wifi_applet:close_ap_menu()
 
 	self.state = false
 	self.popup_widget.visible = false

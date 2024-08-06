@@ -1,21 +1,21 @@
 {
-    "diagnostics": {
-        "enable": true,
-        "globals": [
-            "awesome",
-            "mouse",
-            "screen",
-            "client",
-            "tag"
-        ]
-    },
-    "workspace": {
-        "library": [
-            "/usr/share/awesome/lib/",
-            "/usr/share/lua/5.4/lgi"
-        ],
-        "maxPreload": 2000,
-        "preloadFileSize": 1000
-    },
-    "telemetry.enable": false
+	"diagnostics": {
+		"enable": true,
+		"globals": [
+			"awesome",
+			"mouse",
+			"screen",
+			"client",
+			"tag"
+		]
+	},
+	"workspace": {
+		"library": [
+			"/usr/share/awesome/lib/",
+			"/usr/share/lua/5.4/lgi"
+		],
+		"maxPreload": 2000,
+		"preloadFileSize": 1000
+	},
+	"telemetry.enable": false
 }

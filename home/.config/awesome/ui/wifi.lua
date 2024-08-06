@@ -61,11 +61,11 @@ applet.control_button = wibox.widget {
 			}
 		}
 	},
-	get_label = function(w)
-		return w:get_children_by_id("label")[1]
+	get_label = function(widget)
+		return widget:get_children_by_id("label")[1]
 	end,
-	get_revealer = function(w)
-		return w:get_children_by_id("revealer")[1]
+	get_revealer = function(widget)
+		return widget:get_children_by_id("revealer")[1]
 	end
 }
 
@@ -130,8 +130,8 @@ applet.massage_widget = wibox.widget {
 		align = "center",
 		font = helpers.ui.font(beautiful.font_size + dpi(5))
 	},
-	set_text = function(w, text)
-		w:get_children_by_id("massage_text")[1].text = text
+	set_text = function(widget, text)
+		widget:get_children_by_id("massage_text")[1].text = text
 	end
 }
 

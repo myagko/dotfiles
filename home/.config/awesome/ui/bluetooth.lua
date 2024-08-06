@@ -61,11 +61,11 @@ applet.control_button = wibox.widget {
 			}
 		}
 	},
-	get_label = function(w)
-		return w:get_children_by_id("label")[1]
+	get_label = function(widget)
+		return widget:get_children_by_id("label")[1]
 	end,
-	get_revealer = function(w)
-		return w:get_children_by_id("revealer")[1]
+	get_revealer = function(widget)
+		return widget:get_children_by_id("revealer")[1]
 	end
 }
 
@@ -131,8 +131,8 @@ applet.massage_widget = wibox.widget {
 		align = "center",
 		font = helpers.ui.font(beautiful.font_size + dpi(5))
 	},
-	set_text = function(w, text)
-		w:get_children_by_id("massage_text")[1].text = text
+	set_text = function(widget, text)
+		widget:get_children_by_id("massage_text")[1].text = text
 	end
 }
 
@@ -201,76 +201,75 @@ function applet:crate_dev_widget(device, path)
 	}
 
 	local connect_button = wibox.widget {
-<<<<<<< HEAD
 		widget = wibox.widget.textbox,
 		align = "center",
 		text = "Connect"
-=======
-		widget = wibox.container.background,
-		bg = beautiful.background_alt,
-		{
-			widget = wibox.container.margin,
-			dpi(5),
-			{
-				widget = wibox.widget.textbox,
-				align = "center",
-				text = "Connect"
-			}
-		}
->>>>>>> 1ad189d (update)
 	}
 
-	local connect_widget = wibox.widget {
+	local trust_button = wibox.widget {
+		widget = wibox.widget.textbox,
+		align = "center",
+		text = "Trust"
+	}
+
+	local pair_button = wibox.widget {
+		widget = wibox.widget.textbox,
+		align = "center",
+		text = "Pair"
+	}
+
+	local buttons_widget = wibox.widget {
 		widget = wibox.container.background,
 		{
 			layout = wibox.layout.flex.horizontal,
-			connect_button
+			connect_button,
+			trust_button,
+			pair_button
 		}
 	}
 
 	local inst = wibox.widget {
 		widget = wibox.container.background,
 		forced_height = dpi(40),
-<<<<<<< HEAD
-		bg = beautiful.background_alt,
-		{
-			id = "dev_layout",
-			layout = wibox.layout.fixed.vertical,
-			name
-=======
-		--bg = beautiful.background_alt,
 		{
 			widget = wibox.container.margin,
 			margins = dpi(5),
 			{
-				id = "dev_layout",
 				layout = wibox.layout.fixed.vertical,
-				name
+				{
+					id = "dev_head",
+					widget = wibox.container.background,
+					bg = beautiful.background_alt,
+					name
+				},
+				{
+					id = "dev_layout",
+					layout = wibox.layout.fixed.horizontal
+				}
 			}
->>>>>>> 1ad189d (update)
 		},
-		get_layout = function(w)
-			return w:get_children_by_id("dev_layout")[1]
+		get_layout = function(widget)
+			return widget:get_children_by_id("dev_layout")[1]
+		end,
+		get_head = function(widget)
+			return widget:get_children_by_id("dev_head")[1]
 		end
 	}
 
 	local connect_widget_visible = false
+
 	local function set_connect_widget()
 		connect_widget_visible = not connect_widget_visible
 		if connect_widget_visible then
-			inst:get_layout():insert(2, connect_widget)
+			inst:get_layout():add(buttons_widget)
 			inst.forced_height = dpi(60)
 		else
-			inst:get_layout():remove_widgets(connect_widget)
+			inst:get_layout():reset()
 			inst.forced_height = dpi(40)
 		end
 	end
 
-<<<<<<< HEAD
-	inst:buttons {
-=======
-	name:buttons {
->>>>>>> 1ad189d (update)
+	inst:get_head():buttons {
 		awful.button({}, 1, function()
 			set_connect_widget()
 		end)
@@ -282,10 +281,22 @@ function applet:crate_dev_widget(device, path)
 		end)
 	}
 
+	trust_button:buttons {
+		awful.button({}, 1, function()
+			device:toggle_trust()
+		end)
+	}
+
+	trust_button:buttons {
+		awful.button({}, 1, function()
+			device:toggle_pair()
+		end)
+	}
+
 	bluetooth_daemon:connect_signal(path .. "_updated", function(daemon)
 		connect_button.text = device:is_connected() and "Disconnect" or "Connect"
-		--trust_or_untrust:set_text(device:is_trusted() and "Untrust" or "Trust")
-		--pair_or_unpair:set_text(device:is_paired() and "Unpair" or "Pair")
+		trust_button.text = device:is_trusted() and "Untrust" or "Trust"
+		pair_button.text = device:is_paired() and "Unpair" or "Pair"
 	end)
 
 	return inst
@@ -325,5 +336,13 @@ end)
 bluetooth_daemon:connect_signal("state", function(daemon, state)
 	applet:on_state_changed(state)
 end)
+
+applet.bottombar_toggle_button:set_text(text_icons.switch_off)
+applet.control_button:get_label().text = "Disabled"
+applet.control_button.bg = beautiful.background_alt
+applet.control_button.fg = beautiful.foreground
+applet.main_layout:reset()
+applet.main_layout:add(applet.massage_widget)
+applet.massage_widget:set_text("Bluetooth Disabled")
 
 return applet
