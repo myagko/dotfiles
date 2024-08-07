@@ -143,35 +143,6 @@ applet.connect_button = helpers.ui.create_hover_button {
 	margins = dpi(10)
 }
 
-applet.dev_menu = wibox.widget {
-	widget = wibox.container.background,
-	forced_height = dpi(400),
-	{
-		layout = wibox.layout.fixed.vertical,
-		{
-			widget = wibox.container.margin,
-			margins = dpi(15),
-			{
-				layout = wibox.layout.fixed.horizontal,
-				spacing = dpi(15),
-				{
-					id = "close",
-					widget = wibox.widget.textbox,
-					text = text_icons.arrow_left
-				},
-				{
-					id = "title",
-					widget = wibox.widget.textbox,
-				}
-			}
-		},
-		{
-			layout = wibox.layout.fixed.vertical,
-			applet.connect_button
-		}
-	}
-}
-
 applet.main_layout = wibox.widget {
 	layout = wibox.layout.overflow.vertical,
 	spacing = dpi(15),
@@ -204,27 +175,28 @@ function applet:crate_dev_widget(device, path)
 		text = "Connect",
 		border_width = beautiful.comp_border_width,
 		border_color = beautiful.border_color,
-		margins = dpi(15)
+		margins = dpi(5)
 	}
 
 	local trust_button = helpers.ui.create_hover_button {
 		text = "Trust",
 		border_width = beautiful.comp_border_width,
 		border_color = beautiful.border_color,
-		margins = dpi(15)
+		margins = dpi(5)
 	}
 
 	local pair_button = helpers.ui.create_hover_button {
 		text = "Pair",
 		border_width = beautiful.comp_border_width,
 		border_color = beautiful.border_color,
-		margins = dpi(15)
+		margins = dpi(5)
 	}
 
 	local buttons_widget = wibox.widget {
 		widget = wibox.container.background,
 		{
 			layout = wibox.layout.flex.horizontal,
+			spacing = dpi(5),
 			connect_button,
 			trust_button,
 			pair_button
@@ -242,12 +214,13 @@ function applet:crate_dev_widget(device, path)
 				spacing = dpi(10),
 				{
 					id = "dev_head",
-					widget = wibox.container.background,
+					widget = wibox.container.margin,
+					margins = { left = dpi(10) },
 					name
 				},
 				{
 					id = "dev_layout",
-					layout = wibox.layout.fixed.horizontal
+					layout = wibox.layout.fixed.vertical
 				}
 			}
 		},
@@ -265,7 +238,7 @@ function applet:crate_dev_widget(device, path)
 		connect_widget_visible = not connect_widget_visible
 		if connect_widget_visible then
 			inst:get_layout():add(buttons_widget)
-			inst.forced_height = dpi(60)
+			inst.forced_height = dpi(90)
 		else
 			inst:get_layout():reset()
 			inst.forced_height = dpi(40)
