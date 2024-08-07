@@ -200,22 +200,25 @@ function applet:crate_dev_widget(device, path)
 		text = device:get_name()
 	}
 
-	local connect_button = wibox.widget {
-		widget = wibox.widget.textbox,
-		align = "center",
-		text = "Connect"
+	local connect_button = helpers.ui.create_hover_button {
+		text = "Connect",
+		border_width = beautiful.comp_border_width,
+		border_color = beautiful.border_color,
+		margins = dpi(15)
 	}
 
-	local trust_button = wibox.widget {
-		widget = wibox.widget.textbox,
-		align = "center",
-		text = "Trust"
+	local trust_button = helpers.ui.create_hover_button {
+		text = "Trust",
+		border_width = beautiful.comp_border_width,
+		border_color = beautiful.border_color,
+		margins = dpi(15)
 	}
 
-	local pair_button = wibox.widget {
-		widget = wibox.widget.textbox,
-		align = "center",
-		text = "Pair"
+	local pair_button = helpers.ui.create_hover_button {
+		text = "Pair",
+		border_width = beautiful.comp_border_width,
+		border_color = beautiful.border_color,
+		margins = dpi(15)
 	}
 
 	local buttons_widget = wibox.widget {
@@ -236,10 +239,10 @@ function applet:crate_dev_widget(device, path)
 			margins = dpi(5),
 			{
 				layout = wibox.layout.fixed.vertical,
+				spacing = dpi(10),
 				{
 					id = "dev_head",
 					widget = wibox.container.background,
-					bg = beautiful.background_alt,
 					name
 				},
 				{
@@ -294,9 +297,9 @@ function applet:crate_dev_widget(device, path)
 	}
 
 	bluetooth_daemon:connect_signal(path .. "_updated", function(daemon)
-		connect_button.text = device:is_connected() and "Disconnect" or "Connect"
-		trust_button.text = device:is_trusted() and "Untrust" or "Trust"
-		pair_button.text = device:is_paired() and "Unpair" or "Pair"
+		connect_button:set_text(device:is_connected() and "Disconnect" or "Connect")
+		trust_button:set_text(device:is_trusted() and "Untrust" or "Trust")
+		pair_button:set_text(device:is_paired() and "Unpair" or "Pair")
 	end)
 
 	return inst
