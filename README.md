@@ -1,14 +1,14 @@
 <p align="center">
-    <img src="src/01.png">
+    <img src="src/1.png">
 </p>
 
 <details>
 <summary><b>more previews</b></summary>
 
 <p align="center">
-    <img src="src/02.png">
-    <img src="src/03.png">
-    <img src="src/04.png">
+    <img src="src/2.png">
+    <img src="src/3.png">
+    <img src="src/4.png">
 </p>
 
 </details>
