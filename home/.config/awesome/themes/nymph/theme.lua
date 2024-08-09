@@ -9,7 +9,7 @@ local walls_path = theme_path .. "walls/"
 
 local theme = {}
 
-theme.wallpaper = walls_path .. "01.png"
+theme.wallpaper = walls_path .. "default.png"
 
 theme.font_name = "Iosevka"
 theme.font_size = dpi(14)

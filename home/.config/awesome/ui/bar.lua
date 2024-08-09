@@ -19,7 +19,7 @@ function bar.launcher_button()
 		border_color = beautiful.border_color,
 		buttons = {
 			awful.button({}, 1, function()
-				Launcher:open()
+				Launcher:toggle()
 			end)
 		},
 		{

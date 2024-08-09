@@ -280,9 +280,9 @@ function applet:crate_ap_widget(access_point)
 	local strenght = wibox.widget {
 		widget = wibox.widget.textbox,
 		text = access_point.strength > 70 and "▂▄▆█"
-			or access_point.strength > 45 and "▂▄▆ "
-			or access_point.strength > 20 and "▂▄  "
-			or "▂   "
+			or access_point.strength > 45 and "▂▄▆"
+			or access_point.strength > 20 and "▂▄"
+			or "▂"
 	}
 
 	local inst = wibox.widget {

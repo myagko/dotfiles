@@ -1,3 +1,18 @@
+<p align="center">
+    <img src="src/01.png">
+</p>
+
+<details>
+<summary><b>more previews</b></summary>
+
+<p align="center">
+    <img src="src/02.png">
+    <img src="src/03.png">
+    <img src="src/04.png">
+</p>
+
+</details>
+
 ## Instalation
 
 - Install dependencies
@@ -19,17 +34,6 @@ $ systemctl start bluetooth
 $ systemctl enable bluetooth
 ```
 
-- Keyboard layouts, edit `/etc/X11/xorg.conf.d/00-keyboard.conf`
-```
-Section "InputClass"
-    Identifier "system-keyboard"
-    MatchIsKeyboard "on"
-    Option "XkbLayout" "us,ru"
-    Option "XkbModel" "pc105"
-    Option "XkbOptions" "grp:alt_shift_toggle"
-EndSection
-```
-
 - Setup home dir (before running `rsync` its better to make backup of your home directory, otherwise some files will be replaced)
 ```
 $ git clone --depth 1 https://github.com/myagko/dotfiles.git
@@ -39,6 +43,17 @@ $ rsync -avhu ~/dotfiles/home/ ~/
 - Also dont forget to edit `.xinitrc`, maybe you have different monitor(s) so you need different xrandr options
 ```
 xrandr --output DisplayPort-0 --mode 1920x1080 --rate 165.00 &
+```
+
+- Keyboard layouts, edit `/etc/X11/xorg.conf.d/00-keyboard.conf`
+```
+Section "InputClass"
+    Identifier "system-keyboard"
+    MatchIsKeyboard "on"
+    Option "XkbLayout" "us,ru"
+    Option "XkbModel" "pc105"
+    Option "XkbOptions" "grp:alt_shift_toggle"
+EndSection
 ```
 
 - Edit `~/.config/awesome/user.lua` as you need, you can set theme, choose default apps, and set data for weather widget
@@ -119,17 +134,5 @@ pref("general.config.sandbox_enabled", false);
 3. Set homepage at firefox settings
 
 - Apply cursor, icons and gtk themes with `lxappearance`
-
-</details>
-
-<details>
-<summary><b>Gallery</b></summary>
-
-<p align="center">
-    <img src="src/1.png">
-    <img src="src/2.png">
-    <img src="src/3.png">
-    <img src="src/4.png">
-</p>
 
 </details>

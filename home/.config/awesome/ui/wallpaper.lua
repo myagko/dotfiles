@@ -1,6 +1,5 @@
 local awful = require("awful")
 local wibox = require("wibox")
-local beautiful = require("beautiful")
 
 local walls = {}
 
@@ -15,9 +14,9 @@ function walls.create(s)
 			horizontal_fit_policy = "cover",
 			vertical_fit_policy = "cover"
 		},
-		set = function(self, new_wall)
-			self.widget.image = new_wall
-			self:repaint()
+		set = function(widget, new_wall)
+			widget.widget.image = new_wall
+			widget:repaint()
 		end
 	}
 end

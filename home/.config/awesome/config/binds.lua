@@ -1,11 +1,14 @@
 local awful = require("awful")
 local User = require("user")
-local modkey = "Mod4"
 
 local Screenshot = require("daemons.screenshot")
 local Menu = require("ui.menu")
 local Launcher = require("ui.launcher")
 local Powermenu = require("ui.powermenu")
+
+local modkey = "Mod4"
+
+awful.mouse.snap.edge_enabled = false
 
 awful.mouse.append_global_mousebindings {
 	awful.button({}, 3, function() Menu:toggle() end),
@@ -13,18 +16,20 @@ awful.mouse.append_global_mousebindings {
 	awful.button({}, 5, awful.tag.viewnext),
 }
 
-awful.mouse.snap.edge_enabled = false
-
 awful.keyboard.append_global_keybindings {
 	awful.key({ modkey }, "Tab", function()
 		awful.client.focus.byidx(1)
 		if client.focus then
 			client.focus:raise()
 		end
-	end)
-}
+	end),
+	awful.key({ modkey, "Shift" }, "Tab", function()
+		awful.client.focus.byidx(-1)
+		if client.focus then
+			client.focus:raise()
+		end
+	end),
 
-awful.keyboard.append_global_keybindings {
 	awful.key {
 		modifiers = { modkey },
 		keygroup = "numrow",
@@ -47,11 +52,17 @@ awful.keyboard.append_global_keybindings {
 				end
 			end
 		end
-	}
+	},
+
+	awful.key({ modkey, "Shift" }, "r", function() awesome.restart() end),
+	awful.key({ modkey }, "w", function() awful.spawn(User.terminal) end),
+	awful.key({ modkey }, "d", function() Launcher:open() end),
+	awful.key({ modkey }, "q", function() Powermenu:open() end),
+	awful.key({}, "Print", function() Screenshot:full() end),
+	awful.key({ "Shift" }, "Print", function() Screenshot:select() end)
 }
 
 --[[
--- tiling keys
 awful.keyboard.append_global_keybindings {
 	awful.key({ modkey, "Shift" }, "l", function()
 		awful.client.swap.byidx(1)
@@ -130,14 +141,3 @@ client.connect_signal("request::default_keybindings", function()
 		end),
 	}
 end)
-
-awful.keyboard.append_global_keybindings {
-	awful.key({ modkey, "Shift" }, "r", function() awesome.restart() end),
-	awful.key({ modkey }, "w", function() awful.spawn(User.terminal) end),
-	awful.key({ modkey }, "d", function() Launcher:open() end),
-	awful.key({ modkey }, "q", function() Powermenu:open() end),
-	awful.key({}, "Print", function() Screenshot:full() end),
-	awful.key({ "Shift" }, "Print", function() Screenshot:select() end)
-}
-
-
