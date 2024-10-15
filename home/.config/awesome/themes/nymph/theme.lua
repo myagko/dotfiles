@@ -16,24 +16,6 @@ theme.font_h3 = theme.font_name .. " " .. tostring(dpi(26))
 theme.font = theme.font_h1
 
 theme.text_icons = {
-	-- system
-	poweroff = "",
-	reboot = "",
-	exit = "",
-	arrow_left = "",
-	arrow_right = "",
-	arrow_up = "",
-	arrow_down = "",
-	cross = "",
-	gear = "",
-	sliders = "",
-	wait = "",
-	apps = "",
-	trash = "",
-	calendar = "",
-	wifi = "",
-	bluetooth = "",
-
 	-- ui
 	visible = "",
 	invisible = "",
@@ -49,6 +31,23 @@ theme.text_icons = {
 	bell_off = "",
 	lock = "",
 	unlock = "",
+	arrow_left = "",
+	arrow_right = "",
+	arrow_up = "",
+	arrow_down = "",
+	cross = "",
+	gear = "",
+	sliders = "",
+	wait = "",
+	poweroff = "",
+	reboot = "",
+	exit = "",
+	apps = "",
+	trash = "",
+	calendar = "",
+	wifi = "",
+	bluetooth = "",
+	search = "",
 
 	-- weather
 	sun = "",

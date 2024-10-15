@@ -61,11 +61,15 @@ function bluetooth_applet:crate_dev_widget(device, path)
 				layout = wibox.layout.align.horizontal,
 				{
 					widget = wibox.container.constraint,
-					width = dpi(250),
+					width = dpi(200),
 					name
 				},
 				nil,
-				icon
+				{
+					widget = wibox.container.constraint,
+					width = dpi(130),
+					icon
+				}
 			}
 		}
 	}
@@ -301,7 +305,7 @@ local function new()
 				spacing = beautiful.sep_width,
 				spacing_widget = helpers.ui.create_sep {
 					orientation = "v",
-					margins = { top = 6, bottom = 6 }
+					margins = { top = dpi(10), bottom = dpi(10) }
 				},
 				ret.bottombar_refresh_button,
 				ret.bottombar_close_button

@@ -149,7 +149,7 @@ end
 
 function launcher:run_prompt()
 	awful.prompt.run {
-		prompt = "Launch: ",
+		prompt = "Search: ",
 		textbox = self.prompt,
 		bg_cursor = beautiful.foreground,
 		done_callback = function()
@@ -266,7 +266,7 @@ local function new()
 				spacing = beautiful.sep_width,
 				spacing_widget = helpers.ui.create_sep {
 				orientation = "h",
-					margins = { left = 6, right = 6 }
+					margins = { left = dpi(10), right = dpi(10) }
 				},
 				ret.sidebar_settings_button,
 				ret.sidebar_control_button
