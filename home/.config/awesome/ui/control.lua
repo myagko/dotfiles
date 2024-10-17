@@ -32,10 +32,17 @@ function control:open()
 	if self.state then return end
 	self.state = true
 	self.popup_widget.placement = function(d)
-		awful.placement.bottom_right(d, {
-			honor_workarea = true,
-			margins = beautiful.useless_gap*2
-		})
+		if beautiful.ui_top_layout then
+			awful.placement.top_right(d, {
+				honor_workarea = true,
+				margins = beautiful.useless_gap*2
+			})
+		else
+			awful.placement.bottom_right(d, {
+				honor_workarea = true,
+				margins = beautiful.useless_gap*2
+			})
+		end
 	end
 	self.popup_widget.visible = true
 	self:emit_signal("state", self.state)

@@ -8,6 +8,8 @@ local icons_path = theme_path .. "icons/"
 
 local theme = {}
 
+theme.ui_top_layout = false
+
 theme.font_name = "JetBrains Mono Slashed"
 theme.font_h0 = theme.font_name .. " " .. tostring(dpi(9))
 theme.font_h1 = theme.font_name .. " " .. tostring(dpi(13))
