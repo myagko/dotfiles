@@ -37,12 +37,10 @@ client.connect_signal("request::default_keybindings", function()
 			c.minimized = true
 		end),
 		awful.key({ modkey }, "c", function(c)
-			c.fullscreen = false
 			c.maximized = not c.maximized
 			c:raise()
 		end),
 		awful.key({ modkey }, "v", function(c)
-			c.maximized = false
 			c.fullscreen = not c.fullscreen
 			c:raise()
 		end),
@@ -51,9 +49,6 @@ client.connect_signal("request::default_keybindings", function()
 			c:raise()
 		end),
 		awful.key({ modkey }, "n", function(c)
-			c.floating = not c.floating
-		end),
-		awful.key({ modkey }, "m", function(c)
 			awful.placement.centered(c, { honor_workarea = true })
 		end)
 	}

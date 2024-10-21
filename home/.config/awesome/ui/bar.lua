@@ -419,7 +419,7 @@ end
 
 function bar:set_secondary(s)
 	local wibar = awful.wibar {
-		position = beautiful.ui_top_layout and "top" or "bottom",
+		position = "bottom",
 		ontop = true,
 		screen = s,
 		height = dpi(45),
@@ -428,8 +428,8 @@ function bar:set_secondary(s)
 		margins = {
 			left = -beautiful.border_width,
 			right = -beautiful.border_width,
-			top = beautiful.ui_top_layout and -beautiful.border_width or 0,
-			bottom = not beautiful.ui_top_layout and -beautiful.border_width or 0
+			top = 0,
+			bottom = -beautiful.border_width
 		},
 		widget = {
 			layout = wibox.layout.fixed.horizontal,
@@ -454,7 +454,7 @@ end
 
 function bar:set_primary(s)
 	local wibar = awful.wibar {
-		position = beautiful.ui_top_layout and "top" or "bottom",
+		position = "bottom",
 		ontop = true,
 		screen = s,
 		height = dpi(45),
@@ -463,8 +463,8 @@ function bar:set_primary(s)
 		margins = {
 			left = -beautiful.border_width,
 			right = -beautiful.border_width,
-			top = beautiful.ui_top_layout and -beautiful.border_width or 0,
-			bottom = not beautiful.ui_top_layout and -beautiful.border_width or 0
+			top = 0,
+			bottom = -beautiful.border_width
 		},
 		widget = {
 			layout = wibox.layout.align.horizontal,

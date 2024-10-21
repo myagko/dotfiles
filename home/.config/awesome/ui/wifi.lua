@@ -65,57 +65,49 @@ function wifi_applet:open_ap_menu(access_point)
 	local obscure = true
 	local auto_connect = true
 
-	local close = self.ap_menu:get_children_by_id("close")[1]
-	local title = self.ap_menu:get_children_by_id("title")[1]
-	local connect_or_disconnect = self.ap_menu:get_children_by_id("connect_or_disconnect")[1]
-
-	local pass_prompt = self.connect_widget:get_children_by_id("pass_prompt")[1]
-	local obscure_button = self.connect_widget:get_children_by_id("obscure")[1]
-	local auto_connect_button = self.connect_widget:get_children_by_id("auto_connect_checkbox")[1]
-
 	self.main_layout:reset()
 	self.main_layout:add(self.ap_menu)
 
-	title.markup = access_point.ssid
+	self.ap_menu_title.markup = access_point.ssid
 
-	close:buttons {
+	self.ap_menu_close:buttons {
 		awful.button({}, 1, function()
 			self:close_ap_menu()
 		end)
 	}
 
-	obscure_button.markup = text_icons.invisible
-	obscure_button:buttons {
+	self.connect_widget_obscure.markup = text_icons.invisible
+	self.connect_widget_obscure:buttons {
 		awful.button({}, 1, function()
 			obscure = not obscure
 			if obscure then
-				obscure_button.markup = text_icons.invisible
+				self.connect_widget_obscure.markup = text_icons.invisible
 			else
-				obscure_button.markup = text_icons.visible
+				self.connect_widget_obscure.markup = text_icons.visible
 			end
 		end)
 	}
 
-	auto_connect_button.markup = text_icons.check_on
-	auto_connect_button:buttons {
+	self.connect_widget_autoconnect.markup = text_icons.check_on
+	self.connect_widget_autoconnect:buttons {
 		awful.button({}, 1, function()
 			auto_connect = not auto_connect
 			if auto_connect then
-				auto_connect_button.markup = text_icons.check_on
+				self.connect_widget_autoconnect.markup = text_icons.check_on
 			else
-				auto_connect_button.markup = text_icons.check_off
+				self.connect_widget_autoconnect.markup = text_icons.check_off
 			end
 		end)
 	}
 
 	if access_point:is_active() then
-		connect_or_disconnect.widget = self.disconnect_widget
+		self.ap_menu_container.widget = self.disconnect_widget
 	else
 		local pass_input = ""
-		connect_or_disconnect.widget = self.connect_widget
+		self.ap_menu_container.widget = self.connect_widget
 
 		awful.prompt.run {
-			textbox = pass_prompt,
+			textbox = self.conect_widget_prompt,
 			bg_cursor = beautiful.foreground,
 			fg_cursor = beautiful.foreground,
 			done_callback = function()
@@ -345,6 +337,18 @@ local function new()
 		margins = dpi(10)
 	}
 
+	ret.connect_widget_obscure = wibox.widget {
+		widget = wibox.widget.textbox
+	}
+
+	ret.connect_widget_autoconnect = wibox.widget {
+		widget = wibox.widget.textbox
+	}
+
+	ret.conect_widget_prompt = wibox.widget {
+		widget = wibox.widget.textbox
+	}
+
 	ret.connect_widget = wibox.widget {
 		layout = wibox.layout.fixed.vertical,
 		spacing = dpi(15),
@@ -365,16 +369,10 @@ local function new()
 							{
 								widget = wibox.container.background,
 								forced_width = dpi(310),
-								{
-									id = "pass_prompt",
-									widget = wibox.widget.textbox
-								}
+								ret.conect_widget_prompt
 							},
 							nil,
-							{
-								id = "obscure",
-								widget = wibox.widget.textbox,
-							}
+							ret.connect_widget_obscure
 						}
 					},
 					helpers.ui.create_sep {
@@ -390,11 +388,7 @@ local function new()
 								markup = "Auto connect"
 							},
 							nil,
-							{
-								id = "auto_connect_checkbox",
-								widget = wibox.widget.textbox,
-								markup = text_icons.selected
-							}
+							ret.connect_widget_autoconnect
 						}
 					}
 				}
@@ -419,6 +413,19 @@ local function new()
 		ret.disconnect_button
 	}
 
+	ret.ap_menu_close = wibox.widget {
+		widget = wibox.widget.textbox,
+		markup = text_icons.arrow_left
+	}
+
+	ret.ap_menu_title = wibox.widget {
+		widget = wibox.widget.textbox
+	}
+
+	ret.ap_menu_container = wibox.widget {
+		widget = wibox.container.background
+	}
+
 	ret.ap_menu = wibox.widget {
 		widget = wibox.container.background,
 		forced_height = dpi(400),
@@ -430,21 +437,11 @@ local function new()
 				{
 					layout = wibox.layout.fixed.horizontal,
 					spacing = dpi(15),
-					{
-						id = "close",
-						widget = wibox.widget.textbox,
-						markup = text_icons.arrow_left
-					},
-					{
-						id = "title",
-						widget = wibox.widget.textbox
-					}
+					ret.ap_menu_close,
+					ret.ap_menu_title
 				}
 			},
-			{
-				id = "connect_or_disconnect",
-				widget = wibox.container.background
-			}
+			ret.ap_menu_container
 		}
 	}
 
