@@ -373,50 +373,6 @@ function bar.tasklist(s)
 	return tasklist
 end
 
-local function set_hideaway(wibar)
-	client.connect_signal("focus", function(c)
-		if c.fullscreen then
-			wibar.visible = false
-		else
-			wibar.visible = true
-		end
-	end)
-
-	client.connect_signal("unfocus", function(c)
-		if c.fullscreen then
-			wibar.visible = true
-		end
-	end)
-
-	client.connect_signal("request::manage", function(c)
-		if c.fullscreen then
-			wibar.visible = false
-		else
-			wibar.visible = true
-		end
-	end)
-
-	client.connect_signal("request::unmanage", function(c)
-		if c.fullscreen then
-			wibar.visible = true
-		end
-	end)
-
-	client.connect_signal("property::fullscreen", function(c)
-		if c.fullscreen then
-			wibar.visible = false
-		else
-			wibar.visible = true
-		end
-	end)
-
-	client.connect_signal("property::minimized", function(c)
-		if c.fullscreen then
-			wibar.visible = true
-		end
-	end)
-end
-
 function bar:set_secondary(s)
 	local wibar = awful.wibar {
 		position = "bottom",
@@ -446,8 +402,6 @@ function bar:set_secondary(s)
 			}
 		}
 	}
-
-	set_hideaway(wibar)
 
 	return wibar
 end
@@ -494,8 +448,6 @@ function bar:set_primary(s)
 			}
 		}
 	}
-
-	set_hideaway(wibar)
 
 	return wibar
 end
