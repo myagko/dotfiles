@@ -4,10 +4,6 @@ local gears = require("gears")
 local util = {}
 
 function util.remote_watch(command, interval, output_file, callback)
-	local run_the_thing = function()
-		awful.spawn.easy_async_with_shell(command .. " | tee " .. output_file, function(out) callback(out) end)
-	end
-
 	local timer
 	timer = gears.timer {
 		timeout = interval,
@@ -17,24 +13,32 @@ function util.remote_watch(command, interval, output_file, callback)
 		callback = function()
 			awful.spawn.easy_async_with_shell("date -r " .. output_file .. " +%s", function(last_update, _, _, exitcode)
 				if exitcode == 1 then
-					run_the_thing()
+					awful.spawn.easy_async_with_shell(command .. " | tee " .. output_file, function(out)
+						callback(out)
+					end)
 					return
 				end
 
 				local diff = os.time() - tonumber(last_update)
 				if diff >= interval then
-					run_the_thing()
+					awful.spawn.easy_async_with_shell(command .. " | tee " .. output_file, function(out)
+						callback(out)
+					end)
 				else
 					awful.spawn.easy_async_with_shell("cat " .. output_file, function(out) callback(out) end)
 					timer:stop()
 					gears.timer.start_new(interval - diff, function()
-						run_the_thing()
+						awful.spawn.easy_async_with_shell(command .. " | tee " .. output_file, function(out)
+							callback(out)
+						end)
 						timer:again()
 					end)
 				end
 			end)
 		end
 	}
+
+	return timer
 end
 
 function util.spawn_once(cmd_arr)

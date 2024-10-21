@@ -110,7 +110,7 @@ function weather_daemon:set_remote_watch()
 			"&units=" .. self.units ..
 			"&exclude=minutely'"
 
-		helpers.util.remote_watch(forecast_cmd, self.update_interval, self.tmp_file, function(out)
+		self.remote_watch = helpers.util.remote_watch(forecast_cmd, self.update_interval, self.tmp_file, function(out)
 			self:extract_data(out)
 		end)
 	end
