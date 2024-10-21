@@ -47,6 +47,8 @@ xrandr --output DisplayPort-0 --mode 1920x1080 --rate 165.00 &
 
 ## Keybinds
 
+<div align="center">
+
 | Keybinding            | Description                              |
 | --------------------- | ---------------------------------------- |
 | `Mod+Shift+r`         | Restart awesomewm                        |
@@ -77,6 +79,8 @@ xrandr --output DisplayPort-0 --mode 1920x1080 --rate 165.00 &
 | `Mod+Return`          | Open terminal                            |
 | `Mod+Print`           | Take screenshot                          |
 | `Mod+Shift+Print`     | Take screenshot area                     |
+
+</div>
 
 ## Additional customization
 
