@@ -1,0 +1,28 @@
+[ColorEffects:Inactive]
+ChangeSelectionColor = true
+
+
+[Colors:Button]
+BackgroundNormal     = 26,32,35
+ForegroundNormal     = 188,196,201
+
+
+[Colors:Selection]
+BackgroundNormal     = 137,183,176
+ForegroundNormal     = 0
+
+
+[Colors:View]
+BackgroundAlternate  = 26,32,35
+BackgroundNormal     = 37,43,46
+ForegroundLink       = 124,155,180
+ForegroundNormal     = 188,196,201
+
+
+[Colors:Window]
+BackgroundNormal     = 26,32,35
+ForegroundNormal     = 188,196,201
+
+
+[General]
+Name                 = Nymph

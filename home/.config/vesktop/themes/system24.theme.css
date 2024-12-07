@@ -1,0 +1,84 @@
+/**
+ * @name system24 (nymph)
+ * @description A tui-style discord theme.
+ * @author refact0r
+ * @version 1.0.0
+ * @invite nz87hXyvcy
+ * @website https://github.com/refact0r/system24
+ * @source https://github.com/refact0r/system24/blob/master/system24.theme.css
+ * @authorId 508863359777505290
+ * @authorLink https://www.refact0r.dev
+*/
+
+/* import theme modules */
+@import url('https://refact0r.github.io/system24/src/main.css'); /* main theme css. DO NOT REMOVE */
+@import url('https://refact0r.github.io/system24/src/unrounding.css'); /* gets rid of all rounded corners. remove if you want rounded corners. */
+
+/* customize things here */
+:root {
+	--font: 'DM Mono'; /* UI font name. it must be installed on your system. */
+	letter-spacing: -0.05ch; /* decreases letter spacing for better readability. */
+	font-weight: 300; /* UI font weight. */
+	--label-font-weight: 500; /* font weight for panel labels. */
+	--corner-text: 'system24'; /* custom text to display in the corner. only works on windows. */
+	--pad: 15px; /* padding between panels. */
+	--txt-pad: 10px; /* padding inside panels to prevent labels from clipping */
+	--panel-roundness: 0px; /* corner roundness of panels. ONLY WORKS IF unrounding.css IS REMOVED (see above). */
+
+	/* background colors */
+	--bg-0: #1A2023; /* main background color. */
+	--bg-1: #252B2E; /* background color for secondary elements like code blocks, embeds, etc. */
+	--bg-2: #373D40; /* color of neutral buttons. */
+	--bg-3: #464E52; /* color of neutral buttons when hovered. */
+
+	/* state modifiers */
+	--hover: #252B2E; /* color of hovered elements. */
+	--active: #252B2E; /* color of elements when clicked. */
+	--selected: #373D40; /* color of selected elements. */
+
+	/* text colors */
+	--txt-dark: #1A2023; /* color of dark text on colored backgrounds. */
+	--txt-link: #7C9BB4; /* color of links. */
+	--txt-0: #BCC4C9; /* color of bright/white text. */
+	--txt-1: #BCC4C9; /* main text color. */
+	--txt-2: #5B6265; /* color of secondary text like channel list. */
+	--txt-3: #5B6265; /* color of muted text. */
+
+	/* accent colors */
+	--acc-0: #89B7B0; /* main accent color. */
+	--acc-1: #5B6265; /* color of accent buttons when hovered. */
+	--acc-2: #373D40; /* color of accent buttons when clicked. */
+
+	/* borders */
+	--border-width: 1px; /* panel border thickness. */
+	--border-color: #373D40; /* panel border color. */
+	--border-hover-color: #89B7B0; /* panel border color when hovered. */
+	--border-transition: 0.2s ease; /* panel border transition. */
+
+	/* status dot colors */
+	--online-dot: #9FBC85; /* color of online dot. */
+	--dnd-dot: #BC7171; /* color of do not disturb dot. */
+	--idle-dot: #D5BE82; /* color of idle dot. */
+	--streaming-dot: #5B6265; /* color of streaming dot. */
+
+	/* mention/ping and message colors */
+	--mention-txt: var(--acc-0); /* color of mention text. */
+	--mention-bg: color-mix(in oklch, var(--acc-0), transparent 90%); /* background highlight of mention text. */
+	--mention-overlay: color-mix(in oklch, var(--acc-0), transparent 90%); /* overlay color of messages that mention you. */
+	--mention-hover-overlay: color-mix(in oklch, var(--acc-0), transparent 95%); /* overlay color of messages that mention you when hovered. */
+	--reply-overlay: var(--active); /* overlay color of message you are replying to. */
+	--reply-hover-overlay: var(--hover); /* overlay color of message you are replying to when hovered. */
+
+	/* color shades */
+	--pink: #BC7171;
+	--pink-1: #BC7171;
+	--pink-2: #BC7171;
+	--purple: #A883A2;
+	--purple-1: #A883A2;
+	--purple-2: #A883A2;
+	--cyan: #89B7B0;
+	--yellow: #D5BE82;
+	--green: #9FBC85;
+	--green-1: #9FBC85;
+	--green-2: #9FBC85;
+}
