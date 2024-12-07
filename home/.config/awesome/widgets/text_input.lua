@@ -9,7 +9,7 @@ local gcolor = require("gears.color")
 
 local text_input = { mt = {} }
 
-local function draw_text(args)
+local function create_markup(args)
 	local text = args.text or ""
 	local cursor_pos = args.cursor_pos or 1
 	local selectall = args.selectall or false
@@ -17,7 +17,12 @@ local function draw_text(args)
 	local under_prompt = args.under_prompt or ""
 	local obscure = args.obscure or false
 	local obscure_char = args.obscure_char or "*"
-	local cursor_char, spacer, text_start, text_end, draw
+	local highlighter = args.highlighter or nil
+	local cursor_char, spacer, text_start, text_end, markup
+
+	if obscure and text ~= "" then
+		text = utf8.gsub(text, "(.)", obscure_char)
+	end
 
 	if text == "" and under_prompt ~= "" then
 		spacer = ""
@@ -28,7 +33,7 @@ local function draw_text(args)
 		if text == "" then
 			cursor_char = " "
 		else
-			cursor_char = gstring.xml_escape(obscure and utf8.gsub(text, "(.)", obscure_char) or text)
+			cursor_char = gstring.xml_escape(text)
 		end
 		spacer = " "
 		text_start = ""
@@ -36,31 +41,29 @@ local function draw_text(args)
 	elseif utf8.len(text) < cursor_pos then
 		cursor_char = " "
 		spacer = ""
-		text_start = gstring.xml_escape(obscure and utf8.gsub(text, "(.)", obscure_char) or text)
+		text_start = gstring.xml_escape(text)
 		text_end = ""
 	else
-		cursor_char = gstring.xml_escape(obscure and
-			utf8.gsub(utf8.sub(text, cursor_pos, cursor_pos), "(.)", obscure_char) or
-			utf8.sub(text, cursor_pos, cursor_pos))
+		cursor_char = gstring.xml_escape(utf8.sub(text, cursor_pos, cursor_pos))
 		spacer = " "
-		text_start = gstring.xml_escape(obscure and
-			utf8.gsub(utf8.sub(text, 1, cursor_pos - 1), "(.)", obscure_char) or
-			utf8.sub(text, 1, cursor_pos - 1))
-		text_end = gstring.xml_escape(obscure and
-			utf8.gsub(utf8.sub(text, cursor_pos + 1), "(.)", obscure_char) or
-			utf8.sub(text, cursor_pos + 1))
+		text_start = gstring.xml_escape(utf8.sub(text, 1, cursor_pos - 1))
+		text_end = gstring.xml_escape(utf8.sub(text, cursor_pos + 1))
 	end
 
 	local cursor_bg = gcolor.ensure_pango_color(args.cursor_bg)
 	local cursor_fg = gcolor.ensure_pango_color(args.cursor_fg)
 	local under_prompt_fg = gcolor.ensure_pango_color(args.under_prompt_fg)
 
-	draw = start_prompt .. text_start ..
+	if text ~= "" and highlighter then
+		text_start, text_end = highlighter(text_start, text_end)
+	end
+
+	markup = start_prompt .. text_start ..
 		"<span foreground='" .. cursor_fg .. "' background='" .. cursor_bg ..  "'>" .. cursor_char .. "</span>" ..
 		(text == "" and "<span foreground='" .. under_prompt_fg .. "'>" .. text_end .. "</span>" or text_end) ..
 		spacer
 
-	return draw
+	return markup
 end
 
 function text_input:set_obscure(obscure)
@@ -74,7 +77,7 @@ end
 
 function text_input:update_textbox()
 	local wp = self._private
-	self.textbox:set_markup(draw_text {
+	self.textbox:set_markup(create_markup {
 		text = wp.input,
 		cursor_pos = wp.cur_pos,
 		selectall = wp.selectall,
@@ -84,7 +87,8 @@ function text_input:update_textbox()
 		under_prompt_fg = self.under_prompt_fg,
 		obscure_char = self.obscure_char,
 		start_prompt = self.start_prompt,
-		under_prompt = self.under_prompt
+		under_prompt = self.under_prompt,
+		highlighter = self.highlighter
 	})
 end
 
@@ -259,6 +263,7 @@ local function new(args)
 	ret.changed_callback = args.changed_callback or nil
 	ret.keyreleased_callback = args.keyreleased_callback or nil
 	ret.keypressed_callback = args.keypressed_callback or nil
+	ret.highlighter = args.highlighter or nil
 
 	return ret
 end
