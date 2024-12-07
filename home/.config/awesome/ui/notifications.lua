@@ -1,6 +1,6 @@
 local naughty = require("naughty")
 local wibox = require("wibox")
-local ruled = require("ruled")
+local rnotification = require("ruled.notification")
 local widgets = require("widgets")
 local helpers = require("helpers")
 local beautiful = require("beautiful")
@@ -102,7 +102,7 @@ local function new()
 
 	ret.silent = false
 
-	ruled.notification.append_rule {
+	rnotification.append_rule {
 		rule = { urgency = "normal" },
 		properties = {
 			screen = screen.primary,
@@ -110,7 +110,7 @@ local function new()
 		}
 	}
 
-	ruled.notification.append_rule {
+	rnotification.append_rule {
 		rule = { urgency = "critical" },
 		properties = {
 			screen = screen.primary

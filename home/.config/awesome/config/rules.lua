@@ -1,5 +1,5 @@
 local awful = require("awful")
-local ruled = require("ruled")
+local rclient = require("ruled.client")
 require("awful.autofocus")
 
 client.connect_signal("request::manage", function(c)
@@ -25,8 +25,8 @@ client.connect_signal("request::manage", function(c)
 	end
 end)
 
-ruled.client.connect_signal("request::rules", function()
-	ruled.client.append_rule {
+rclient.connect_signal("request::rules", function()
+	rclient.append_rule {
 		id = "global",
 		rule = {},
 		properties = {
@@ -40,7 +40,7 @@ ruled.client.connect_signal("request::rules", function()
 		}
 	}
 
-	ruled.client.append_rule {
+	rclient.append_rule {
 		id = "titlebars",
 		rule_any = {
 			type = { "normal", "dialog" }
@@ -50,7 +50,7 @@ ruled.client.connect_signal("request::rules", function()
 		}
 	}
 
-	ruled.client.append_rule {
+	rclient.append_rule {
 		rule_any = {
 			class = { "steam", "lunarclient", "CheatBreaker" }
 		},
@@ -59,7 +59,7 @@ ruled.client.connect_signal("request::rules", function()
 		}
 	}
 
-	ruled.client.append_rule {
+	rclient.append_rule {
 		rule_any = {
 			class = { "vesktop", "discord" }
 		},
@@ -68,7 +68,7 @@ ruled.client.connect_signal("request::rules", function()
 		}
 	}
 
-	ruled.client.append_rule {
+	rclient.append_rule {
 		rule_any = {
 			class = { "firefox" }
 		},
@@ -78,7 +78,7 @@ ruled.client.connect_signal("request::rules", function()
 		}
 	}
 
-	ruled.client.append_rule {
+	rclient.append_rule {
 		rule_any = {
 			class = { "Eom", "mpv", "vlc" }
 		},

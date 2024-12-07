@@ -165,11 +165,6 @@ function notification_list:add_notifs(n)
 		self.is_empty = false
 	end
 
-	local appicon = n.icon or n.app_icon
-	if not appicon then
-		appicon = beautiful.icon_bell
-	end
-
 	if beautiful.notif_list_limit and #self.m_layout.children >= beautiful.notif_list_limit then
 		self:remove_notif(self.m_layout.children[beautiful.notif_list_limit])
 	end
