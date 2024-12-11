@@ -20,7 +20,7 @@ local menu = awful.menu {
 		},
 		{ "shot", {
 				{ "full", function() screenshot_daemon:full() end },
-				{ "full 5s", function() screenshot_daemon:wait() end },
+				{ "full 5s", function() screenshot_daemon:wait(5) end },
 				{ "area", function() screenshot_daemon:select() end }
 			}
 		},

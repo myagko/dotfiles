@@ -118,9 +118,10 @@ local function new()
 	}
 
 	screenshot_daemon:connect_signal("saved", function(_, dir)
+		local display_dir = dir:gsub(tostring(os.getenv("HOME")), "~")
 		naughty.notification {
 			title = "Screenshot",
-			text = "Saved to: " .. dir,
+			text = "Saved to: " .. display_dir,
 			icon = beautiful.notification_icon_camera
 		}
 	end)

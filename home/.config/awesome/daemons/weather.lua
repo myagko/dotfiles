@@ -37,10 +37,10 @@ local function new()
 	ret._private = {}
 
 	ret:set_remote_watch({
-		lat = user.coords and user.coords[1],
-		lon = user.coords and user.coords[2],
+		lat = user.weather_location and user.weather_location[1],
+		lon = user.weather_location and user.weather_location[2],
 		tmp_file = user.tmp_file,
-		imperial_units = user.imperial_units
+		imperial_units = user.weather_imperial_units
 	})
 
 	return ret

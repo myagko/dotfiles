@@ -1,9 +1,11 @@
 local beautiful = require("beautiful")
+local gfilesystem = require("gears.filesystem")
 local gshape = require("gears.shape")
+local gcolor = require("gears.color")
 local dpi = beautiful.xresources.apply_dpi
 
 local theme_name = "nymph"
-local theme_path = "~/.config/awesome/themes/" .. theme_name .. "/"
+local theme_path = gfilesystem.get_configuration_dir() .. "/themes/" .. theme_name .. "/"
 local icons_path = theme_path .. "icons/"
 
 local theme = {}
@@ -107,9 +109,9 @@ theme.notification_max_width = dpi(380)
 theme.notification_min_width = dpi(300)
 theme.notification_max_height = dpi(150)
 theme.notification_min_height = dpi(50)
-theme.notification_icon_bell = icons_path .. "bell.png"
-theme.notification_icon_camera = icons_path .. "camera.png"
-theme.notification_icon_alert = icons_path .. "alert.png"
+theme.notification_icon_bell = gcolor.recolor_image(icons_path .. "bell.png", theme.foreground)
+theme.notification_icon_camera = gcolor.recolor_image(icons_path .. "camera.png", theme.foreground)
+theme.notification_icon_alert = gcolor.recolor_image(icons_path .. "alert.png", theme.red)
 
 theme.menu_submenu = theme.text_icons.arrow_right .. " "
 theme.menu_bg_normal = theme.background
@@ -119,12 +121,12 @@ theme.menu_fg_focus = theme.background
 theme.menu_border_width = theme.border_width
 theme.menu_border_color = theme.border_color
 
-theme.layout_floating = icons_path .. "layout_floating.png"
-theme.layout_tile = icons_path .. "layout_tile.png"
+theme.layout_floating = gcolor.recolor_image(icons_path .. "layout_floating.png", theme.foreground)
+theme.layout_tile = gcolor.recolor_image(icons_path .. "layout_tile.png", theme.foreground)
 
 theme.systray_icon_spacing = dpi(6)
 theme.bg_systray = theme.background_alt
 
-theme.awesome_icon = beautiful.theme_assets.awesome_icon(32, theme.accent, theme.background)
+theme.awesome_icon = beautiful.theme_assets.awesome_icon(128, theme.accent, theme.background)
 
 return theme
