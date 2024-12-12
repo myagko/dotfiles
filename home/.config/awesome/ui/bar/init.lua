@@ -203,7 +203,7 @@ local function taglist(s)
 			layout = wibox.layout.fixed.horizontal
 		},
 		widget_template = {
-			id = "t_container",
+			id = "t_selection",
 			widget = wibox.container.background,
 			{
 				widget = wibox.container.margin,
@@ -218,25 +218,25 @@ local function taglist(s)
 	}
 
 	local function t_callback(tw, t)
-		local t_container = tw:get_children_by_id("t_container")[1]
+		local t_selection = tw:get_children_by_id("t_selection")[1]
 		local t_text = tw:get_children_by_id("t_text")[1]
 
 		t_text.markup = t.index
 
 		if t.selected then
-			t_container.bg = beautiful.accent
-			t_container.fg = beautiful.background
+			t_selection.bg = beautiful.accent
+			t_selection.fg = beautiful.background
 		elseif #t:clients() > 0 then
-			t_container.bg = beautiful.background_alt
-			t_container.fg = beautiful.foreground
+			t_selection.bg = beautiful.background_alt
+			t_selection.fg = beautiful.foreground
 		else
-			t_container.bg = beautiful.background_alt
-			t_container.fg = beautiful.foreground_alt
+			t_selection.bg = beautiful.background_alt
+			t_selection.fg = beautiful.foreground_alt
 		end
 
 		for _, c in ipairs(t:clients()) do
 			if c.urgent then
-				t_container.fg = beautiful.red
+				t_selection.fg = beautiful.red
 				break
 			end
 		end
@@ -244,16 +244,17 @@ local function taglist(s)
 
 	widget.widget_template.create_callback = function(tw, t)
 		t_callback(tw, t)
+		local t_selection = tw:get_children_by_id("t_selection")[1]
 
-		tw:connect_signal("mouse::enter", function(w)
+		tw:connect_signal("mouse::enter", function()
 			if not t.selected then
-				w.bg = beautiful.background_urgent
+				t_selection.bg = beautiful.background_urgent
 			end
 		end)
 
-		tw:connect_signal("mouse::leave", function(w)
+		tw:connect_signal("mouse::leave", function()
 			if not t.selected then
-				w.bg = beautiful.background_alt
+				t_selection.bg = beautiful.background_alt
 			end
 		end)
 	end
@@ -372,7 +373,7 @@ function bar.set_secondary(s)
 				{
 					layout = wibox.layout.fixed.horizontal,
 					spacing = dpi(7),
-					--layoutbox(s),
+					layoutbox(s),
 					taglist(s),
 					tasklist(s)
 				}
@@ -406,7 +407,7 @@ function bar.set_primary(s)
 				{
 					layout = wibox.layout.fixed.horizontal,
 					spacing = dpi(7),
-					--layoutbox(s),
+					layoutbox(s),
 					taglist(s),
 					tasklist(s)
 				}
