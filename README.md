@@ -1,10 +1,21 @@
 <p align="center">
-    <img src="assets/3.png">
+    <img src="assets/01.png">
 </p>
+
+<details>
+<summary>more previews</summary>
+
+<p align="center">
+    <img src="assets/02.png">
+    <img src="assets/03.png">
+    <img src="assets/04.png">
+</p>
+
+</details>
 
 ## Instalation
 
-- Install dependencies:
+#### Install dependencies:
 1. necessary
 ```
 $ sudo pacman -S xorg xorg-xinit pulseaudio pulseaudio-bluetooth \
@@ -15,7 +26,7 @@ networkmanager bluez bluez-utils luarocks picom maim lxappearance
 $ sudo pacman -S alacritty nemo nemo-fileroller leafpad eom 
 ```
 
-- Install lua modules
+#### Install lua modules
 
 <div align="center">
 
@@ -30,14 +41,12 @@ $ sudo pacman -S alacritty nemo nemo-fileroller leafpad eom
 $ sudo luarocks install luautf8
 ```
 
-- Install `awesome-git` package from aur (`pikaur` for example)
+#### Install `awesome-git` package from aur (`pikaur` for example)
 ```
 $ pikaur -S awesome-git
 ```
 
-
-
-- Start & enable `network manager` & `bluez` services
+#### Start & enable `network manager` & `bluez` services
 ```
 $ systemctl start NetworkManager
 $ systemctl enable NetworkManager
@@ -45,19 +54,61 @@ $ systemctl start bluetooth
 $ systemctl enable bluetooth
 ```
 
-- Clone repo
+#### Clone repo
 ```
 $ git clone --depth 1 https://github.com/myagko/dotfiles.git
 ```
 
-- Copy contens of `dotfiles/home` to your home folder (i use `rsync` instead of copying every folder with `cp -r`)
+#### Copy contens of `dotfiles/home` to your home folder (i use `rsync` instead of copying every folder with `cp -r`)
 ```
 $ rsync -avhu ~/dotfiles/home/ ~/
 ```
 
-- Edit `~/.config/awesome/user.lua` as you need, you can set wm theme, choose default apps, and set data for weather widget
+#### Edit `~/.config/awesome/user.lua` as you need, you can set wm theme, choose default apps, and set data for weather widget
 
-- Download [JetBrainsMonoSlashed](https://github.com/sharpjs/JetBrainsMonoSlashed/releases) font and put it to `~/.fonts`
+#### Download [JetBrainsMonoSlashed](https://github.com/sharpjs/JetBrainsMonoSlashed/releases) font and put it to `~/.fonts`
+
+<details>
+<summary><b>Additioan customisation</b></summary>
+
+#### Icons and themes
+1. Install `themix-full-git` from aur
+2. Export icons and theme from user presets
+
+#### Cursors (`inkscape` required) ([source](https://github.com/charakterziffer/cursor-toolbox))
+```
+$ cd ~/dotfiles/extra/cursor_toolbox
+$ ~/dotfiles/extra/cursor_toolbox/render-pngs.py ~/dotfiles/extra/cursor_toolbox/sharp_dark.svg
+$ ~/dotfiles/extra/cursor_toolbox/make_dark.sh
+$ cp -r sharp_cursors_dark ~/.icons
+```
+
+#### Firefox css
+1. Search `about:config`.
+2. `toolkit.legacyUserProfileCustomizations.stylesheets`, `layers.acceleration.force-enabled`, `gfx.webrender.all`, `svg.context-properties.content.enabled` change to `True`.
+3. Copy `~/dotfiles/extra/mozilla/chrome` to `~/.mozilla/firefox/XXXXXXX.default-release/`.
+
+#### Firefox startpage
+1. Edit `/usr/lib/firefox/autoconfig.cfg`
+```
+var {classes:Cc,interfaces:Ci,utils:Cu} = Components;
+try {
+  Cu.import("resource:///modules/AboutNewTab.jsm");
+  var newTabURL = "file:///home/username/yourfile.html";
+  AboutNewTab.newTabURL = newTabURL;
+} catch(e){Cu.reportError(e);}
+```
+2. Edit `/usr/lib/firefox/defaults/pref/autoconfig.js`
+```
+pref("general.config.filename", "autoconfig.cfg");
+pref("general.config.obscure_value", 0);
+pref("general.config.sandbox_enabled", false);
+```
+3. Set homepage at firefox settings
+
+#### Apply cursors, icons and gtk themes with `lxappearance`
+
+</details>
 
 ## Keybinds
 
@@ -95,42 +146,3 @@ $ rsync -avhu ~/dotfiles/home/ ~/
 | `Mod+Shift+Print`     | Take screenshot area                     |
 
 </div>
-
-## Additional customization
-
-- Icons and themes
-1. Install `themix-full-git` from aur
-2. Export icons and theme from user presets
-
-- Cursors (`inkscape` required) ([source](https://github.com/charakterziffer/cursor-toolbox))
-```
-$ cd ~/dotfiles/extra/cursor_toolbox
-$ ~/dotfiles/extra/cursor_toolbox/render-pngs.py ~/dotfiles/extra/cursor_toolbox/sharp_dark.svg
-$ ~/dotfiles/extra/cursor_toolbox/make_dark.sh
-$ cp -r sharp_cursors_dark ~/.icons
-```
-
-- Firefox css
-1. Search `about:config`.
-2. `toolkit.legacyUserProfileCustomizations.stylesheets`, `layers.acceleration.force-enabled`, `gfx.webrender.all`, `svg.context-properties.content.enabled` change to `True`.
-3. Copy `~/dotfiles/extra/mozilla/chrome` to `~/.mozilla/firefox/XXXXXXX.default-release/`.
-
-- Firefox startpage
-1. Edit `/usr/lib/firefox/autoconfig.cfg`
-```
-var {classes:Cc,interfaces:Ci,utils:Cu} = Components;
-try {
-  Cu.import("resource:///modules/AboutNewTab.jsm");
-  var newTabURL = "file:///home/username/yourfile.html";
-  AboutNewTab.newTabURL = newTabURL;
-} catch(e){Cu.reportError(e);}
-```
-2. Edit `/usr/lib/firefox/defaults/pref/autoconfig.js`
-```
-pref("general.config.filename", "autoconfig.cfg");
-pref("general.config.obscure_value", 0);
-pref("general.config.sandbox_enabled", false);
-```
-3. Set homepage at firefox settings
-
-- Apply cursors, icons and gtk themes with `lxappearance`
