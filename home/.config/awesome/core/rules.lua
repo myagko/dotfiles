@@ -73,8 +73,7 @@ rclient.connect_signal("request::rules", function()
 			class = { "firefox" }
 		},
 		properties = {
-			tag = "tag_5",
-			titlebars_enabled = false
+			tag = "tag_5"
 		}
 	}
 
