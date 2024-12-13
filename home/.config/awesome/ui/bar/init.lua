@@ -12,15 +12,18 @@ local bar = {}
 local function launcher_button()
 	local widget = wibox.widget {
 		widget = wibox.container.background,
+		forced_width = dpi(31),
+		bg = beautiful.accent,
+		fg = beautiful.background,
 		buttons = {
 			awful.button({}, 1, function()
 				launcher:toggle()
 			end)
 		},
 		{
-			widget = wibox.widget.imagebox,
-			scaling_quality = "nearest",
-			image = beautiful.awesome_icon
+			widget = wibox.widget.textbox,
+			align = "center",
+			text = text_icons.apps
 		}
 	}
 

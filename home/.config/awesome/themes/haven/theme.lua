@@ -127,6 +127,4 @@ theme.layout_tile = gcolor.recolor_image(icons_path .. "layout_tile.png", theme.
 theme.systray_icon_spacing = dpi(6)
 theme.bg_systray = theme.background_alt
 
-theme.awesome_icon = beautiful.theme_assets.awesome_icon(128, theme.accent, theme.background)
-
 return theme
