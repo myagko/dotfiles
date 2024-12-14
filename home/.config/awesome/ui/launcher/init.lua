@@ -7,10 +7,20 @@ local gobject = require("gears.object")
 local gtable = require("gears.table")
 local widgets = require("widgets")
 local helpers = require("helpers")
+local user = require("user")
 local dpi = beautiful.xresources.apply_dpi
 local text_icons = beautiful.text_icons
 local powermenu = require("ui.powermenu")
 local control = require("ui.control_panel")
+
+local terminals_map = {
+	alacritty = "alacritty -e",
+	termite = "termite -e",
+	rxvt = "rxvt -e",
+	terminator = "terminator -e"
+}
+
+local terminal_command = user.terminal and terminals_map[user.terminal] or nil
 
 local launcher = {}
 local instance = nil
@@ -186,8 +196,15 @@ local function new()
 			ret:update_entries()
 		end,
 		exe_callback = function()
-			if ret.filtered[ret.index_entry] then
-				ret.filtered[ret.index_entry]:launch()
+			local app = ret.filtered[ret.index_entry]
+			if app then
+				local desktop_app_info = Gio.DesktopAppInfo.new(Gio.AppInfo.get_id(app))
+				local terminal = Gio.DesktopAppInfo.get_string(desktop_app_info, "Terminal") == "true" and true or false
+				if terminal and terminal_command then
+					awful.spawn(terminal_command .. app:get_executable())
+				else
+					app:launch()
+				end
 			end
 		end,
 		keypressed_callback = function(_, key)
