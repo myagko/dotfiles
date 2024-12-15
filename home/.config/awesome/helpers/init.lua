@@ -54,4 +54,16 @@ function helpers.lua_escape(string)
 	return string:gsub("[%[%]%(%)%.%-%+%?%*%%]", "%%%1")
 end
 
+function helpers.has_common_values(t1, t2)
+	local common = {}
+	for _, v1 in pairs(t1) do
+		for _, v2 in pairs(t2) do
+			if v1 == v2 then
+				table.insert(common, v1)
+			end
+		end
+	end
+	return #common > 0 and common or nil
+end
+
 return helpers

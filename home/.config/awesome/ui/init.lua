@@ -1,5 +1,6 @@
 local awful = require("awful")
 local naughty = require("naughty")
+local helpers = require("helpers")
 local user = require("user")
 local notifications = require("ui.notifications")
 local bar = require("ui.bar")
@@ -13,7 +14,24 @@ local desktop_menu = require("ui.desktop_menu")
 local client_menu = require("ui.client_menu")
 
 local function set_wibar_hideaway(wibar)
+	client.connect_signal("request::manage", function(c)
+		if wibar.screen ~= awful.screen.focused() then return end
+		if helpers.has_common_values(c:tags(), awful.screen.focused().selected_tags) and c.fullscreen then
+			wibar.visible = false
+		else
+			wibar.visible = true
+		end
+	end)
+
+	client.connect_signal("request::unmanage", function(c)
+		if wibar.screen ~= awful.screen.focused() then return end
+		if c.fullscreen then
+			wibar.visible = true
+		end
+	end)
+
 	client.connect_signal("focus", function(c)
+		if wibar.screen ~= awful.screen.focused() then return end
 		if c.fullscreen then
 			wibar.visible = false
 		else
@@ -22,35 +40,24 @@ local function set_wibar_hideaway(wibar)
 	end)
 
 	client.connect_signal("unfocus", function(c)
+		if wibar.screen ~= awful.screen.focused() then return end
 		if c.fullscreen then
 			wibar.visible = true
 		end
 	end)
 
-	client.connect_signal("request::manage", function(c)
-		if c.fullscreen then
-			wibar.visible = false
-		else
-			wibar.visible = true
-		end
-	end)
-
-	client.connect_signal("request::unmanage", function(c)
+	client.connect_signal("property::minimized", function(c)
+		if wibar.screen ~= awful.screen.focused() then return end
 		if c.fullscreen then
 			wibar.visible = true
 		end
 	end)
 
 	client.connect_signal("property::fullscreen", function(c)
-		if c.fullscreen then
+		if wibar.screen ~= awful.screen.focused() then return end
+		if helpers.has_common_values(c:tags(), awful.screen.focused().selected_tags) and c.fullscreen then
 			wibar.visible = false
 		else
-			wibar.visible = true
-		end
-	end)
-
-	client.connect_signal("property::minimized", function(c)
-		if c.fullscreen then
 			wibar.visible = true
 		end
 	end)

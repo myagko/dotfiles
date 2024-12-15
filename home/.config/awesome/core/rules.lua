@@ -3,18 +3,16 @@ local rclient = require("ruled.client")
 require("awful.autofocus")
 
 client.connect_signal("request::manage", function(c)
-	if c.maximized then
-		c.x = c.screen.workarea.x
-		c.y = c.screen.workarea.y
-		c.width = c.screen.workarea.width
-		c.height = c.screen.workarea.height
-	end
-
 	if c.fullscreen then
 		c.x = c.screen.geometry.x
 		c.y = c.screen.geometry.y
 		c.width = c.screen.geometry.width
 		c.height = c.screen.geometry.height
+	elseif c.maximized then
+		c.x = c.screen.workarea.x
+		c.y = c.screen.workarea.y
+		c.width = c.screen.workarea.width
+		c.height = c.screen.workarea.height
 	end
 
 	if c.transient_for then
