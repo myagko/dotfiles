@@ -15,8 +15,9 @@ local client_menu = require("ui.client_menu")
 
 local function set_wibar_hideaway(wibar)
 	client.connect_signal("request::manage", function(c)
-		if wibar.screen ~= awful.screen.focused() then return end
-		if helpers.has_common_values(c:tags(), awful.screen.focused().selected_tags) and c.fullscreen then
+		local focused_screen = awful.screen.focused({ client = true })
+		if wibar.screen ~= focused_screen then return end
+		if helpers.has_common_values(c:tags(), focused_screen.selected_tags) and c.fullscreen then
 			wibar.visible = false
 		else
 			wibar.visible = true
@@ -24,14 +25,16 @@ local function set_wibar_hideaway(wibar)
 	end)
 
 	client.connect_signal("request::unmanage", function(c)
-		if wibar.screen ~= awful.screen.focused() then return end
+		local focused_screen = awful.screen.focused({ client = true })
+		if wibar.screen ~= focused_screen then return end
 		if c.fullscreen then
 			wibar.visible = true
 		end
 	end)
 
 	client.connect_signal("focus", function(c)
-		if wibar.screen ~= awful.screen.focused() then return end
+		local focused_screen = awful.screen.focused({ client = true })
+		if wibar.screen ~= focused_screen then return end
 		if c.fullscreen then
 			wibar.visible = false
 		else
@@ -40,22 +43,25 @@ local function set_wibar_hideaway(wibar)
 	end)
 
 	client.connect_signal("unfocus", function(c)
-		if wibar.screen ~= awful.screen.focused() then return end
+		local focused_screen = awful.screen.focused({ client = true })
+		if wibar.screen ~= focused_screen then return end
 		if c.fullscreen then
 			wibar.visible = true
 		end
 	end)
 
 	client.connect_signal("property::minimized", function(c)
-		if wibar.screen ~= awful.screen.focused() then return end
+		local focused_screen = awful.screen.focused({ client = true })
+		if wibar.screen ~= focused_screen then return end
 		if c.fullscreen then
 			wibar.visible = true
 		end
 	end)
 
 	client.connect_signal("property::fullscreen", function(c)
-		if wibar.screen ~= awful.screen.focused() then return end
-		if helpers.has_common_values(c:tags(), awful.screen.focused().selected_tags) and c.fullscreen then
+		local focused_screen = awful.screen.focused({ client = true })
+		if wibar.screen ~= focused_screen then return end
+		if helpers.has_common_values(c:tags(), focused_screen.selected_tags) and c.fullscreen then
 			wibar.visible = false
 		else
 			wibar.visible = true
