@@ -326,8 +326,8 @@ panel, menupopup {
 	--panel-border-color: var(--border) !important;
 }
 
-#appMenu-popup, #permission-popup, #protections-popup,
-#identity-popup, #appMenu-notification-popup,
+#appMenu-popup, #widget-overflow, #permission-popup,
+#protections-popup, #identity-popup, #appMenu-notification-popup,
 #unified-extensions-panel, #downloadsPanel, #notification-popup,
 #editBookmarkPanel, #full-page-translations-panel {
 	margin-top: 8px !important;
@@ -335,6 +335,10 @@ panel, menupopup {
 
 #appMenu-notification-popup:has(#appMenu-addon-installed-notification) {
 	display: none !important;
+}
+
+#widget-overflow {
+	max-height: 500px !important;
 }
 
 .menupopup-arrowscrollbox {
