@@ -337,8 +337,13 @@ panel, menupopup {
 	display: none !important;
 }
 
-#widget-overflow {
-	max-height: 500px !important;
+#appMenu-popup {
+	max-height: 80vh !important;
+}
+
+#widget-overflow, #unified-extensions-panel,
+#downloadsPanel, #customizationui-widget-panel {
+	max-height: 60vh !important;
 }
 
 .menupopup-arrowscrollbox {
