@@ -1,8 +1,10 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local gtimer = require("gears.timer")
+local widgets = require("widgets")
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
+local text_icons = beautiful.text_icons
 local client_menu = require("ui.client_menu")
 
 return function(c)
@@ -30,10 +32,27 @@ return function(c)
 		end)
 	}
 
-	local maximize = wibox.widget {
-		widget = wibox.container.background,
-		forced_width = dpi(15),
-		bg = beautiful.background_alt,
+	local close_button = widgets.hover_button {
+		markup = text_icons.cross,
+		forced_width = dpi(25),
+		fg_normal = beautiful.foreground_alt,
+		bg_normal = beautiful.background,
+		fg_hover = beautiful.background,
+		bg_hover = beautiful.red,
+		buttons = {
+			awful.button({}, 1, function()
+				c:kill()
+			end)
+		}
+	}
+
+	local maximize_button = widgets.hover_button {
+		markup = c.maximized and text_icons.shrink or text_icons.stretch,
+		forced_width = dpi(25),
+		fg_normal = beautiful.foreground_alt,
+		bg_normal = beautiful.background,
+		fg_hover = beautiful.background,
+		bg_hover = beautiful.yellow,
 		buttons = {
 			awful.button({}, 1, function()
 				c.maximized = not c.maximized
@@ -42,26 +61,18 @@ return function(c)
 		}
 	}
 
-	local minimize = wibox.widget {
-		widget = wibox.container.background,
-		forced_width = dpi(15),
-		bg = beautiful.background_alt,
+	local minimize_button = widgets.hover_button {
+		markup = text_icons.dash,
+		forced_width = dpi(25),
+		fg_normal = beautiful.foreground_alt,
+		bg_normal = beautiful.background,
+		fg_hover = beautiful.background,
+		bg_hover = beautiful.green,
 		buttons = {
 			awful.button({}, 1, function()
 				gtimer.delayed_call(function()
 					c.minimized = true
 				end)
-			end)
-		}
-	}
-
-	local close = wibox.widget {
-		widget = wibox.container.background,
-		forced_width = dpi(15),
-		bg = beautiful.background_alt,
-		buttons = {
-			awful.button({}, 1, function()
-				c:kill()
 			end)
 		}
 	}
@@ -78,26 +89,40 @@ return function(c)
 		},
 		{
 			widget = wibox.container.margin,
-			margins = dpi(10),
+			margins = dpi(5),
 			{
 				layout = wibox.layout.fixed.horizontal,
-				spacing = dpi(10),
-				maximize,
-				minimize,
-				close
+				spacing = dpi(5),
+				minimize_button,
+				maximize_button,
+				close_button
 			}
 		}
 	}
 
+	c:connect_signal("property::maximized", function()
+		if c.maximized then
+			maximize_button:set_text(text_icons.shrink)
+		else
+			maximize_button:set_text(text_icons.stretch)
+		end
+	end)
+
 	c:connect_signal("property::active", function()
 		if c.active then
-			close.bg = beautiful.red
-			minimize.bg = beautiful.yellow
-			maximize.bg = beautiful.green
+			close_button._private.fg_normal = beautiful.foreground
+			close_button.fg = beautiful.foreground
+			maximize_button._private.fg_normal = beautiful.foreground
+			maximize_button.fg = beautiful.foreground
+			minimize_button._private.fg_normal = beautiful.foreground
+			minimize_button.fg = beautiful.foreground
 		else
-			close.bg = beautiful.background_alt
-			minimize.bg = beautiful.background_alt
-			maximize.bg = beautiful.background_alt
+			close_button._private.fg_normal = beautiful.foreground_alt
+			close_button.fg = beautiful.foreground_alt
+			maximize_button._private.fg_normal = beautiful.foreground_alt
+			maximize_button.fg = beautiful.foreground_alt
+			minimize_button._private.fg_normal = beautiful.foreground_alt
+			minimize_button.fg = beautiful.foreground_alt
 		end
 	end)
 end

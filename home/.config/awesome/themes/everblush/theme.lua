@@ -66,20 +66,20 @@ theme.text_icons = {
 	mist = ""
 }
 
-theme.red = "#EA6962"
-theme.green = "#A9B665"
-theme.yellow = "#D8A657"
-theme.blue = "#7DAEA3"
-theme.magenta = "#D3869B"
-theme.cyan = "#89B482"
-theme.orange = "#E78A4E"
-theme.background = "#282828"
-theme.background_alt = "#32302F"
-theme.background_urgent = "#45403D"
-theme.foreground_alt = "#7C6F64"
-theme.foreground = "#DDC7A1"
+theme.red = "#E57474"
+theme.green = "#8CCF7E"
+theme.yellow = "#E5C76B"
+theme.blue = "#67B0E8"
+theme.magenta = "#C47FD5"
+theme.cyan = "#6CBFBF"
+theme.orange = "#E6A068"
+theme.background = "#141B1E"
+theme.background_alt = "#21282B"
+theme.background_urgent = "#3F4547"
+theme.foreground_alt = "#676B6D"
+theme.foreground = "#DADADA"
 
-theme.accent = theme.green
+theme.accent = theme.cyan
 theme.bg_normal = theme.background
 theme.fg_normal = theme.foreground
 theme.border_color = theme.background_urgent

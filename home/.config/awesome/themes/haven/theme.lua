@@ -18,7 +18,6 @@ theme.font_h3 = theme.font_name .. " " .. tostring(dpi(26))
 theme.font = theme.font_h1
 
 theme.text_icons = {
-	-- ui
 	eye_on = "",
 	eye_off = "",
 	check_on = "",
@@ -37,8 +36,11 @@ theme.text_icons = {
 	arrow_right = "",
 	arrow_up = "",
 	arrow_down = "",
+	dash = "",
 	cross = "",
 	check = "",
+	stretch = "",
+	shrink = "",
 	gear = "",
 	sliders = "",
 	wait = "",
@@ -51,8 +53,6 @@ theme.text_icons = {
 	wifi = "",
 	bluetooth = "",
 	search = "",
-
-	-- weather
 	sun = "",
 	moon = "",
 	wind = "",
@@ -87,6 +87,9 @@ theme.border_color = theme.background_urgent
 theme.titlebar_bg_normal = theme.background
 theme.titlebar_bg_focus = theme.background
 theme.titlebar_bg_urgent = theme.background
+theme.titlebar_fg_normal = theme.foreground_alt
+theme.titlebar_fg_focus = theme.foreground
+theme.titlebar_fg_urgent = theme.red
 
 theme.tooltip_bg = theme.background
 theme.tooltip_fg = theme.foreground

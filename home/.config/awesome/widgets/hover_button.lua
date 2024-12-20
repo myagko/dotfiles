@@ -65,6 +65,12 @@ local function new(args)
 		w.fg = wp.fg_normal
 	end)
 
+	widget:connect_signal("button::press", function(w)
+		w.border_color = wp.border_normal
+		w.bg = wp.bg_normal
+		w.fg = wp.fg_normal
+	end)
+
 	return widget
 end
 

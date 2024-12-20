@@ -156,5 +156,5 @@ awful.keyboard.append_global_keybindings {
 	end),
 	awful.key({ modkey, "Shift" }, "Print", function()
 		screenshot_daemon:select()
-	end),
+	end)
 }

@@ -18,7 +18,6 @@ theme.font_h3 = theme.font_name .. " " .. tostring(dpi(26))
 theme.font = theme.font_h1
 
 theme.text_icons = {
-	-- ui
 	eye_on = "",
 	eye_off = "",
 	check_on = "",
@@ -37,8 +36,11 @@ theme.text_icons = {
 	arrow_right = "",
 	arrow_up = "",
 	arrow_down = "",
+	dash = "",
 	cross = "",
 	check = "",
+	stretch = "",
+	shrink = "",
 	gear = "",
 	sliders = "",
 	wait = "",
@@ -51,8 +53,6 @@ theme.text_icons = {
 	wifi = "",
 	bluetooth = "",
 	search = "",
-
-	-- weather
 	sun = "",
 	moon = "",
 	wind = "",

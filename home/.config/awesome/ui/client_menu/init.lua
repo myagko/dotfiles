@@ -9,7 +9,7 @@ local function create_menu(c)
 	local move_to_tag_item = {}
 
 	for _, t in ipairs(c.screen.tags) do
-		table.insert(move_to_tag_item, { t.index .. ":" .. t.name, function()
+		table.insert(move_to_tag_item, { t.name, function()
 			c:move_to_tag(t)
 		end })
 	end
