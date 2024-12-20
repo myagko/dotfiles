@@ -331,10 +331,10 @@ local function new()
 
 	ret.connect_widget_input_grabber = widgets.text_input {
 		textbox = ret.connect_widget_input_textbox,
-		under_prompt = "Password",
+		placeholder = "Password",
 		cursor_bg = beautiful.foreground,
 		cursor_fg = beautiful.background,
-		under_prompt_fg = beautiful.foreground_alt,
+		placeholder_fg = beautiful.foreground_alt,
 		obscure = true,
 		done_callback = function()
 			ret:close_ap_menu()

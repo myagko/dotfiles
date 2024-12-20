@@ -7,7 +7,7 @@ local gstring = require("gears.string")
 local gcolor = require("gears.color")
 local utf8_char_match = "[\0-\x7F\xC2-\xF4][\x80-\xBF]*"
 
-local text_input = { mt = {} }
+local text_input = {}
 
 local function have_multibyte_char_at(text, position)
 	return text:sub(position, position):wlen() == -1
@@ -17,8 +17,8 @@ local function create_markup(args)
 	local text = args.text or ""
 	local cursor_pos = args.cursor_pos or 1
 	local selectall = args.selectall or false
-	local start_prompt = args.start_prompt or ""
-	local under_prompt = args.under_prompt or ""
+	local prompt = args.prompt or ""
+	local placeholder = args.placeholder or ""
 	local obscure = args.obscure or false
 	local obscure_char = args.obscure_char or "*"
 	local highlighter = args.highlighter or nil
@@ -28,15 +28,15 @@ local function create_markup(args)
 		text = string.gsub(text, utf8_char_match, obscure_char)
 	end
 
-	if text == "" and under_prompt ~= "" then
+	if text == "" and placeholder ~= "" then
 		local offset = 0
-		if have_multibyte_char_at(under_prompt, 1) then
+		if have_multibyte_char_at(placeholder, 1) then
 			offset = 1
 		end
 		spacer = ""
-		cursor_char = gstring.xml_escape(under_prompt:sub(cursor_pos, cursor_pos + offset))
+		cursor_char = gstring.xml_escape(placeholder:sub(cursor_pos, cursor_pos + offset))
 		text_start = ""
-		text_end = gstring.xml_escape(under_prompt:sub(2 + offset))
+		text_end = gstring.xml_escape(placeholder:sub(2 + offset))
 	elseif selectall then
 		if text == "" then
 			cursor_char = " "
@@ -64,15 +64,15 @@ local function create_markup(args)
 
 	local cursor_bg = gcolor.ensure_pango_color(args.cursor_bg)
 	local cursor_fg = gcolor.ensure_pango_color(args.cursor_fg)
-	local under_prompt_fg = gcolor.ensure_pango_color(args.under_prompt_fg)
+	local placeholder_fg = gcolor.ensure_pango_color(args.placeholder_fg)
 
 	if text ~= "" and highlighter then
 		text_start, text_end = highlighter(text_start, text_end)
 	end
 
-	markup = start_prompt .. text_start ..
+	markup = prompt .. text_start ..
 		"<span foreground='" .. cursor_fg .. "' background='" .. cursor_bg ..  "'>" .. cursor_char .. "</span>" ..
-		(text == "" and "<span foreground='" .. under_prompt_fg .. "'>" .. text_end .. "</span>" or text_end) ..
+		(text == "" and "<span foreground='" .. placeholder_fg .. "'>" .. text_end .. "</span>" or text_end) ..
 		spacer
 
 	return markup
@@ -96,10 +96,10 @@ function text_input:update_textbox()
 		obscure = self.obscure,
 		cursor_bg = self.cursor_bg,
 		cursor_fg = self.cursor_fg,
-		under_prompt_fg = self.under_prompt_fg,
+		placeholder_fg = self.placeholder_fg,
 		obscure_char = self.obscure_char,
-		start_prompt = self.start_prompt,
-		under_prompt = self.under_prompt,
+		prompt = self.prompt,
+		placeholder = self.placeholder,
 		highlighter = self.highlighter
 	})
 end
@@ -280,12 +280,12 @@ local function new(args)
 
 	ret.textbox = args.textbox
 	ret.obscure = args.obscure or false
-	ret.start_prompt = args.start_prompt or ""
-	ret.under_prompt = args.under_prompt or ""
+	ret.prompt = args.prompt or ""
+	ret.placeholder = args.placeholder or ""
 	ret.obscure_char = args.obscure_char or "*"
 	ret.cursor_bg = args.cursor_bg or "#ffffff"
 	ret.cursor_fg = args.cursor_fg or "#000000"
-	ret.under_prompt_fg = args.under_prompt_fg or "#373737"
+	ret.placeholder_fg = args.placeholder_fg or "#373737"
 	ret.done_callback = args.done_callback or nil
 	ret.exe_callback = args.exe_callback or nil
 	ret.changed_callback = args.changed_callback or nil
@@ -296,8 +296,8 @@ local function new(args)
 	return ret
 end
 
-function text_input.mt:__call(...)
-	return new(...)
-end
-
-return setmetatable(text_input, text_input.mt)
+return setmetatable(text_input, {
+	__call = function(_, ...)
+		return new(...)
+	end
+})

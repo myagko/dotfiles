@@ -2,7 +2,7 @@ local wibox = require("wibox")
 local gtable = require("gears.table")
 local beautiful = require("beautiful")
 
-local sep = { mt = {} }
+local sep = {}
 
 function sep:set_color(color)
 	self:get_children_by_id("sep")[1].bg = color
@@ -37,8 +37,8 @@ local function new(args)
 	return widget
 end
 
-function sep.mt:__call(...)
-	return new(...)
-end
-
-return setmetatable(sep, sep.mt)
+return setmetatable(sep, {
+	__call = function(_, ...)
+		return new(...)
+	end
+})

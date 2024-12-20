@@ -2,7 +2,7 @@ local wibox = require("wibox")
 local gtable = require("gears.table")
 local beautiful = require("beautiful")
 
-local button = { mt = {} }
+local button = {}
 
 function button:set_text(text)
 	self:get_children_by_id("text_comp")[1].markup = text
@@ -68,8 +68,8 @@ local function new(args)
 	return widget
 end
 
-function button.mt:__call(...)
-	return new(...)
-end
-
-return setmetatable(button, button.mt)
+return setmetatable(button, {
+	__call = function(_, ...)
+		return new(...)
+	end
+})

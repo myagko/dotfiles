@@ -183,11 +183,11 @@ local function new()
 
 	ret.input_grabber = widgets.text_input {
 		textbox = ret.input_textbox,
-		start_prompt = text_icons.search .. " ",
-		under_prompt = "Search...",
+		prompt = text_icons.search .. " ",
+		placeholder = "Search...",
 		cursor_bg = beautiful.foreground,
 		cursor_fg = beautiful.background,
-		under_prompt_fg = beautiful.foreground_alt,
+		placeholder_fg = beautiful.foreground_alt,
 		done_callback = function()
 			ret:close()
 		end,

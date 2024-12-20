@@ -5,7 +5,7 @@ local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 local text_icons = beautiful.text_icons
 
-local calendar = { mt = {} }
+local calendar = {}
 
 local hebr_format = {
 	[1] = 7,
@@ -218,8 +218,8 @@ local function new(args)
 	return widget
 end
 
-function calendar.mt:__call(...)
-	return new(...)
-end
-
-return setmetatable(calendar, calendar.mt)
+return setmetatable(calendar, {
+	__call = function(_, ...)
+		return new(...)
+	end
+})
