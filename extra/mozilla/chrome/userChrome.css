@@ -76,12 +76,6 @@ menubar > menu {
 	background-color: var(--background) !important;
 }
 
-/*
-.tab-close-button {
-	display: none !important;
-}
-*/
-
 .tabbrowser-tab:not([pinned]) .tab-icon-image {
 	display: none !important;
 }
@@ -172,12 +166,23 @@ toolbar {
 	color: var(--foreground) !important;
 }
 
-#star-button[starred] {
-	fill: var(--accent) !important;
+#nav-bar-customization-target > :is(toolbarbutton, toolbaritem),
+#nav-bar-customization-target > toolbarpaletteitem > :is(toolbarbutton, toolbaritem) {
+	padding: 0 !important;
 }
 
-#alltabs-button {
+#nav-bar .toolbarbutton-1 {
+	color: var(--foreground) !important;
 	padding: 0 !important;
+}
+
+#nav-bar-customization-target {
+	padding: 5px !important;
+	padding-inline-end: 0 !important;
+}
+
+#PanelUI-button {
+	padding-inline-end: 5px !important;
 }
 
 #nav-bar {
@@ -192,20 +197,6 @@ toolbar {
 
 nav-bar:not([tabs-hidden='true']) {
 	box-shadow: none !important;
-}
-
-#nav-bar-customization-target > :is(toolbarbutton, toolbaritem),
-#nav-bar-customization-target > toolbarpaletteitem > :is(toolbarbutton, toolbaritem) {
-	padding: 0 !important;
-}
-
-#nav-bar-customization-target {
-	spacing: 5px !important;
-	padding: 5px !important;
-}
-
-#PanelUI-menu-button {
-	padding: 5px !important;
 }
 
 #urlbar-input-container {
@@ -230,6 +221,18 @@ nav-bar:not([tabs-hidden='true']) {
 	width: auto !important;
 }
 
+.urlbarView-body-outer {
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+.urlbarView-body-inner {
+	padding: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+	width: auto !important;
+}
+
 .urlbarView-results {
 	padding: 5px !important;
 }
@@ -238,8 +241,9 @@ nav-bar:not([tabs-hidden='true']) {
 	display: none !important;
 }
 
-.urlbarView-body-inner {
-	border: none !important;
+#urlbar[breakout][breakout-extend] {
+	margin-left: 0 !important;
+	width: var(--urlbar-width) !important;
 }
 
 .urlbarView > .search-one-offs:not([hidden]) {
@@ -318,6 +322,14 @@ html|textarea {
 	background: conic-gradient(var(--accent) var(--download-progress-pcent), transparent var(--download-progress-pcent)) !important;
 }
 
+#star-button[starred] {
+	fill: var(--accent) !important;
+}
+
+#alltabs-button {
+	padding: 0 !important;
+}
+
 /* Panels */
 
 panel, menupopup {
@@ -346,6 +358,24 @@ panel, menupopup {
 	max-height: 60vh !important;
 }
 
+#statuspanel-label {
+	color: var(--foreground) !important;
+	background: var(--background) !important;
+	border-top: 1px solid var(--border) !important;
+}
+
+#statuspanel {
+	&:not([mirror]) #statuspanel-label {
+		border-right: 1px solid var(--border) !important;
+	}
+
+	&[mirror] #statuspanel-label {
+		border-left: 1px solid var(--border) !important;
+	}
+}
+
+/* Component */
+
 .menupopup-arrowscrollbox {
 	color: var(--foreground) !important;
 }
@@ -368,33 +398,6 @@ menuitem, richlistitem,
 		background: var(--accent) !important;
 	}
 }
-
-.unified-extensions-item-menu-button.subviewbutton {
-	padding: 0 !important;
-}
-
-#unified-extensions-panel .unified-extensions-item {
-	margin-block: 0 !important;
-	padding: 2px 10px 2px 5px !important;
-}
-
-#statuspanel-label {
-	color: var(--foreground) !important;
-	background: var(--background) !important;
-	border-top: 1px solid var(--border) !important;
-}
-
-#statuspanel {
-	&:not([mirror]) #statuspanel-label {
-		border-right: 1px solid var(--border) !important;
-	}
-
-	&[mirror] #statuspanel-label {
-		border-left: 1px solid var(--border) !important;
-	}
-}
-
-/* Component */
 
 .toggle-button {
 	background: var(--background_alt) !important;
@@ -458,6 +461,15 @@ screenshots-buttons {
 	top: 8px !important;
 	inset-inline-end: 8px !important;
 	padding: 10px !important;
+}
+
+.unified-extensions-item-menu-button.subviewbutton {
+	padding: 0 !important;
+}
+
+#unified-extensions-panel .unified-extensions-item {
+	margin-block: 0 !important;
+	padding: 2px 10px 2px 5px !important;
 }
 
 #sidebar-box,
