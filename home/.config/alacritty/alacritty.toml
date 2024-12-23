@@ -106,7 +106,7 @@ y = 9
 [general]
 import = [
 	# colorscheme
-	"~/.config/alacritty/themes/haven.toml",
+	"~/.config/alacritty/themes/everblush.toml",
 
 	# font
 	"~/.config/alacritty/fonts/JetBrainsSlashed.toml"

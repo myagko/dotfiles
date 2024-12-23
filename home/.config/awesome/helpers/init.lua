@@ -1,4 +1,5 @@
 local awful = require("awful")
+local inspect = require("modules.inspect")
 
 local helpers = {}
 
@@ -64,6 +65,14 @@ function helpers.has_common_values(t1, t2)
 		end
 	end
 	return #common > 0 and common or nil
+end
+
+function helpers.table_to_file(file, table, tablename)
+	tablename = tablename or "M"
+	local inspected = assert(inspect(table, { indent = "\t" }))
+	local wfile = assert(io.open(file, "w"))
+	wfile:write("local " .. tablename .. " = " .. inspected .. "\n\nreturn " .. tablename)
+	wfile:close()
 end
 
 return helpers

@@ -1,7 +1,10 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local gtable = require("gears.table")
+local gfilesytem = require("gears.filesystem")
 local beautiful = require("beautiful")
+local helpers = require("helpers")
+local user = require("user")
 
 local wallpaper = {}
 
@@ -17,8 +20,11 @@ function wallpaper:set_image(new_image)
 		image = new_image
 	}
 	self:repaint()
+	user.wallpaper = new_image
+	helpers.table_to_file(gfilesytem.get_configuration_dir() .. "/user.lua", user)
 end
 
+--[[
 function wallpaper:set_tile(new_tile, tile_size)
 	if not new_tile then return end
 	self.widget = {
@@ -43,6 +49,7 @@ function wallpaper:set_color(new_color)
 	}
 	self:repaint()
 end
+]]
 
 return function(s)
 	local ret = awful.wallpaper {
