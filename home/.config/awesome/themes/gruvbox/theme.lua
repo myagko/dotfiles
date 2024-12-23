@@ -79,7 +79,7 @@ theme.background_urgent = "#45403D"
 theme.foreground_alt = "#7C6F64"
 theme.foreground = "#DDC7A1"
 
-theme.accent = theme.green
+theme.accent = theme.yellow
 theme.bg_normal = theme.background
 theme.fg_normal = theme.foreground
 theme.border_color = theme.background_urgent
