@@ -83,7 +83,7 @@ screen.connect_signal("request::wallpaper", function(s)
 	s.wallpaper = Wallpaper(s)
 
 	if user.wallpaper then
-		s.wallpaper:set_image(user.wallpaper)
+		s.wallpaper:set(user.wallpaper)
 	end
 end)
 

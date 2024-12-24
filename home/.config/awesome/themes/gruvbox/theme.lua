@@ -74,9 +74,9 @@ theme.magenta = "#D3869B"
 theme.cyan = "#89B482"
 theme.orange = "#E78A4E"
 theme.background = "#282828"
-theme.background_alt = "#32302F"
-theme.background_urgent = "#45403D"
-theme.foreground_alt = "#7C6F64"
+theme.background_alt = "#343330"
+theme.background_urgent = "#47433C"
+theme.foreground_alt = "#746B5B"
 theme.foreground = "#DDC7A1"
 
 theme.accent = theme.yellow

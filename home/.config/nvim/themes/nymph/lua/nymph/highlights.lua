@@ -1,6 +1,6 @@
-local T = {}
+local H = {}
 
-function T.set_colors(p)
+function H.set_colors(p)
 	local theme = {
 		-- base highlights
 		Normal = { fg = p.fg, bg = p.bg },
@@ -27,14 +27,14 @@ function T.set_colors(p)
 		IncSearch = { fg = p.bg, bg = p.magenta },
 		Search = { fg = p.bg, bg = p.yellow },
 		CurSearch = { fg = p.bg, bg = p.orange },
-		Visual = { fg = p.bg, bg = p.cyan },
+		Visual = { fg = p.bg, bg = p.ac },
 		Substitute = { fg = p.bg, bg = p.magenta },
 		VisualNOS = { fg = p.bg, bg = p.fg },
 		Cursor = { fg = p.fg, bg = p.fg },
 		CursorColumn = { bg = p.bg_alt },
 		CursorIM = { fg = p.fg, bg = p.fg },
 		CursorLine = { bg = p.bg_alt },
-		CursorLineNr = { fg = p.cyan },
+		CursorLineNr = { fg = p.ac },
 		lCursor = { fg = p.fg, bg = p.fg },
 		LineNr = { fg = p.fg_alt },
 		TermCursor = { fg = p.fg, bg = p.fg },
@@ -43,19 +43,19 @@ function T.set_colors(p)
 		DiffChange = { fg = p.yellow },
 		DiffDelete = { fg = p.red },
 		DiffText = { fg = p.fg },
-		MatchParen = { fg = p.yellow, bg = p.bg_urgent },
+		MatchParen = { fg = p.yellow, bg = p.bg_urg },
 		NonText = { fg = p.fg_alt },
 		SpecialKey = { fg = p.fg_alt },
 		Whitespace = { fg = p.bg_alt },
 		Pmenu = { fg = p.fg, bg = p.bg_alt },
-		PmenuSbar = { bg = p.bg_urgent },
-		PmenuSel = { fg = p.bg, bg = p.cyan },
-		PmenuThumb = { bg = p.cyan },
+		PmenuSbar = { bg = p.bg_urg },
+		PmenuSel = { fg = p.bg, bg = p.ac },
+		PmenuThumb = { bg = p.ac },
 		WildMenu = { fg = p.fg, bg = p.bg_alt },
 		NormalFloat = { fg = p.fg, bg = p.bg_alt },
 		TabLine = { fg = p.fg, bg = p.bg },
 		TabLineFill = { fg = p.fg, bg = p.bg },
-		TabLineSel = { fg = p.cyan, bg = p.bg },
+		TabLineSel = { fg = p.ac, bg = p.bg },
 		StatusLine = { fg = p.fg, bg = p.bg },
 		StatusLineNC = { bg = p.bg, fg = p.bg },
 		SpellBad = { fg = p.red },
@@ -195,7 +195,7 @@ function T.set_colors(p)
 
 		-- bufferline.nvim: https://github.com/akinsho/bufferline.nvim
 		BufferLineFill = { fg = p.bg, bg = p.bg },
-		BufferLineIndicatorSelected = { fg = p.cyan },
+		BufferLineIndicatorSelected = { fg = p.ac },
 
 		-- nvim-tree.lua: https://github.com/nvim-tree/nvim-tree.lua
 		NvimTreeEmptyFolderName = { fg = p.fg_alt },
@@ -207,10 +207,10 @@ function T.set_colors(p)
 		NvimTreeGitDirty = { fg = p.red },
 		NvimTreeGitNew = { fg = p.blue },
 		NvimTreeImageFile = { fg = p.fg_alt },
-		NvimTreeIndentMarker = { fg = p.cyan },
+		NvimTreeIndentMarker = { fg = p.ac },
 		NvimTreeNormal = { fg = p.fg, bg = p.bg },
 		NvimTreeNormalNC = { fg = p.fg, bg = p.bg },
-		NvimTreeOpenedFolderName = { fg = p.cyan },
+		NvimTreeOpenedFolderName = { fg = p.ac },
 		NvimTreeRootFolder = { fg = p.fg_alt },
 		NvimTreeSpecialFile = { fg = p.red },
 		NvimTreeStatusLineNC = { bg = p.bg, fg = p.bg },
@@ -226,11 +226,11 @@ function T.set_colors(p)
 		-- telescope.nvim: https://github.com/nvim-telescope/telescope.nvim
 		TelescopeBorder = { fg = p.bg_alt, bg = p.bg_alt },
 		TelescopeNormal = { fg = p.fg, bg = p.bg_alt },
-		TelescopeSelection = { fg = p.fg, bg = p.bg_urgent },
-		TelescopeMatching = { fg = p.bg, bg = p.cyan },
-		TelescopePromptNormal = { fg = p.fg, bg = p.bg_urgent },
-		TelescopePromptTitle = { fg = p.cyan, bg = p.bg_urgent },
-		TelescopePromptBorder = { fg = p.bg_urgent, bg = p.bg_urgent },
+		TelescopeSelection = { fg = p.fg, bg = p.bg_urg },
+		TelescopeMatching = { fg = p.bg, bg = p.ac },
+		TelescopePromptNormal = { fg = p.fg, bg = p.bg_urg },
+		TelescopePromptTitle = { fg = p.ac, bg = p.bg_urg },
+		TelescopePromptBorder = { fg = p.bg_urg, bg = p.bg_urg },
 		TelescopePreviewTitle = { fg = p.fg_alt, bg = p.bg_alt },
 		TelescopePreviewBorder = { fg = p.bg_alt, bg = p.bg_alt },
 		TelescopeResultsTitle = { fg = p.fg_alt, bg = p.bg_alt },
@@ -265,4 +265,4 @@ function T.set_colors(p)
 	return theme
 end
 
-return T
+return H

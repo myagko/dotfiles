@@ -37,11 +37,11 @@ client.connect_signal("request::default_keybindings", function()
 			c:kill()
 		end),
 		awful.key({ modkey }, "x", function(c)
-			c.minimized = true
-		end),
-		awful.key({ modkey }, "c", function(c)
 			c.maximized = not c.maximized
 			c:raise()
+		end),
+		awful.key({ modkey }, "c", function(c)
+			c.minimized = true
 		end),
 		awful.key({ modkey }, "v", function(c)
 			c.fullscreen = not c.fullscreen

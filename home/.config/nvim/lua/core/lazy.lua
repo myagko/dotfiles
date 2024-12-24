@@ -28,8 +28,10 @@ local plugins = {
 	{ 'windwp/nvim-autopairs', event = "InsertEnter", opts = {} },
 	{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
 	--{ 'nvim-telescope/telescope.nvim', tag = '0.1.8', dependencies = { 'nvim-lua/plenary.nvim' } },
-	{ 'myagko/nymph', branch = 'Nvim' },
-	{ dir = '~/.config/nvim/themes/haven' }
+	{ dir = '~/.config/nvim/themes/nymph' },
+	{ dir = '~/.config/nvim/themes/haven' },
+	{ dir = '~/.config/nvim/themes/everblush' },
+	{ dir = '~/.config/nvim/themes/gruvbox' }
 }
 
 require("lazy").setup(plugins)

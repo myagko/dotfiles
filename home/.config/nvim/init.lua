@@ -1,7 +1,6 @@
 require("core.lazy")
-require("core.configs")
-require("core.keymaps")
-
+require("core.opts")
+require("core.keys")
 require("plugins.lsp")
 require("plugins.treesitter")
 require("plugins.auto_complete")

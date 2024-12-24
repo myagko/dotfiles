@@ -133,8 +133,8 @@ pref("general.config.sandbox_enabled", false);
 | `Mod+1...9`           | Only view tag                            |
 | `Mod+Shift+1...9`     | Move focused client to tag               |
 | `Mod+z`               | Close client                             |
-| `Mod+x`               | Minimize client                          |
-| `Mod+c`               | (Un)Maximize client                      |
+| `Mod+x`               | (Un)Maximize client                      |
+| `Mod+c`               | Minimize client                          |
 | `Mod+v`               | Toggle client fullscreen                 |
 | `Mod+b`               | Toggle client ontop                      |
 | `Mod+n`               | Move client to center                    |

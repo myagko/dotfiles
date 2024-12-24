@@ -8,7 +8,7 @@ local user = require("user")
 
 local wallpaper = {}
 
-function wallpaper:set_image(new_image)
+function wallpaper:set(new_image)
 	if not new_image then return end
 	self.widget = {
 		widget = wibox.widget.imagebox,
@@ -23,33 +23,6 @@ function wallpaper:set_image(new_image)
 	user.wallpaper = new_image
 	helpers.table_to_file(gfilesytem.get_configuration_dir() .. "/user.lua", user)
 end
-
---[[
-function wallpaper:set_tile(new_tile, tile_size)
-	if not new_tile then return end
-	self.widget = {
-		widget = wibox.container.tile,
-		{
-			widget = wibox.widget.imagebox,
-			scaling_quality = "nearest",
-			resize = tile_size and true or false,
-			forced_width = tile_size,
-			forced_height = tile_size,
-			image = new_tile
-		}
-	}
-	self:repaint()
-end
-
-function wallpaper:set_color(new_color)
-	new_color = new_color or beautiful.background_alt
-	self.widget = {
-		widget = wibox.container.background,
-		bg = new_color
-	}
-	self:repaint()
-end
-]]
 
 return function(s)
 	local ret = awful.wallpaper {
