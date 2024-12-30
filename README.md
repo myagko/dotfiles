@@ -30,8 +30,8 @@ $ sudo pacman -S alacritty nemo nemo-fileroller leafpad eom
 
 <div align="center">
 
-| Module                                                             | Description                   |
-| ------------------------------------------------------------------ | ----------------------------- |
+| Module                                                            | Description                   |
+| ----------------------------------------------------------------- | ----------------------------- |
 | [luautf8](https://github.com/starwing/luautf8?tab=readme-ov-file) | Needed for text input widgets |
 
 
@@ -69,7 +69,7 @@ $ rsync -avhu ~/dotfiles/home/ ~/
 #### Download [JetBrainsMonoSlashed](https://github.com/sharpjs/JetBrainsMonoSlashed/releases) font and put it to `~/.fonts`
 
 <details>
-<summary><b>Additioan customisation</b></summary>
+<summary><b>Additional customisation</b></summary>
 
 #### Icons and themes
 1. Install `themix-full-git` from aur
