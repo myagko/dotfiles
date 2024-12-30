@@ -1,0 +1,28 @@
+[ColorEffects:Inactive]
+ChangeSelectionColor = true
+
+
+[Colors:Button]
+BackgroundNormal     = 20,27,30
+ForegroundNormal     = 218,218,218
+
+
+[Colors:Selection]
+BackgroundNormal     = 108,191,191
+ForegroundNormal     = 0
+
+
+[Colors:View]
+BackgroundAlternate  = 20,27,30
+BackgroundNormal     = 33,40,43
+ForegroundLink       = 103,176,232
+ForegroundNormal     = 218,218,218
+
+
+[Colors:Window]
+BackgroundNormal     = 20,27,30
+ForegroundNormal     = 218,218,218
+
+
+[General]
+Name                 = Everblush

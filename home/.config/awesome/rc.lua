@@ -1,0 +1,10 @@
+pcall(require, "luarocks.loader")
+collectgarbage("setpause", 110)
+collectgarbage("setstepmul", 1000)
+
+require("core.error")
+require("core.theme")
+require("core.tag")
+require("core.client")
+require("ui")
+require("core.bind")
