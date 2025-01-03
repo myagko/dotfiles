@@ -84,13 +84,13 @@ function powermenu:open()
 	self:emit_signal("state", self.state)
 	self.index_element = 1
 	self:update_elements()
-	awful.keygrabber.run(self._grabber)
+	self:run_keygrabber()
 end
 
 function powermenu:close()
 	if not self.state then return end
 	self.state = false
-	awful.keygrabber.stop(self._grabber)
+	self:stop_keygrabber()
 	self.popup_widget.visible = false
 	self:emit_signal("state", self.state)
 end
@@ -103,24 +103,28 @@ function powermenu:toggle()
 	end
 end
 
-local function grabber(self, _, key, event)
-	if event ~= "press" then return end
+function powermenu:run_keygrabber()
+	self.keygrabber = awful.keygrabber.run(function(_, key, event)
+		if event ~= "press" then return end
+		if gtable.hasitem(self.keys.up, key) then
+			self:next()
+		elseif gtable.hasitem(self.keys.down, key) then
+			self:back()
+		elseif gtable.hasitem(self.keys.left, key) then
+			self:back()
+		elseif gtable.hasitem(self.keys.right, key) then
+			self:next()
+		elseif gtable.hasitem(self.keys.exec, key) then
+			self.elements[self.index_element]:exec()
+		elseif gtable.hasitem(self.keys.close, key) then
+			self:close()
+		end
+		self:update_elements()
+	end)
+end
 
-	if gtable.hasitem(self.keys.up, key) then
-		self:next()
-	elseif gtable.hasitem(self.keys.down, key) then
-		self:back()
-	elseif gtable.hasitem(self.keys.left, key) then
-		self:back()
-	elseif gtable.hasitem(self.keys.right, key) then
-		self:next()
-	elseif gtable.hasitem(self.keys.exec, key) then
-		self.elements[self.index_element]:exec()
-	elseif gtable.hasitem(self.keys.close, key) then
-		self:close()
-	end
-
-	self:update_elements()
+function powermenu:stop_keygrabber()
+	awful.keygrabber.stop(self.keygrabber)
 end
 
 local function new()
@@ -184,10 +188,6 @@ local function new()
 		border_color = beautiful.border_color,
 		widget = ret.main_widget
 	}
-
-	ret._grabber = function(...)
-		grabber(ret, ...)
-	end
 
 	return ret
 end
