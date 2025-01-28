@@ -1,0 +1,28 @@
+[ColorEffects:Inactive]
+ChangeSelectionColor = true
+
+
+[Colors:Button]
+BackgroundNormal     = 15,15,15
+ForegroundNormal     = 219,219,219
+
+
+[Colors:Selection]
+BackgroundNormal     = 53,198,219
+ForegroundNormal     = 0
+
+
+[Colors:View]
+BackgroundAlternate  = 15,15,15
+BackgroundNormal     = 29,29,29
+ForegroundLink       = 62,124,232
+ForegroundNormal     = 219,219,219
+
+
+[Colors:Window]
+BackgroundNormal     = 15,15,15
+ForegroundNormal     = 219,219,219
+
+
+[General]
+Name                 = Placid
