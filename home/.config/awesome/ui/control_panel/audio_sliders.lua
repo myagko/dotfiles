@@ -71,7 +71,7 @@ local function new()
 	ret.vol_ico:buttons {
 		awful.button({}, 1, function()
 			audio_daemon:vol_toggle_mute()
-			audio_daemon:vol_get_value()
+			audio_daemon:vol_get()
 		end)
 	}
 
@@ -136,7 +136,7 @@ local function new()
 	ret.mic_ico:buttons {
 		awful.button({}, 1, function()
 			audio_daemon:mic_toggle_mute()
-			audio_daemon:mic_get_value()
+			audio_daemon:mic_get()
 		end)
 	}
 

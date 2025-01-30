@@ -70,8 +70,8 @@ function calendar:set_date(date)
 	local wp = self._private
 	local days_layout = self:get_children_by_id("days_layout")[1]
 	local title_textbox = self:get_children_by_id("title_textbox")[1]
-
 	days_layout:reset()
+
 	wp.date = date
 	local curr_date = os.date("*t")
 	local firstday = os.date("*t", os.time({
@@ -94,6 +94,7 @@ function calendar:set_date(date)
 	})).day
 	local month_prev_count = month_start - 1
 	local month_next_count = rows*7 - lastday.day - month_prev_count
+
 	title_textbox.markup = os.date("%B, %Y", os.time(date))
 
 	for day = month_prev_lastday - (month_prev_count - 1), month_prev_lastday, 1 do
@@ -116,7 +117,8 @@ function calendar:inc(dir)
 	self:set_date({
 		year = wp.date.year,
 		month = new_calendar_month,
-		day = wp.date.day })
+		day = wp.date.day
+	})
 end
 
 function calendar:set_current_date()
