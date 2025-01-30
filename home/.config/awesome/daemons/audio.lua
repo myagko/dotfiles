@@ -5,7 +5,7 @@ local gtable = require("gears.table")
 local audio = {}
 local instance = nil
 
-function audio:vol_get_value(sink)
+function audio:vol_get(sink)
 	sink = sink or "@DEFAULT_SINK@"
 
 	awful.spawn.easy_async_with_shell("LANG=C pactl get-sink-volume " .. sink, function(stdout)
@@ -29,7 +29,7 @@ function audio:vol_toggle_mute(sink)
 	awful.spawn("pactl set-sink-mute " .. sink .. " toggle", false)
 end
 
-function audio:mic_get_value(source)
+function audio:mic_get(source)
 	source = source or "@DEFAULT_SOURCE@"
 
 	awful.spawn.easy_async_with_shell("LANG=C pactl get-source-volume " .. source, function(stdout)
@@ -57,8 +57,8 @@ local function new()
 	local ret = gobject {}
 	gtable.crush(ret, audio, true)
 
-	ret:vol_get_value()
-	ret:mic_get_value()
+	ret:vol_get()
+	ret:mic_get()
 
 	return ret
 end

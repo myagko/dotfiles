@@ -5,7 +5,7 @@ local widgets = require("widgets")
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 local text_icons = beautiful.text_icons
-local client_menu = require("ui.client_menu")
+local menu = require("ui.menu")
 
 return function(c)
 	if c.requests_no_titlebar then return end
@@ -23,7 +23,7 @@ return function(c)
 			awful.mouse.client.move(c)
 		end),
 		awful.button({}, 2, function()
-			client_menu:toggle(c)
+			menu:toggle_client_menu(c)
 		end),
 		awful.button({}, 3, function()
 			client.focus = c

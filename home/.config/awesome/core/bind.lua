@@ -1,8 +1,7 @@
 local awful = require("awful")
 local modkey = "Mod4"
 local screenshot_daemon = require("daemons.screenshot")
-local client_menu = require("ui.client_menu")
-local desktop_menu = require("ui.desktop_menu")
+local menu = require("ui.menu")
 local launcher = require("ui.launcher")
 local powermenu = require("ui.powermenu")
 local control_panel = require("ui.control_panel")
@@ -11,9 +10,9 @@ local user = require("user")
 awful.mouse.snap.edge_enabled = false
 
 awful.mouse.append_global_mousebindings {
-	awful.button({}, 3, function() desktop_menu:toggle() end),
+	awful.button({}, 3, function() menu:toggle_desktop_menu() end),
 	awful.button({}, 4, awful.tag.viewprev),
-	awful.button({}, 5, awful.tag.viewnext),
+	awful.button({}, 5, awful.tag.viewnext)
 }
 
 awful.keyboard.append_global_keybindings {
@@ -181,7 +180,7 @@ client.connect_signal("request::default_keybindings", function()
 			c:raise()
 		end),
 		awful.key({ modkey }, "m", function(c)
-			client_menu:toggle(c)
+			menu:toggle_client_menu(c)
 		end),
 		awful.key({ modkey, "Control" }, "Return", function(c)
 			c:swap(awful.client.getmaster())

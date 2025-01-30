@@ -10,8 +10,7 @@ local launcher = require("ui.launcher")
 local powermenu = require("ui.powermenu")
 local control_panel = require("ui.control_panel")
 local day_info_panel = require("ui.day_info_panel")
-local desktop_menu = require("ui.desktop_menu")
-local client_menu = require("ui.client_menu")
+local menu = require("ui.menu")
 
 local function set_wibar_hideaway(wibar)
 	local function hide_wibar(client)
@@ -91,14 +90,14 @@ powermenu:connect_signal("state", function(_, state)
 		launcher:close()
 		control_panel:close()
 		day_info_panel:close()
-		desktop_menu:hide()
+		menu:hide()
 	end
 end)
 
 launcher:connect_signal("state", function(_, state)
 	if state then
 		powermenu:close()
-		desktop_menu:hide()
+		menu:hide()
 	end
 end)
 
@@ -106,7 +105,7 @@ control_panel:connect_signal("state", function(_, state)
 	if state then
 		powermenu:close()
 		day_info_panel:close()
-		desktop_menu:hide()
+		menu:hide()
 	end
 end)
 
@@ -114,15 +113,12 @@ day_info_panel:connect_signal("state", function(_, state)
 	if state then
 		powermenu:close()
 		control_panel:close()
-		desktop_menu:hide()
+		menu:hide()
 	end
 end)
 
 local function click_hideaway()
-	if client_menu._menu then
-		client_menu._menu:hide()
-	end
-	desktop_menu:hide()
+	menu:hide()
 	launcher:close()
 	powermenu:close()
 	control_panel:close()

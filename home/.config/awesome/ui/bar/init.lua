@@ -7,7 +7,7 @@ local text_icons = beautiful.text_icons
 local launcher = require("ui.launcher")
 local control_panel = require("ui.control_panel")
 local day_info_panel = require("ui.day_info_panel")
-local client_menu = require("ui.client_menu")
+local menu = require("ui.menu")
 local modkey = "Mod4"
 
 local bar = {}
@@ -307,10 +307,10 @@ local function tasklist(s)
 		buttons = {
 			awful.button({ }, 1, function(c)
 				c:activate { context = "tasklist", action = "toggle_minimization" }
-				client_menu:hide()
+				menu:hide()
 			end),
 			awful.button({ }, 3, function(c)
-				client_menu:toggle(c)
+				menu:toggle_client_menu(c)
 			end)
 		},
 		layout = {
