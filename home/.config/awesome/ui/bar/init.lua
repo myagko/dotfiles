@@ -307,6 +307,7 @@ local function tasklist(s)
 		buttons = {
 			awful.button({ }, 1, function(c)
 				c:activate { context = "tasklist", action = "toggle_minimization" }
+				client_menu:hide()
 			end),
 			awful.button({ }, 3, function(c)
 				client_menu:toggle(c)

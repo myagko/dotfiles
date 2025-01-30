@@ -68,7 +68,30 @@ local function create_menu(c)
 	return cmenu
 end
 
+function client_menu:hide()
+	if self._menu and self._menu.wibox.visible then
+		self._menu:hide()
+		self._menu = nil
+	end
+end
+
+function client_menu:show(c)
+	c = c or client.focus
+	if not c then return end
+	if self._menu then
+		if not self._menu.wibox.visible then
+			self._menu = create_menu(c)
+			self._menu:show()
+		end
+	else
+		self._menu = create_menu(c)
+		self._menu:show()
+	end
+end
+
 function client_menu:toggle(c)
+	c = c or client.focus
+	if not c then return end
 	if self._menu then
 		if self._menu.wibox.visible then
 			self._menu:hide()
