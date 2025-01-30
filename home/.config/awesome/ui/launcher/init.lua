@@ -16,8 +16,6 @@ local user = require("user")
 local launcher = {}
 local instance = nil
 
-local home_folder = os.getenv("HOME")
-local wallpapers_folder = user.wallpapers_folder
 local terminals_map = {
 	alacritty = "alacritty -e ",
 	termite = "termite -e ",
@@ -130,19 +128,15 @@ function launcher:update_entries()
 			if i == self.index_entry then
 				entry_widget.bg = beautiful.accent
 				entry_widget.fg = beautiful.bg
-			end
-
-			entry_widget:connect_signal("mouse::enter", function(w)
-				if not (i == self.index_entry) then
+			else
+				entry_widget:connect_signal("mouse::enter", function(w)
 					w.bg = beautiful.bg_urg
-				end
-			end)
+				end)
 
-			entry_widget:connect_signal("mouse::leave", function(w)
-				if not (i == self.index_entry) then
+				entry_widget:connect_signal("mouse::leave", function(w)
 					w.bg = beautiful.bg
-				end
-			end)
+				end)
+			end
 
 			self.entries_container:add(entry_widget)
 		end
@@ -223,7 +217,7 @@ local function new()
 		forced_height = dpi(55),
 		buttons = {
 			awful.button({}, 1, function()
-				awful.spawn("xdg-open " .. home_folder)
+				awful.spawn("xdg-open " .. os.getenv("HOME"))
 				ret:close()
 			end)
 		}
@@ -235,8 +229,10 @@ local function new()
 		forced_height = dpi(55),
 		buttons = {
 			awful.button({}, 1, function()
-				awful.spawn("xdg-open " .. wallpapers_folder)
-				ret:close()
+				if user.wallpapers_folder then
+					awful.spawn("xdg-open " .. user.wallpapers_folder)
+					ret:close()
+				end
 			end)
 		}
 	}

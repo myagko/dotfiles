@@ -54,19 +54,15 @@ function powermenu:update_elements()
 		if i == self.index_element then
 			element_widget.bg = element.color
 			element_widget.fg = beautiful.bg
-		end
-
-		element_widget:connect_signal("mouse::enter", function(w)
-			if not (i == self.index_element) then
+		else
+			element_widget:connect_signal("mouse::enter", function(w)
 				w.bg = beautiful.bg_urg
-			end
-		end)
+			end)
 
-		element_widget:connect_signal("mouse::leave", function(w)
-			if not (i == self.index_element) then
+			element_widget:connect_signal("mouse::leave", function(w)
 				w.bg = beautiful.bg
-			end
-		end)
+			end)
+		end
 
 		self.elements_container:add(element_widget)
 	end
