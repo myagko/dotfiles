@@ -15,7 +15,7 @@ local function create_desktop_menu()
 		auto_expand = true,
 		theme = {
 			font = beautiful.font_h0,
-			width = dpi(180),
+			width = dpi(160),
 			height = dpi(25)
 		},
 		items = {
@@ -24,7 +24,7 @@ local function create_desktop_menu()
 				{ "restart", function() awesome.restart() end },
 				{ "power", function() powermenu:toggle() end }
 			} },
-			{ "take screenshot", {
+			{ "screenshot", {
 				{ "full", function() screenshot_daemon:take_full() end },
 				{ "full 5s delay", function() screenshot_daemon:take_delay(5) end },
 				{ "select area", function() screenshot_daemon:take_select() end }
