@@ -1,6 +1,5 @@
 <p align="center">
-    <img src="assets/1.png">
-    <img src="assets/2.png">
+    <img src="assets/preview.png">
 </p>
 
 </details>
