@@ -1,12 +1,12 @@
 [colors.bright]
 black = "#656565"
-blue = "#3E7CE8"
-cyan = "#35C6DB"
-green = "#38C644"
-magenta = "#944ACA"
-red = "#EA4047"
+blue = "#5957E1"
+cyan = "#4DAFEC"
+green = "#3ABF54"
+magenta = "#B44DC8"
+red = "#E14047"
 white = "#DBDBDB"
-yellow = "#F9C132"
+yellow = "#E5B742"
 
 [colors.cursor]
 cursor = "CellForeground"
@@ -14,13 +14,13 @@ text = "CellBackground"
 
 [colors.normal]
 black = "#0F0F0F"
-blue = "#3E7CE8"
-cyan = "#35C6DB"
-green = "#38C644"
-magenta = "#944ACA"
-red = "#EA4047"
+blue = "#5957E1"
+cyan = "#4DAFEC"
+green = "#3ABF54"
+magenta = "#B44DC8"
+red = "#E14047"
 white = "#DBDBDB"
-yellow = "#F9C132"
+yellow = "#E5B742"
 
 [colors.primary]
 background = "#0F0F0F"
