@@ -5,6 +5,9 @@ local gobject = require("gears.object")
 local gtable = require("gears.table")
 local dpi = beautiful.xresources.apply_dpi
 local text_icons = beautiful.text_icons
+local capi = {
+	screen = screen
+}
 
 local powermenu = {}
 local instance = nil
@@ -174,7 +177,7 @@ local function new()
 	ret.popup_widget = awful.popup {
 		visible = false,
 		ontop = true,
-		screen = screen.primary,
+		screen = capi.screen.primary,
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_color,
 		placement = function(d)

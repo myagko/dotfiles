@@ -6,6 +6,9 @@ local gtable = require("gears.table")
 local widgets = require("widgets")
 local dpi = beautiful.xresources.apply_dpi
 local weather_applet = require("ui.day_info_panel.weather_applet")
+local capi = {
+	screen = screen
+}
 
 local day_info = {}
 local instance = nil
@@ -51,7 +54,7 @@ local function new()
 	ret.popup_widget = awful.popup {
 		visible = false,
 		ontop = true,
-		screen = screen.primary,
+		screen = capi.screen.primary,
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_color,
 		placement = function(d)

@@ -6,6 +6,9 @@ local launcher = require("ui.launcher")
 local powermenu = require("ui.powermenu")
 local control_panel = require("ui.control_panel")
 local user = require("user")
+local capi = {
+	client = client
+}
 
 awful.mouse.snap.edge_enabled = false
 
@@ -144,7 +147,7 @@ awful.keyboard.append_global_keybindings {
 	end)
 }
 
-client.connect_signal("request::default_mousebindings", function()
+capi.client.connect_signal("request::default_mousebindings", function()
 	awful.mouse.append_client_mousebindings {
 		awful.button({}, 1, function(c)
 			c:activate { context = "mouse_click" }
@@ -159,7 +162,7 @@ client.connect_signal("request::default_mousebindings", function()
 end)
 
 
-client.connect_signal("request::default_keybindings", function()
+capi.client.connect_signal("request::default_keybindings", function()
 	awful.keyboard.append_client_keybindings {
 		awful.key({ modkey }, "z", function(c)
 			c:kill()

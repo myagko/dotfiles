@@ -11,6 +11,10 @@ local powermenu = require("ui.powermenu")
 local control_panel = require("ui.control_panel")
 local day_info_panel = require("ui.day_info_panel")
 local menu = require("ui.menu")
+local capi = {
+	screen = screen,
+	client = client
+}
 
 local function set_wibar_hideaway(wibar)
 	local function hide_wibar(client)
@@ -34,32 +38,32 @@ local function set_wibar_hideaway(wibar)
 		end
 	end
 
-	client.connect_signal("request::manage", function(c)
+	capi.client.connect_signal("request::manage", function(c)
 		hide_wibar(c)
 	end)
 
-	client.connect_signal("focus", function(c)
+	capi.client.connect_signal("focus", function(c)
 		hide_wibar(c)
 	end)
 
-	client.connect_signal("property::fullscreen", function(c)
+	capi.client.connect_signal("property::fullscreen", function(c)
 		hide_wibar(c)
 	end)
 
-	client.connect_signal("request::unmanage", function(c)
+	capi.client.connect_signal("request::unmanage", function(c)
 		show_wibar(c)
 	end)
 
-	client.connect_signal("unfocus", function(c)
+	capi.client.connect_signal("unfocus", function(c)
 		show_wibar(c)
 	end)
 
-	client.connect_signal("property::minimized", function(c)
+	capi.client.connect_signal("property::minimized", function(c)
 		show_wibar(c)
 	end)
 end
 
-screen.connect_signal("request::desktop_decoration", function(s)
+capi.screen.connect_signal("request::desktop_decoration", function(s)
 	if s == screen.primary then
 		s.bar = bar.set_primary(s)
 	else
@@ -69,11 +73,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
 	set_wibar_hideaway(s.bar)
 end)
 
-naughty.connect_signal("request::display", function(n)
-	notifications:display(n)
-end)
-
-screen.connect_signal("request::wallpaper", function(s)
+capi.screen.connect_signal("request::wallpaper", function(s)
 	s.wallpaper = Wallpaper(s)
 
 	if user.wallpaper then
@@ -81,8 +81,12 @@ screen.connect_signal("request::wallpaper", function(s)
 	end
 end)
 
-client.connect_signal("request::titlebars", function(c)
+capi.client.connect_signal("request::titlebars", function(c)
 	Titlebar(c)
+end)
+
+naughty.connect_signal("request::display", function(n)
+	notifications:display(n)
 end)
 
 powermenu:connect_signal("state", function(_, state)
@@ -129,10 +133,10 @@ awful.mouse.append_global_mousebinding(
 	awful.button({}, 1, click_hideaway)
 )
 
-client.connect_signal("request::manage", function(c)
+capi.client.connect_signal("request::manage", function(c)
 	c:connect_signal("button::press", click_hideaway)
 end)
 
-client.connect_signal("request::unmanage", function(c)
+capi.client.connect_signal("request::unmanage", function(c)
 	c:disconnect_signal("button::press", click_hideaway)
 end)

@@ -1,8 +1,12 @@
 local awful = require("awful")
 local rclient = require("ruled.client")
+local capi = {
+	client = client
+}
+
 require("awful.autofocus")
 
-client.connect_signal("request::manage", function(c)
+capi.client.connect_signal("request::manage", function(c)
 	if c.fullscreen then
 		c.x = c.screen.geometry.x
 		c.y = c.screen.geometry.y

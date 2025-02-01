@@ -11,7 +11,9 @@ local dpi = beautiful.xresources.apply_dpi
 local text_icons = beautiful.text_icons
 local powermenu = require("ui.powermenu")
 local user = require("user")
-
+local capi = {
+	screen = screen
+}
 
 local launcher = {}
 local instance = nil
@@ -332,7 +334,7 @@ local function new()
 	ret.popup_widget = awful.popup {
 		ontop = true,
 		visible = false,
-		screen = screen.primary,
+		screen = capi.screen.primary,
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_color,
 		placement = function(d)

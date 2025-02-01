@@ -7,6 +7,9 @@ local dpi = beautiful.xresources.apply_dpi
 local screenshot_daemon = require("daemons.screenshot")
 local powermenu = require("ui.powermenu")
 local user = require("user")
+local capi = {
+	client = client
+}
 
 local menu = {}
 
@@ -135,7 +138,7 @@ function menu:toggle_desktop_menu()
 end
 
 function menu:show_client_menu(c)
-	c = c or client.focus
+	c = c or capi.client.focus
 	if not c then return end
 	if self._menu then
 		if not self._menu.wibox.visible then
@@ -149,7 +152,7 @@ function menu:show_client_menu(c)
 end
 
 function menu:toggle_client_menu(c)
-	c = c or client.focus
+	c = c or capi.client.focus
 	if not c then return end
 	if self._menu then
 		if self._menu.wibox.visible then

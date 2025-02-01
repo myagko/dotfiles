@@ -10,6 +10,9 @@ local notification_list = require("ui.control_panel.notification_list")
 local audio_sliders = require("ui.control_panel.audio_sliders")
 local wifi_applet = require("ui.control_panel.wifi_applet")
 local bluetooth_applet = require("ui.control_panel.bluetooth_applet")
+local capi = {
+	screen = screen
+}
 
 local control_panel = {}
 local instance = nil
@@ -80,7 +83,7 @@ local function new()
 	ret.popup_widget = awful.popup {
 		visible = false,
 		ontop = true,
-		screen = screen.primary,
+		screen = capi.screen.primary,
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_color,
 		placement = function(d)
