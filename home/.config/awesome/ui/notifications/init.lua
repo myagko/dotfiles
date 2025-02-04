@@ -180,7 +180,7 @@ local function create_notification(n, screen)
 		screen = screen,
 		visible = false,
 		ontop = true,
-		minimum_width = dpi(300),
+		minimum_width = dpi(380),
 		maximum_width = dpi(450),
 		minimum_height = dpi(100),
 		maximum_height = dpi(200),
