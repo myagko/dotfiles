@@ -1,10 +1,9 @@
 <p align="center">
-    <img src="assets/preview.png">
+    <img src="assets/01.png">
 </p>
 
-</details>
-
-## Instalation
+<details>
+<summary><b>Installation</b></summary>
 
 #### Install dependencies:
 1. necessary
@@ -55,12 +54,14 @@ $ git clone --depth 1 https://github.com/myagko/dotfiles.git
 $ rsync -avhu ~/dotfiles/home/ ~/
 ```
 
-#### Edit `~/.config/awesome/user.lua` as you need, you can set wm theme, choose default apps, and set data for weather widget
-
 #### Download [JetBrainsMonoSlashed](https://github.com/sharpjs/JetBrainsMonoSlashed/releases) font and put it to `~/.fonts`
 
+</details>
+
 <details>
-<summary><b>Additional customisation</b></summary>
+<summary><b>Customisation</b></summary>
+
+#### Edit `~/.config/awesome/user.lua` as you need, you can set wm theme, choose default terminal, and set data for weather widget
 
 #### Icons and themes
 1. Install `themix-full-git` from aur
@@ -101,7 +102,9 @@ pref("general.config.sandbox_enabled", false);
 
 </details>
 
-## Keybinds
+
+<details>
+<summary><b>Keybinds</b></summary>
 
 <div align="center">
 
@@ -139,6 +142,4 @@ pref("general.config.sandbox_enabled", false);
 
 </div>
 
----
-
-#### Special thx to [Kasper24](https://github.com/Kasper24) for sharing their [KwesomeDE](https://github.com/Kasper24/KwesomeDE) configuration!
+</details>
