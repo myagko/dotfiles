@@ -1,18 +1,16 @@
 local astal = require("astal")
+local Variable = astal.Variable
+local bind = astal.bind
 local gtkApp = require("astal.gtk3.app")
 local gtkWidget = require("astal.gtk3.widget")
 local gtkAstal = require("astal.gtk3").Astal
 local Gdk = require("astal.gtk3").Gdk
-local Variable = astal.Variable
 local AstalApps = astal.require("AstalApps")
 
-local slice = require("lib").slice
 local map = require("lib").map
 
-local MAX_ITEMS = 7
-
 local function hide()
-	local launcher = gtkApp:get_window("launcher")
+	local launcher = gtkApp:get_window("Launcher")
 	if launcher then launcher:hide() end
 end
 
@@ -35,12 +33,6 @@ local function AppButton(app)
 					wrap = true,
 					xalign = 0,
 					label = app.name
-				},
-				app.description and gtkWidget.Label {
-					class_name = "description",
-					wrap = true,
-					xalign = 0,
-					label = app.description
 				}
 			}
 		}
@@ -50,13 +42,13 @@ end
 return function()
 	local apps = AstalApps.Apps()
 
-	local text = Variable("")
-	local list = text(function(str)
-		return slice(apps:fuzzy_query(str), 1, MAX_ITEMS)
+	local app_query = Variable("")
+	local app_list = bind(app_query):as(function(text)
+		return apps:fuzzy_query(text)
 	end)
 
 	local on_enter = function()
-		local found = apps:fuzzy_query(text:get())[1]
+		local found = apps:fuzzy_query(app_query:get())[1]
 		if found then
 			found:launch()
 			hide()
@@ -64,17 +56,19 @@ return function()
 	end
 
 	return gtkWidget.Window {
-		name = "launcher",
+		name = "Launcher",
 		anchor = gtkAstal.WindowAnchor.TOP + gtkAstal.WindowAnchor.BOTTOM,
 		exclusivity = "IGNORE",
 		keymode = "ON_DEMAND",
 		application = gtkApp,
 		visible = false,
 		on_show = function()
-			text:set("")
+			app_query:set("")
 		end,
 		on_key_press_event = function(self, event)
-			if event.keyval == Gdk.KEY_Escape then self:hide() end
+			if event.keyval == Gdk.KEY_Escape then
+				self:hide()
+			end
 		end,
 		gtkWidget.Box {
 			gtkWidget.EventBox {
@@ -92,28 +86,38 @@ return function()
 				gtkWidget.Box {
 					vertical = true,
 					width_request = 500,
-					class_name = "Applauncher",
+					class_name = "launcher-mainbox",
 					gtkWidget.Entry {
 						placeholder_text = "Search",
-						text = text(),
+						text = bind(app_query):as(function(text)
+							return tostring(text)
+						end),
 						on_changed = function(self)
-							text:set(self.text)
+							app_query:set(self.text)
 						end,
-						on_activate = on_enter,
+						on_activate = on_enter
 					},
-					gtkWidget.Box {
-						spacing = 6,
-						vertical = true,
-						list:as(function(l)
-							return map(l, AppButton)
-						end)
+					gtkWidget.Scrollable {
+						min_content_height = 500,
+						visible = app_list:as(function(list)
+							return #list ~= 0
+						end),
+						gtkWidget.Box {
+							spacing = 6,
+							vertical = true,
+							app_list:as(function(list)
+								return map(list, function(app)
+									return AppButton(app)
+								end)
+							end)
+						}
 					},
 					gtkWidget.Box {
 						halign = "CENTER",
 						class_name = "not-found",
 						vertical = true,
-						visible = list:as(function(l)
-							return #l == 0
+						visible = app_list:as(function(list)
+							return #list == 0
 						end),
 						gtkWidget.Icon {
 							icon = "system-search-symbolic"

@@ -8,15 +8,20 @@
 $fg-color: #{'@theme_fg_color'};
 $bg-color: #{'@theme_bg_color'};
 
-window#launcher {
+window#Launcher {
   all: unset;
 
-  box.Applauncher {
+  .launcher-mainbox {
     background-color: $bg-color;
     border-radius: 0;
+    border: 1px solid #373737;
     margin: 1rem;
     padding: 0.8rem;
     box-shadow: 2px 3px 8px 0 gtkalpha(black, 0.4);
+
+    scrollable > viewport {
+      all: unset;
+    }
 
     entry {
       margin-bottom: 0.8rem;

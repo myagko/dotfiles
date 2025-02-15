@@ -1,16 +1,14 @@
 local astal = require("astal")
+local timeout = astal.timeout
 local gtkWidget = require("astal.gtk3").Widget
 local Gtk = require("astal.gtk3").Gtk
 local gtkAstal = require("astal.gtk3").Astal
 local AstalNotifd = astal.require("AstalNotifd")
-local timeout = astal.timeout
-
 local map = require("lib").map
 local time = require("lib").time
 local file_exists = require("lib").file_exists
 local varmap = require("lib").varmap
 local notifd = AstalNotifd.get_default()
-
 local TIMEOUT_DELAY = 5000
 
 local function is_icon(icon)
@@ -23,10 +21,6 @@ local function create_notification(props)
 
 	local header = gtkWidget.Box {
 		class_name = "header",
-		(n.app_icon or n.desktop_entry) and gtkWidget.Icon {
-			class_name = "app-icon",
-			icon = n.app_icon or n.desktop_entry
-		},
 		gtkWidget.Label {
 			class_name = "app-name",
 			halign = "START",
@@ -122,11 +116,14 @@ local function create_notification_map()
 	local notif_map = varmap({})
 
 	notifd.on_notified = function(_, id)
+		local n = notifd:get_notification(id)
+
 		notif_map.set(id, create_notification {
-			notification = notifd:get_notification(id),
+			notification = n,
 			setup = function()
 				timeout(TIMEOUT_DELAY, function()
-					notif_map.delete(id)
+					--notif_map.delete(id)
+					n:dismiss()
 				end)
 			end
 		})

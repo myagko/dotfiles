@@ -5,8 +5,9 @@ local astal = require("astal")
 local gtkApp = require("astal.gtk3.app")
 local src = require("lib").src
 
+local Bar = require("widgets.bar")
 local Notifications = require("widgets.notifications")
-local Applauncher = require("widgets.applauncher")
+local Launcher = require("widgets.launcher")
 
 local scss = src("style.scss")
 local css = "/tmp/style.css"
@@ -18,8 +19,9 @@ gtkApp:start {
 	css = css,
 	main = function()
 		for _, monitor in pairs(gtkApp.monitors) do
+			Bar(monitor)
 			Notifications(monitor)
 		end
-		Applauncher()
+		Launcher()
 	end
 }

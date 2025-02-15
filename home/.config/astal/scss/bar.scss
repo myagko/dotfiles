@@ -1,0 +1,65 @@
+@use "sass:color";
+
+$bg: #212223;
+$fg: #f1f1f1;
+$accent: #378DF7;
+$radius: 7px;
+
+window.Bar {
+  border: none;
+  box-shadow: none;
+  background-color: $bg;
+  color: $fg;
+  font-size: 1.1em;
+  font-weight: bold;
+
+  label {
+    margin: 0 8px;
+  }
+
+  .bar-centerbox {
+    min-height: 35px;
+    padding: 5px;
+  }
+
+  .Workspaces  {
+    button {
+      all: unset;
+      background-color: transparent;
+
+      &:hover label {
+        background-color: color.adjust($fg, $alpha: -0.84);
+        border-color: color.adjust($accent, $alpha: -0.8);
+      }
+
+      &:active label {
+        background-color: color.adjust($fg, $alpha: -0.8)
+      }
+    }
+
+    label {
+      transition: 200ms;
+      padding: 0 8px;
+      margin: 2px;
+      border-radius: $radius;
+      border: 1pt solid transparent;
+    }
+
+    .focused label {
+      color: $accent;
+      border-color: $accent;
+    }
+  }
+
+  .SysTray {
+    margin-right: 8px;
+
+    button {
+      padding: 0 4px;
+    }
+  }
+
+  .FocusedClient {
+    color: $accent;
+  }
+}

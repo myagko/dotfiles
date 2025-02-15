@@ -14,27 +14,27 @@ window.NotificationPopups {
 }
 
 eventbox.Notification {
-  &:first-child>box {
+  &:first-child > box {
     margin-top: 25px;
   }
 
-  &:last-child>box {
+  &:last-child > box {
     margin-bottom: 25px;
   }
 
   // eventboxes can not take margins so we style its inner box instead
-  >box {
+  > box {
     min-width: 400px;
     border-radius: 0;
+    border: 1px solid #373737;
     background-color: $bg-color;
     margin-right: 25px;
     margin-left: 25px; 
     margin-bottom: 10px;
     box-shadow: 2px 3px 8px 0 gtkalpha(black, .4);
-    border: 1pt solid gtkalpha($fg-color, .03);
   }
 
-  &.critical>box {
+  &.critical > box {
     border: 1pt solid gtkalpha($error, .4);
 
     .header {
