@@ -6,7 +6,7 @@ local gtkWidget = require("astal.gtk3.widget")
 local gtkAstal = require("astal.gtk3").Astal
 local Gdk = require("astal.gtk3").Gdk
 local AstalApps = astal.require("AstalApps")
-
+local Hyprland = astal.require("AstalHyprland")
 local map = require("lib").map
 
 local function hide()

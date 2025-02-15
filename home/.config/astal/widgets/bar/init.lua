@@ -7,47 +7,10 @@ local Tray = astal.require("AstalTray")
 local Hyprland = astal.require("AstalHyprland")
 local map = require("lib").map
 
-local function SysTray()
-	local tray = Tray.get_default()
-
-	return gtkWidget.Box {
-		class_name = "SysTray",
-		bind(tray, "items"):as(function(items)
-			return map(items, function(item)
-				return gtkWidget.MenuButton {
-					tooltip_markup = bind(item, "tooltip_markup"),
-					use_popover = false,
-					menu_model = bind(item, "menu-model"),
-					action_group = bind(item, "action-group"):as(function(ag)
-						return { "dbusmenu", ag }
-					end),
-					gtkWidget.Icon {
-						gicon = bind(item, "gicon")
-					}
-				}
-			end)
-		end)
-	}
-end
-
-local function FocusedClient()
-	local hypr = Hyprland.get_default()
-	local focused = bind(hypr, "focused-client")
-
-	return gtkWidget.Box {
-		class_name = "Focused",
-		visible = focused,
-		focused:as(function(client)
-			return client and gtkWidget.Label {
-				label = bind(client, "title"):as(tostring),
-			}
-		end)
-	}
-end
+local hypr = Hyprland.get_default()
+local tray = Tray.get_default()
 
 local function Workspaces()
-	local hypr = Hyprland.get_default()
-
 	return gtkWidget.Box {
 		class_name = "Workspaces",
 		bind(hypr, "workspaces"):as(function(wss)
@@ -66,6 +29,56 @@ local function Workspaces()
 						end)
 					}
 				end
+			end)
+		end)
+	}
+end
+
+local function Clients()
+	return gtkWidget.Box {
+		class_name = "Clients",
+		spacing = 5,
+		bind(hypr, "clients"):as(function(cs)
+			return map(cs, function(c)
+				return gtkWidget.Button {
+					setup = function(self)
+						self:hook(c, "moved-to", function(ws)
+							self:set_visible(ws == hypr:get_focused_workspace())
+						end)
+					end,
+					visible = bind(hypr, "focused-workspace"):as(function(fw)
+						return fw == c:get_workspace()
+					end),
+					on_clicked = function()
+						if c ~= hypr:get_focused_client() then
+							c:focus()
+						end
+					end,
+					gtkWidget.Label {
+						label = bind(c, "title"):as(tostring)
+					}
+				}
+			end)
+		end)
+	}
+end
+
+local function SysTray()
+	return gtkWidget.Box {
+		class_name = "SysTray",
+		bind(tray, "items"):as(function(items)
+			return map(items, function(item)
+				return gtkWidget.MenuButton {
+					tooltip_markup = bind(item, "tooltip_markup"),
+					use_popover = false,
+					menu_model = bind(item, "menu-model"),
+					action_group = bind(item, "action-group"):as(function(ag)
+						return { "dbusmenu", ag }
+					end),
+					gtkWidget.Icon {
+						gicon = bind(item, "gicon")
+					}
+				}
 			end)
 		end)
 	}
@@ -97,14 +110,15 @@ return function(gdkmonitor)
 			class_name = "bar-centerbox",
 			gtkWidget.Box {
 				halign = "START",
-				Workspaces(),
-				FocusedClient()
+				Workspaces()
 			},
-			gtkWidget.Box {},
+			gtkWidget.Box {
+				Clients()
+			},
 			gtkWidget.Box {
 				halign = "END",
 				SysTray(),
-				Time("%H:%M - %A %e.")
+				Time("%A %e - %H:%M")
 			}
 		}
 	}
