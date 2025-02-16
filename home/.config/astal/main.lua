@@ -10,7 +10,7 @@ local Notifications = require("widgets.notifications")
 local Launcher = require("widgets.launcher")
 
 local scss = src("style.scss")
-local css = "/tmp/style.css"
+local css = "/tmp/astal-style.css"
 
 astal.exec("sass " .. scss .. " " .. css)
 

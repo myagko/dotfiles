@@ -9,11 +9,11 @@ $fg-color: #{"@theme_fg_color"};
 $bg-color: #{"@theme_bg_color"};
 $error: red;
 
-window.NotificationPopups {
+window.notifications {
   all: unset;
 }
 
-eventbox.Notification {
+eventbox.notification {
   &:first-child > box {
     margin-top: 25px;
   }

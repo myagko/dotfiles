@@ -1,13 +1,14 @@
 local astal = require("astal")
 local timeout = astal.timeout
 local gtkWidget = require("astal.gtk3").Widget
-local Gtk = require("astal.gtk3").Gtk
 local gtkAstal = require("astal.gtk3").Astal
-local AstalNotifd = astal.require("AstalNotifd")
+local gtkGtk = require("astal.gtk3").Gtk
 local map = require("lib").map
 local time = require("lib").time
 local file_exists = require("lib").file_exists
 local varmap = require("lib").varmap
+local AstalNotifd = astal.require("AstalNotifd")
+
 local notifd = AstalNotifd.get_default()
 local TIMEOUT_DELAY = 5000
 
@@ -83,16 +84,16 @@ local function create_notification(props)
 	}
 
 	return gtkWidget.EventBox {
-		class_name = string.format("Notification %s", string.lower(n.urgency)),
+		class_name = string.format("notification %s", string.lower(n.urgency)),
 		setup = props.setup,
 		gtkWidget.Box {
 			vertical = true,
 			header,
-			Gtk.Separator {
+			gtkGtk.Separator {
 				visible = true
 			},
 			content,
-			#n.actions > 0 and gtkWidget.Box {
+			#n.actions > 1 and gtkWidget.Box {
 				class_name = "actions",
 				map(n.actions, function(action)
 					return gtkWidget.Button {
@@ -141,7 +142,8 @@ return function(gdkmonitor)
 	local notifs = create_notification_map()
 
 	return gtkWidget.Window {
-		class_name = "Notifications",
+		name = "Notifications",
+		class_name = "notifications",
 		gdkmonitor = gdkmonitor,
 		anchor = Anchor.TOP + Anchor.RIGHT,
 		gtkWidget.Box {

@@ -4,10 +4,9 @@ local bind = astal.bind
 local gtkApp = require("astal.gtk3.app")
 local gtkWidget = require("astal.gtk3.widget")
 local gtkAstal = require("astal.gtk3").Astal
-local Gdk = require("astal.gtk3").Gdk
-local AstalApps = astal.require("AstalApps")
-local Hyprland = astal.require("AstalHyprland")
+local gtkGdk = require("astal.gtk3").Gdk
 local map = require("lib").map
+local AstalApps = astal.require("AstalApps")
 
 local function hide()
 	local launcher = gtkApp:get_window("Launcher")
@@ -16,24 +15,21 @@ end
 
 local function AppButton(app)
 	return gtkWidget.Button {
-		class_name = "AppButton",
+		class_name = "app-button",
 		on_clicked = function()
 			hide()
 			app:launch()
 		end,
 		gtkWidget.Box {
 			gtkWidget.Icon {
+				class_name = "icon",
 				icon = app.icon_name
 			},
-			gtkWidget.Box {
-				valign = "CENTER",
-				vertical = true,
-				gtkWidget.Label {
-					class_name = "name",
-					wrap = true,
-					xalign = 0,
-					label = app.name
-				}
+			gtkWidget.Label {
+				class_name = "name",
+				wrap = true,
+				xalign = 0,
+				label = app.name
 			}
 		}
 	}
@@ -57,6 +53,7 @@ return function()
 
 	return gtkWidget.Window {
 		name = "Launcher",
+		class_name = "launcher",
 		anchor = gtkAstal.WindowAnchor.TOP + gtkAstal.WindowAnchor.BOTTOM,
 		exclusivity = "IGNORE",
 		keymode = "ON_DEMAND",
@@ -66,7 +63,7 @@ return function()
 			app_query:set("")
 		end,
 		on_key_press_event = function(self, event)
-			if event.keyval == Gdk.KEY_Escape then
+			if event.keyval == gtkGdk.KEY_Escape then
 				self:hide()
 			end
 		end,
@@ -86,7 +83,7 @@ return function()
 				gtkWidget.Box {
 					vertical = true,
 					width_request = 500,
-					class_name = "launcher-mainbox",
+					class_name = "mainbox",
 					gtkWidget.Entry {
 						placeholder_text = "Search",
 						text = bind(app_query):as(function(text)

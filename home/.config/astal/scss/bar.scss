@@ -5,7 +5,7 @@ $fg: #f1f1f1;
 $accent: #378DF7;
 $radius: 7px;
 
-window.Bar {
+window.bar {
   border: none;
   box-shadow: none;
   background-color: $bg;
@@ -17,13 +17,13 @@ window.Bar {
     margin: 0 8px;
   }
 
-  .bar-centerbox {
+  .mainbox {
     min-height: 35px;
     padding: 5px;
   }
 
-  .Workspaces  {
-    button {
+  .workspaces  {
+    .workspace {
       all: unset;
       background-color: transparent;
 
@@ -51,15 +51,39 @@ window.Bar {
     }
   }
 
-  .SysTray {
-    margin-right: 8px;
+  .clients {
+    .client {
+      all: unset;
+      background-color: transparent;
 
-    button {
-      padding: 0 4px;
+      &:hover label {
+        background-color: color.adjust($fg, $alpha: -0.84);
+        border-color: color.adjust($accent, $alpha: -0.8);
+      }
+
+      &:active label {
+        background-color: color.adjust($fg, $alpha: -0.8)
+      }
+    }
+
+    label {
+      transition: 200ms;
+      padding: 0 8px;
+      margin: 2px;
+      border-radius: $radius;
+      border: 1pt solid transparent;
+    }
+
+    .focused label {
+      color: $accent;
+      border-color: $accent;
     }
   }
 
-  .FocusedClient {
-    color: $accent;
+  .systray {
+    button {
+      all: unset;
+      padding: 8px;
+    }
   }
 }

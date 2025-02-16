@@ -8,10 +8,10 @@
 $fg-color: #{'@theme_fg_color'};
 $bg-color: #{'@theme_bg_color'};
 
-window#Launcher {
+window.launcher {
   all: unset;
 
-  .launcher-mainbox {
+  .mainbox {
     background-color: $bg-color;
     border-radius: 0;
     border: 1px solid #373737;
@@ -40,10 +40,6 @@ window#Launcher {
       label.name {
         font-weight: bold;
         font-size: 1.1em;
-      }
-
-      label.description {
-        color: gtkalpha($fg-color, 0.8);
       }
     }
 
