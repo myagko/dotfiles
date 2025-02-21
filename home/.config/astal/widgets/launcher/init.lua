@@ -92,8 +92,8 @@ return function()
 	return gtkWidget.Window {
 		name = "Launcher",
 		class_name = "launcher",
-		anchor = gtkAstal.WindowAnchor.TOP + gtkAstal.WindowAnchor.BOTTOM,
-		exclusivity = "IGNORE",
+		anchor = gtkAstal.WindowAnchor.BOTTOM + gtkAstal.WindowAnchor.LEFT,
+		exclusivity = "EXCLUSIVE",
 		keymode = "ON_DEMAND",
 		application = gtkApp,
 		visible = false,
@@ -115,17 +115,12 @@ return function()
 			end)
 		end,
 		gtkWidget.Box {
-			gtkWidget.EventBox {
-				expand = true,
-				on_click = hide,
-				width_request = 4000,
-			},
 			gtkWidget.Box {
 				hexpand = false,
 				vertical = true,
 				gtkWidget.EventBox {
 					on_click = hide,
-					height_request = 100
+					height_request = 1000
 				},
 				gtkWidget.Box {
 					vertical = true,
@@ -135,10 +130,6 @@ return function()
 					apps_scrollable,
 					not_found
 				},
-				gtkWidget.EventBox {
-					expand = true,
-					on_click = hide
-				}
 			},
 			gtkWidget.EventBox {
 				width_request = 4000,
