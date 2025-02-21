@@ -355,7 +355,7 @@ local function new()
 						}
 					},
 					widgets.separator {
-						dir = "h",
+						vertical = true,
 					},
 					{
 						widget = wibox.container.margin,
