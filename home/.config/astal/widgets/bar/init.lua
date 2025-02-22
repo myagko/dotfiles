@@ -95,12 +95,12 @@ local function KbLayout()
 end
 
 local function SysTray()
-	local tray_visibility = Variable(false)
+	local tray_visibility = Variable()
 
 	return gtkWidget.Box {
 		class_name = "systray",
 		gtkWidget.Button {
-			class_name = "revealer",
+			class_name = "reveal-button",
 			on_clicked = function()
 				tray_visibility:set(not tray_visibility:get())
 			end,
@@ -110,23 +110,28 @@ local function SysTray()
 				end)
 			}
 		},
-		bind(tray, "items"):as(function(items)
-			return map(items, function(item)
-				return gtkWidget.MenuButton {
-					class_name = "item",
-					visible = bind(tray_visibility),
-					tooltip_markup = bind(item, "tooltip_markup"),
-					use_popover = false,
-					menu_model = bind(item, "menu-model"),
-					action_group = bind(item, "action-group"):as(function(ag)
-						return { "dbusmenu", ag }
-					end),
-					gtkWidget.Icon {
-						gicon = bind(item, "gicon")
-					}
-				}
-			end)
-		end)
+		gtkWidget.Revealer {
+			reveal_child = bind(tray_visibility),
+			transition_type = "SLIDE_LEFT",
+			gtkWidget.Box {
+				bind(tray, "items"):as(function(items)
+					return map(items, function(item)
+						return gtkWidget.MenuButton {
+							class_name = "item",
+							tooltip_markup = bind(item, "tooltip_markup"),
+							use_popover = false,
+							menu_model = bind(item, "menu-model"),
+							action_group = bind(item, "action-group"):as(function(ag)
+								return { "dbusmenu", ag }
+							end),
+							gtkWidget.Icon {
+								gicon = bind(item, "gicon")
+							}
+						}
+					end)
+				end)
+			}
+		}
 	}
 end
 

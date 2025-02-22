@@ -41,7 +41,7 @@ window.bar {
       }
     }
 
-    .focused {
+    .workspace.focused {
       color: $bg;
       background-color: $ac;
     }
@@ -64,7 +64,7 @@ window.bar {
       }
     }
 
-    .focused {
+    .client.focused {
       color: $fg;
       border-bottom: 2px solid $ac;
     }
@@ -73,7 +73,7 @@ window.bar {
   .systray {
     background-color: $bg-alt;
 
-    .revealer, .item {
+    .reveal-button, .item {
       all: unset;
       background-color: transparent;
       padding: 0 8px;
