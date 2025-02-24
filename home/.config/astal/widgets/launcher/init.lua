@@ -20,13 +20,11 @@ local function AppButton(app)
 			hide()
 			app:launch()
 		end,
-		gtkWidget.Box {
-			gtkWidget.Label {
-				class_name = "name",
-				wrap = true,
-				xalign = 0,
-				label = app.name
-			}
+		gtkWidget.Label {
+			class_name = "name",
+			xalign = 0,
+			ellipsize = "END",
+			label = app:get_name()
 		}
 	}
 end
@@ -48,7 +46,7 @@ return function()
 	end
 
 	local entry = gtkWidget.Entry {
-		placeholder_text = "Search",
+		placeholder_text = "Search...",
 		text = bind(app_query):as(function(text)
 			return tostring(text)
 		end),
@@ -59,12 +57,11 @@ return function()
 	}
 
 	local apps_scrollable = gtkWidget.Scrollable {
-		min_content_height = 500,
+		height_request = 400,
 		visible = app_list:as(function(list)
 			return #list ~= 0
 		end),
 		gtkWidget.Box {
-			spacing = 6,
 			vertical = true,
 			app_list:as(function(list)
 				return map(list, function(app)
@@ -75,8 +72,10 @@ return function()
 	}
 
 	local not_found = gtkWidget.Box {
-		halign = "CENTER",
 		class_name = "not-found",
+		height_request = 400,
+		halign = "CENTER",
+		valign = "CENTER",
 		vertical = true,
 		visible = app_list:as(function(list)
 			return #list == 0
@@ -124,7 +123,7 @@ return function()
 				},
 				gtkWidget.Box {
 					vertical = true,
-					width_request = 500,
+					width_request = 400,
 					class_name = "mainbox",
 					entry,
 					apps_scrollable,

@@ -16,6 +16,23 @@ window.bar {
     margin: 0 10px;
   }
 
+  button {
+    all: unset;
+    padding: 0 8px;
+    color: $fg;
+    background-color: $bg-alt;
+
+    &:hover {
+      color: $fg;
+      background-color: color.adjust($fg, $alpha: -0.8);
+    }
+
+    &:active {
+      color: $fg;
+      background-color: color.adjust($fg, $alpha: -0.7)
+    }
+  }
+
   .mainbox {
     min-height: 30px;
     padding: 8px;

@@ -2,6 +2,7 @@ local astal = require("astal")
 local Variable = astal.Variable
 local bind = astal.bind
 local gtkWidget = require("astal.gtk3.widget")
+local gtkApp = require("astal.gtk3.app")
 local GLib = astal.require("GLib")
 local map = require("lib").map
 local Hyprland = astal.require("AstalHyprland")
@@ -10,24 +11,37 @@ local Tray = astal.require("AstalTray")
 local hyprland = Hyprland.get_default()
 local tray = Tray.get_default()
 
+local function Launcher_button()
+	return gtkWidget.Button {
+		class_name = "launcher-button",
+		on_click = function()
+			local launcher = gtkApp:get_window("Launcher")
+			if launcher then launcher:show() end
+		end,
+		gtkWidget.Icon {
+			icon = "application-menu"
+		}
+	}
+end
+
 local function Workspaces()
 	return gtkWidget.Box {
 		class_name = "workspaces",
-		bind(hyprland, "workspaces"):as(function(wss)
-			table.sort(wss, function(a, b) return a.id < b.id end)
-			return map(wss, function(ws)
-				if not (ws.id >= -99 and ws.id <= -2) then
+		bind(hyprland, "workspaces"):as(function(ws)
+			table.sort(ws, function(a, b) return a.id < b.id end)
+			return map(ws, function(w)
+				if not (w.id >= -99 and w.id <= -2) then
 					return gtkWidget.Button {
 						class_name = bind(hyprland, "focused-workspace"):as(function(fw)
-							return "workspace " .. (fw == ws and "focused" or "")
+							return "workspace " .. (fw == w and "focused" or "")
 						end),
-						on_clicked = function()
-							if ws ~= hyprland:get_focused_workspace() then
-								ws:focus()
+						on_click = function()
+							if w ~= hyprland:get_focused_workspace() then
+								w:focus()
 							end
 						end,
-						label = bind(ws, "id"):as(function(v)
-							return type(v) == "number" and string.format("%.0f", v) or v
+						label = bind(w, "id"):as(function(id)
+							return type(id) == "number" and string.format("%.0f", id) or id
 						end)
 					}
 				end
@@ -40,6 +54,7 @@ local function Clients()
 	return gtkWidget.Box {
 		class_name = "clients",
 		spacing = 6,
+		expand = false,
 		bind(hyprland, "clients"):as(function(cs)
 			return map(cs, function(c)
 				return gtkWidget.Button {
@@ -53,22 +68,25 @@ local function Clients()
 						if event.button == "PRIMARY" then
 							if c ~= hyprland:get_focused_client() then
 								c:focus()
-								if c:get_floating() then
-									hyprland:dispatch("alterzorder", "top, " .. c:get_address())
-								end
+							end
+							if c:get_floating() then
+								hyprland:dispatch("alterzorder", "top, " .. c:get_address())
 							end
 						elseif event.button == "MIDDLE" then
 							c:kill()
 						end
 					end,
-					--tooltip_markup = bind(c, "title"),
 					setup = function(self)
 						self:hook(c, "moved-to", function(_, ws)
 							self:set_visible(ws == hyprland:get_focused_workspace())
 						end)
 					end,
 					gtkWidget.Label {
-						label = bind(c, "initial-class")
+						max_width_chars = 15,
+						ellipsize = "END",
+						label = bind(c, "title"):as(function(label)
+							return label or "untitled"
+						end)
 					}
 				}
 			end)
@@ -105,8 +123,8 @@ local function SysTray()
 				tray_visibility:set(not tray_visibility:get())
 			end,
 			gtkWidget.Icon {
-				icon = bind(tray_visibility):as(function(vis)
-					return vis and "arrow-right" or "arrow-left"
+				icon = bind(tray_visibility):as(function(v)
+					return v and "arrow-right" or "arrow-left"
 				end)
 			}
 		},
@@ -162,19 +180,22 @@ return function(gdkmonitor)
 		exclusivity = "EXCLUSIVE",
 		gtkWidget.CenterBox {
 			class_name = "mainbox",
+			spacing = 6,
 			gtkWidget.Box {
 				halign = "START",
 				spacing = 6,
+				Launcher_button(),
 				Workspaces(),
+			},
+			gtkWidget.Box {
 				Clients()
 			},
-			gtkWidget.Box {},
 			gtkWidget.Box {
 				halign = "END",
 				spacing = 6,
 				SysTray(),
 				KbLayout(),
-				Time("%e %B, %a - %H:%M")
+				Time("%e %b, %a - %H:%M")
 			}
 		}
 	}

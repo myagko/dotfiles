@@ -78,6 +78,8 @@ local function create_notification(props)
 				halign = "START",
 				xalign = 0,
 				justify = "FILL",
+				ellipsize = "END",
+				lines = 6,
 				label = n.body
 			}
 		}
