@@ -8,6 +8,7 @@ local src = require("lib").src
 local Bar = require("widgets.bar")
 local Notifications = require("widgets.notifications")
 local Launcher = require("widgets.launcher")
+local ControlPanel = require("widgets.control_panel")
 
 local scss = src("style.scss")
 local css = "/tmp/astal-style.css"
@@ -23,5 +24,6 @@ gtkApp:start {
 			Notifications(monitor)
 		end
 		Launcher()
+		ControlPanel()
 	end
 }

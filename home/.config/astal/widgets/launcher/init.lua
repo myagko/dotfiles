@@ -128,7 +128,7 @@ return function()
 					entry,
 					apps_scrollable,
 					not_found
-				},
+				}
 			},
 			gtkWidget.EventBox {
 				width_request = 4000,

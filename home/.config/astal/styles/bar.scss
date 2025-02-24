@@ -1,5 +1,5 @@
 @use "sass:color";
-@import "themes/everblush";
+@import "themes/placid";
 
 @function gtkalpha($c, $a) {
   @return string.unquote('alpha(#{$c}, #{$a})');
@@ -90,6 +90,10 @@ window.bar {
   .systray {
     background-color: $bg-alt;
 
+    label {
+      all: unset;
+    }
+
     .reveal-button, .item {
       all: unset;
       background-color: transparent;
@@ -114,5 +118,13 @@ window.bar {
 
   .time {
     background-color: $bg-alt;
+  }
+
+  .launcher-button, .control-panel-button {
+    transition: 200ms;
+
+    label {
+      all: unset;
+    }
   }
 }

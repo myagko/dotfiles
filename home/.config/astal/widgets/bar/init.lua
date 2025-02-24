@@ -7,19 +7,20 @@ local GLib = astal.require("GLib")
 local map = require("lib").map
 local Hyprland = astal.require("AstalHyprland")
 local Tray = astal.require("AstalTray")
+local text_icons = require("text_icons")
 
 local hyprland = Hyprland.get_default()
 local tray = Tray.get_default()
 
-local function Launcher_button()
+local function LauncherButton()
 	return gtkWidget.Button {
 		class_name = "launcher-button",
 		on_click = function()
 			local launcher = gtkApp:get_window("Launcher")
 			if launcher then launcher:show() end
 		end,
-		gtkWidget.Icon {
-			icon = "application-menu"
+		gtkWidget.Label {
+			label = text_icons.menu
 		}
 	}
 end
@@ -122,9 +123,9 @@ local function SysTray()
 			on_clicked = function()
 				tray_visibility:set(not tray_visibility:get())
 			end,
-			gtkWidget.Icon {
-				icon = bind(tray_visibility):as(function(v)
-					return v and "arrow-right" or "arrow-left"
+			gtkWidget.Label {
+				label = bind(tray_visibility):as(function(v)
+					return v and text_icons.arrow_right or text_icons.arrow_left
 				end)
 			}
 		},
@@ -169,6 +170,19 @@ local function Time(format)
 	}
 end
 
+local function ControlPanelButton()
+	return gtkWidget.Button {
+		class_name = "control-panel-button",
+		on_click = function()
+			local panel = gtkApp:get_window("Control-panel")
+			if panel then panel:show() end
+		end,
+		gtkWidget.Label {
+			label = text_icons.sliders
+		}
+	}
+end
+
 return function(gdkmonitor)
 	local Anchor = astal.require("Astal").WindowAnchor
 
@@ -184,7 +198,7 @@ return function(gdkmonitor)
 			gtkWidget.Box {
 				halign = "START",
 				spacing = 6,
-				Launcher_button(),
+				LauncherButton(),
 				Workspaces(),
 			},
 			gtkWidget.Box {
@@ -195,7 +209,8 @@ return function(gdkmonitor)
 				spacing = 6,
 				SysTray(),
 				KbLayout(),
-				Time("%e %b, %a - %H:%M")
+				Time("%e %b, %a - %H:%M"),
+				ControlPanelButton()
 			}
 		}
 	}
