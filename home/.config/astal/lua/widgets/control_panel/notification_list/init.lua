@@ -1,25 +1,20 @@
 local astal = require("astal")
-local timeout = astal.timeout
 local gtkWidget = require("astal.gtk3").Widget
 local gtkAstal = require("astal.gtk3").Astal
 local gtkGtk = require("astal.gtk3").Gtk
-local map = require("lib").map
-local time = require("lib").time
-local file_exists = require("lib").file_exists
-local varmap = require("lib").varmap
 local AstalNotifd = astal.require("AstalNotifd")
+local map = require("lua.lib").map
+local time = require("lua.lib").time
+local file_exists = require("lua.lib").file_exists
+local varmap = require("lua.lib").varmap
 
 local notifd = AstalNotifd.get_default()
-local TIMEOUT_DELAY = 5000
 
 local function is_icon(icon)
 	return gtkAstal.Icon.lookup_icon(icon) ~= nil
 end
 
----@param props { setup?: function, notification: any }
-local function create_notification(props)
-	local n = props.notification
-
+local function create_notification(n)
 	local header = gtkWidget.Box {
 		class_name = "header",
 		gtkWidget.Label {
@@ -85,72 +80,66 @@ local function create_notification(props)
 		}
 	}
 
-	return gtkWidget.EventBox {
+	return gtkWidget.Box {
 		class_name = string.format("notification %s", string.lower(n.urgency)),
-		setup = props.setup,
-		gtkWidget.Box {
-			vertical = true,
-			header,
-			gtkGtk.Separator {
-				visible = true
-			},
-			content,
-			#n.actions > 1 and gtkWidget.Box {
-				class_name = "actions",
-				map(n.actions, function(action)
-					return gtkWidget.Button {
-						hexpand = true,
-						on_clicked = function()
-							return n:invoke(action.id)
-						end,
-						gtkWidget.Label {
-							label = action.label,
-							halign = "CENTER",
-							hexpand = true
-						}
+		vertical = true,
+		header,
+		gtkGtk.Separator {
+			visible = true
+		},
+		content,
+		#n.actions > 1 and gtkWidget.Box {
+			class_name = "actions",
+			map(n.actions, function(action)
+				return gtkWidget.Button {
+					hexpand = true,
+					on_clicked = function()
+						return n:invoke(action.id)
+					end,
+					gtkWidget.Label {
+						label = action.label,
+						halign = "CENTER",
+						hexpand = true
 					}
-				end)
-			}
+				}
+			end)
 		}
 	}
 end
 
-local function create_notification_map()
+return function()
 	local notif_map = varmap({})
 
-	notifd.on_notified = function(_, id)
-		local n = notifd:get_notification(id)
+	for _, n in ipairs(notifd:get_notifications()) do
+		notif_map.set(n:get_id(), create_notification(n))
+	end
 
-		notif_map.set(id, create_notification {
-			notification = n,
-			setup = function()
-				timeout(TIMEOUT_DELAY, function()
-					notif_map.delete(id)
-					--n:dismiss()
-				end)
-			end
-		})
+	notifd.on_notified = function(_, id)
+		notif_map.set(id, create_notification(notifd:get_notification(id)))
 	end
 
 	notifd.on_resolved = function(_, id)
 		notif_map.delete(id)
 	end
 
-	return notif_map
-end
-
-return function(gdkmonitor)
-	local Anchor = astal.require("Astal").WindowAnchor
-	local notifs = create_notification_map()
-
-	return gtkWidget.Window {
-		name = "Notifications",
-		class_name = "notifications",
-		gdkmonitor = gdkmonitor,
-		anchor = Anchor.TOP + Anchor.RIGHT,
+	return gtkWidget.Scrollable {
+		min_content_height = 600,
 		gtkWidget.Box {
+			class_name = "notifications",
 			vertical = true,
-			notifs()
+			spacing = 8,
+			notif_map(),
+			gtkWidget.Box {
+				height_request = 600,
+				halign = "CENTER",
+				valign = "CENTER",
+				visible = notif_map():as(function(v)
+					return #v == 0
+				end),
+				gtkWidget.Label {
+					label = "No notifications"
+				}
+			}
 		}
 	}
 end

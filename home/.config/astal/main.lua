@@ -3,12 +3,12 @@ package.path = ".config/astal/?.lua;.config/astal/?/init.lua;" .. package.path
 
 local astal = require("astal")
 local gtkApp = require("astal.gtk3.app")
-local src = require("lib").src
+local src = require("lua.lib").src
 
-local Bar = require("widgets.bar")
-local Notifications = require("widgets.notifications")
-local Launcher = require("widgets.launcher")
-local ControlPanel = require("widgets.control_panel")
+local Bar = require("lua.widgets.bar")
+local Notifications = require("lua.widgets.notifications")
+local Launcher = require("lua.widgets.launcher")
+local ControlPanel = require("lua.widgets.control_panel")
 
 local scss = src("style.scss")
 local css = "/tmp/astal-style.css"

@@ -5,8 +5,8 @@ local gtkApp = require("astal.gtk3.app")
 local gtkWidget = require("astal.gtk3.widget")
 local gtkAstal = require("astal.gtk3").Astal
 local gtkGdk = require("astal.gtk3").Gdk
-local map = require("lib").map
 local AstalApps = astal.require("AstalApps")
+local map = require("lua.lib").map
 
 local function hide()
 	local launcher = gtkApp:get_window("Launcher")
@@ -56,38 +56,6 @@ return function()
 		on_activate = on_enter
 	}
 
-	local apps_scrollable = gtkWidget.Scrollable {
-		height_request = 400,
-		visible = app_list:as(function(list)
-			return #list ~= 0
-		end),
-		gtkWidget.Box {
-			vertical = true,
-			app_list:as(function(list)
-				return map(list, function(app)
-					return AppButton(app)
-				end)
-			end)
-		}
-	}
-
-	local not_found = gtkWidget.Box {
-		class_name = "not-found",
-		height_request = 400,
-		halign = "CENTER",
-		valign = "CENTER",
-		vertical = true,
-		visible = app_list:as(function(list)
-			return #list == 0
-		end),
-		gtkWidget.Icon {
-			icon = "system-search-symbolic"
-		},
-		gtkWidget.Label {
-			label = "No match found"
-		}
-	}
-
 	return gtkWidget.Window {
 		name = "Launcher",
 		class_name = "launcher",
@@ -126,8 +94,32 @@ return function()
 					width_request = 400,
 					class_name = "mainbox",
 					entry,
-					apps_scrollable,
-					not_found
+					gtkWidget.Scrollable {
+						height_request = 400,
+						visible = app_list:as(function(list)
+							return #list ~= 0
+						end),
+						gtkWidget.Box {
+							vertical = true,
+							app_list:as(function(list)
+								return map(list, function(app)
+									return AppButton(app)
+								end)
+							end)
+						}
+					},
+					gtkWidget.Box {
+						class_name = "not-found",
+						height_request = 400,
+						halign = "CENTER",
+						valign = "CENTER",
+						visible = app_list:as(function(list)
+							return #list == 0
+						end),
+						gtkWidget.Label {
+							label = "No match found"
+						}
+					}
 				}
 			},
 			gtkWidget.EventBox {

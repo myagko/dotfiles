@@ -3,7 +3,7 @@ local gtkApp = require("astal.gtk3").App
 local gtkAstal = require("astal.gtk3").Astal
 local gtkGdk = require("astal.gtk3").Gdk
 
-local NotificationList = require("widgets.control_panel.notification_list")
+local NotificationList = require("lua.widgets.control_panel.notification_list")
 
 local function hide()
 	local panel = gtkApp:get_window("Control-panel")

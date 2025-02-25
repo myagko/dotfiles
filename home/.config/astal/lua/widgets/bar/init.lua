@@ -4,10 +4,10 @@ local bind = astal.bind
 local gtkWidget = require("astal.gtk3.widget")
 local gtkApp = require("astal.gtk3.app")
 local GLib = astal.require("GLib")
-local map = require("lib").map
 local Hyprland = astal.require("AstalHyprland")
 local Tray = astal.require("AstalTray")
-local text_icons = require("text_icons")
+local text_icons = require("lua.text_icons")
+local map = require("lua.lib").map
 
 local hyprland = Hyprland.get_default()
 local tray = Tray.get_default()

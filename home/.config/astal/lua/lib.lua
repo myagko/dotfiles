@@ -71,23 +71,6 @@ function M.varmap(initial)
 	})
 end
 
----@generic T
----@param array T[]
----@param start integer
----@param stop? integer
----@return T[]
-function M.slice(array, start, stop)
-	local new_arr = {}
-
-	stop = stop or #array
-
-	for i = start, stop do
-		table.insert(new_arr, array[i])
-	end
-
-	return new_arr
-end
-
 ---@param time number
 ---@param format? string
 function M.time(time, format)
