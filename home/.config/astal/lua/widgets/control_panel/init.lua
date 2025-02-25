@@ -5,6 +5,7 @@ local gtkGdk = require("astal.gtk3").Gdk
 local gtkGtk = require("astal.gtk3").Gtk
 
 local NotificationList = require("lua.widgets.control_panel.notification_list")
+local AudioSliders = require("lua.widgets.control_panel.audio_sliders")
 
 local function hide()
 	local panel = gtkApp:get_window("Control-panel")
@@ -39,14 +40,16 @@ return function()
 					height_request = 1000
 				},
 				gtkWidget.Box {
-					vertical = true,
+					class_name = "mainbox",
 					width_request = 500,
 					height_request = 800,
-					class_name = "mainbox",
+					vertical = true,
+					spacing = 8,
 					NotificationList(),
 					gtkGtk.Separator {
 						visible = true
 					},
+					AudioSliders()
 				}
 			}
 		}

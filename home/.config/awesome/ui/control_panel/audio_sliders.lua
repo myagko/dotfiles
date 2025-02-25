@@ -64,7 +64,6 @@ local function new()
 	end)
 
 	volume_slider:connect_signal("property::value", function(_, new_value)
-		volume_slider:set_value(new_value)
 		volume_value:set_markup(tostring(new_value*5) .. "%")
 		audio_daemon:vol_set_value(new_value*5)
 	end)
@@ -130,7 +129,6 @@ local function new()
 	end)
 
 	micro_slider:connect_signal("property::value", function(_, new_value)
-		micro_slider:set_value(new_value)
 		micro_value:set_markup(tostring(new_value*5) .. "%")
 		audio_daemon:mic_set_value(new_value*5)
 	end)
@@ -147,7 +145,12 @@ local function new()
 		bg = beautiful.bg_alt,
 		{
 			widget = wibox.container.margin,
-			margins = { left = dpi(20), right = dpi(20), top = dpi(10), bottom = dpi(10) },
+			margins = {
+				left = dpi(20),
+				right = dpi(20),
+				top = dpi(10),
+				bottom = dpi(10)
+			},
 			{
 				layout = wibox.layout.fixed.vertical,
 				volume_widget,
