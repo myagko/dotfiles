@@ -1,4 +1,5 @@
 local astal = require("astal")
+local Variable = astal.Variable
 local gtkWidget = require("astal.gtk3").Widget
 local gtkAstal = require("astal.gtk3").Astal
 local gtkGtk = require("astal.gtk3").Gtk
@@ -109,6 +110,7 @@ end
 
 return function()
 	local notif_map = varmap({})
+	local notif_count = Variable(#notifd:get_notifications())
 
 	for _, n in ipairs(notifd:get_notifications()) do
 		notif_map.set(n:get_id(), create_notification(n))
@@ -116,28 +118,56 @@ return function()
 
 	notifd.on_notified = function(_, id)
 		notif_map.set(id, create_notification(notifd:get_notification(id)))
+		notif_count:set(notif_count:get() + 1)
 	end
 
 	notifd.on_resolved = function(_, id)
 		notif_map.delete(id)
+		notif_count:set(notif_count:get() - 1)
 	end
 
-	return gtkWidget.Scrollable {
-		min_content_height = 600,
+	return gtkWidget.Box {
+		vertical = true,
+		spacing = 8,
 		gtkWidget.Box {
-			class_name = "notifications",
-			vertical = true,
-			spacing = 8,
-			notif_map(),
+			gtkWidget.Label {
+				label = notif_count():as(function(count)
+					return "Notifications " ..
+						(count > 0 and "(" .. tostring(count) .. ")" or "")
+				end)
+			},
 			gtkWidget.Box {
-				height_request = 600,
-				halign = "CENTER",
-				valign = "CENTER",
-				visible = notif_map():as(function(v)
-					return #v == 0
-				end),
-				gtkWidget.Label {
-					label = "No notifications"
+				hexpand = true,
+				halign = "END",
+				gtkWidget.Button {
+					on_clicked = function()
+						for _, n in ipairs(notifd:get_notifications()) do
+							n:dismiss()
+						end
+					end,
+					gtkWidget.Label {
+						label = "Clear"
+					}
+				}
+			}
+		},
+		gtkWidget.Scrollable {
+			expand = true,
+			gtkWidget.Box {
+				class_name = "notifications",
+				vertical = true,
+				spacing = 8,
+				notif_map(),
+				gtkWidget.Box {
+					expand = true,
+					halign = "CENTER",
+					valign = "CENTER",
+					visible = notif_map():as(function(v)
+						return #v == 0
+					end),
+					gtkWidget.Label {
+						label = "No notifications"
+					}
 				}
 			}
 		}

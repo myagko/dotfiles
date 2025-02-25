@@ -92,32 +92,30 @@ return function()
 				gtkWidget.Box {
 					vertical = true,
 					width_request = 400,
+					height_request = 500,
 					class_name = "mainbox",
 					entry,
 					gtkWidget.Scrollable {
-						height_request = 400,
-						visible = app_list:as(function(list)
-							return #list ~= 0
-						end),
+						expand = true,
 						gtkWidget.Box {
 							vertical = true,
 							app_list:as(function(list)
 								return map(list, function(app)
 									return AppButton(app)
 								end)
-							end)
-						}
-					},
-					gtkWidget.Box {
-						class_name = "not-found",
-						height_request = 400,
-						halign = "CENTER",
-						valign = "CENTER",
-						visible = app_list:as(function(list)
-							return #list == 0
-						end),
-						gtkWidget.Label {
-							label = "No match found"
+							end),
+							gtkWidget.Box {
+								class_name = "not-found",
+								halign = "CENTER",
+								valign = "CENTER",
+								expand = true,
+								visible = app_list:as(function(list)
+									return #list == 0
+								end),
+								gtkWidget.Label {
+									label = "No match found"
+								}
+							}
 						}
 					}
 				}

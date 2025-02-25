@@ -2,6 +2,7 @@ local gtkWidget = require("astal.gtk3").Widget
 local gtkApp = require("astal.gtk3").App
 local gtkAstal = require("astal.gtk3").Astal
 local gtkGdk = require("astal.gtk3").Gdk
+local gtkGtk = require("astal.gtk3").Gtk
 
 local NotificationList = require("lua.widgets.control_panel.notification_list")
 
@@ -42,7 +43,10 @@ return function()
 					width_request = 500,
 					height_request = 800,
 					class_name = "mainbox",
-					NotificationList()
+					NotificationList(),
+					gtkGtk.Separator {
+						visible = true
+					},
 				}
 			}
 		}

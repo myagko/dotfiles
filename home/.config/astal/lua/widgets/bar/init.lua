@@ -15,7 +15,7 @@ local tray = Tray.get_default()
 local function LauncherButton()
 	return gtkWidget.Button {
 		class_name = "launcher-button",
-		on_click = function()
+		on_clicked = function()
 			local launcher = gtkApp:get_window("Launcher")
 			if launcher then launcher:show() end
 		end,
@@ -31,21 +31,19 @@ local function Workspaces()
 		bind(hyprland, "workspaces"):as(function(ws)
 			table.sort(ws, function(a, b) return a.id < b.id end)
 			return map(ws, function(w)
-				if not (w.id >= -99 and w.id <= -2) then
-					return gtkWidget.Button {
-						class_name = bind(hyprland, "focused-workspace"):as(function(fw)
-							return "workspace " .. (fw == w and "focused" or "")
-						end),
-						on_click = function()
-							if w ~= hyprland:get_focused_workspace() then
-								w:focus()
-							end
-						end,
-						label = bind(w, "id"):as(function(id)
-							return type(id) == "number" and string.format("%.0f", id) or id
-						end)
-					}
-				end
+				return not (w.id >= -99 and w.id <= -2) and gtkWidget.Button {
+					class_name = bind(hyprland, "focused-workspace"):as(function(fw)
+						return "workspace " .. (fw == w and "focused" or "")
+					end),
+					on_clicked = function()
+						if w ~= hyprland:get_focused_workspace() then
+							w:focus()
+						end
+					end,
+					label = bind(w, "id"):as(function(id)
+						return type(id) == "number" and string.format("%.0f", id) or id
+					end)
+				}
 			end)
 		end)
 	}
@@ -85,8 +83,8 @@ local function Clients()
 					gtkWidget.Label {
 						max_width_chars = 15,
 						ellipsize = "END",
-						label = bind(c, "title"):as(function(label)
-							return label or "untitled"
+						label = bind(c, "title"):as(function(t)
+							return (t ~= nil and t ~= "") and t or "untitled"
 						end)
 					}
 				}
@@ -173,7 +171,7 @@ end
 local function ControlPanelButton()
 	return gtkWidget.Button {
 		class_name = "control-panel-button",
-		on_click = function()
+		on_clicked = function()
 			local panel = gtkApp:get_window("Control-panel")
 			if panel then panel:show() end
 		end,
