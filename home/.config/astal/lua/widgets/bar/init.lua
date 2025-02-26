@@ -4,10 +4,11 @@ local bind = astal.bind
 local GLib = astal.require("GLib")
 local AstalHyprland = astal.require("AstalHyprland")
 local AstalTray = astal.require("AstalTray")
-local gtkWidget = require("astal.gtk3").Widget
 local gtkApp = require("astal.gtk3").App
-local text_icons = require("lua.text_icons")
+local gtkWidget = require("astal.gtk3").Widget
+local gtkAstal = require("astal.gtk3").Astal
 local map = require("lua.lib").map
+local text_icons = require("lua.text_icons")
 
 local hyprland = AstalHyprland.get_default()
 local tray = AstalTray.get_default()
@@ -182,8 +183,7 @@ local function ControlPanelButton()
 end
 
 return function(gdkmonitor)
-	local Anchor = astal.require("Astal").WindowAnchor
-
+	local Anchor = gtkAstal.WindowAnchor
 	return gtkWidget.Window {
 		name = "Bar",
 		class_name = "bar",
