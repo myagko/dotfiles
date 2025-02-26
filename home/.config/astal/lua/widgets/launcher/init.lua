@@ -1,11 +1,11 @@
 local astal = require("astal")
 local Variable = astal.Variable
 local bind = astal.bind
-local gtkApp = require("astal.gtk3.app")
-local gtkWidget = require("astal.gtk3.widget")
+local AstalApps = astal.require("AstalApps")
+local gtkApp = require("astal.gtk3").App
+local gtkWidget = require("astal.gtk3").Widget
 local gtkAstal = require("astal.gtk3").Astal
 local gtkGdk = require("astal.gtk3").Gdk
-local AstalApps = astal.require("AstalApps")
 local map = require("lua.lib").map
 
 local function hide()
@@ -56,10 +56,11 @@ return function()
 		on_activate = on_enter
 	}
 
+	local Anchor = gtkAstal.WindowAnchor
 	return gtkWidget.Window {
 		name = "Launcher",
 		class_name = "launcher",
-		anchor = gtkAstal.WindowAnchor.BOTTOM + gtkAstal.WindowAnchor.LEFT,
+		anchor = Anchor.BOTTOM + Anchor.LEFT,
 		exclusivity = "EXCLUSIVE",
 		keymode = "ON_DEMAND",
 		application = gtkApp,

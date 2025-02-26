@@ -1,9 +1,9 @@
 local astal = require("astal")
 local timeout = astal.timeout
+local AstalNotifd = astal.require("AstalNotifd")
 local gtkWidget = require("astal.gtk3").Widget
 local gtkAstal = require("astal.gtk3").Astal
 local gtkGtk = require("astal.gtk3").Gtk
-local AstalNotifd = astal.require("AstalNotifd")
 local map = require("lua.lib").map
 local time = require("lua.lib").time
 local file_exists = require("lua.lib").file_exists
@@ -126,7 +126,7 @@ return function(gdkmonitor)
 		notif_map.delete(id)
 	end
 
-	local Anchor = astal.require("Astal").WindowAnchor
+	local Anchor = gtkAstal.WindowAnchor
 	return gtkWidget.Window {
 		name = "Notifications",
 		class_name = "notifications",

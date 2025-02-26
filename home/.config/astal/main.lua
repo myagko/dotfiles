@@ -2,9 +2,8 @@ pcall(require, "luarocks.loader")
 package.path = ".config/astal/?.lua;.config/astal/?/init.lua;" .. package.path
 
 local astal = require("astal")
-local gtkApp = require("astal.gtk3.app")
+local gtkApp = require("astal.gtk3").App
 local src = require("lua.lib").src
-
 local Bar = require("lua.widgets.bar")
 local Notifications = require("lua.widgets.notifications")
 local Launcher = require("lua.widgets.launcher")

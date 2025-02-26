@@ -1,7 +1,7 @@
 local astal = require("astal")
 local bind = astal.bind
-local gtkWidget = require("astal.gtk3").Widget
 local AstalWp = astal.require("AstalWp")
+local gtkWidget = require("astal.gtk3").Widget
 local text_icons = require("lua.text_icons")
 
 local WpAudio = AstalWp.get_default():get_audio()

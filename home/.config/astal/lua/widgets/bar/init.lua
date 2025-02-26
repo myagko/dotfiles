@@ -1,16 +1,16 @@
 local astal = require("astal")
 local Variable = astal.Variable
 local bind = astal.bind
-local gtkWidget = require("astal.gtk3.widget")
-local gtkApp = require("astal.gtk3.app")
 local GLib = astal.require("GLib")
-local Hyprland = astal.require("AstalHyprland")
-local Tray = astal.require("AstalTray")
+local AstalHyprland = astal.require("AstalHyprland")
+local AstalTray = astal.require("AstalTray")
+local gtkWidget = require("astal.gtk3").Widget
+local gtkApp = require("astal.gtk3").App
 local text_icons = require("lua.text_icons")
 local map = require("lua.lib").map
 
-local hyprland = Hyprland.get_default()
-local tray = Tray.get_default()
+local hyprland = AstalHyprland.get_default()
+local tray = AstalTray.get_default()
 
 local function LauncherButton()
 	return gtkWidget.Button {

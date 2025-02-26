@@ -1,5 +1,5 @@
-local gtkWidget = require("astal.gtk3").Widget
 local gtkApp = require("astal.gtk3").App
+local gtkWidget = require("astal.gtk3").Widget
 local gtkAstal = require("astal.gtk3").Astal
 local gtkGdk = require("astal.gtk3").Gdk
 local gtkGtk = require("astal.gtk3").Gtk
@@ -13,10 +13,11 @@ local function hide()
 end
 
 return function()
+	local Anchor = gtkAstal.WindowAnchor
 	return gtkWidget.Window {
 		name = "Control-panel",
 		class_name = "control-panel",
-		anchor = gtkAstal.WindowAnchor.BOTTOM + gtkAstal.WindowAnchor.RIGHT,
+		anchor = Anchor.BOTTOM + Anchor.RIGHT,
 		exclusivity = "EXCLUSIVE",
 		keymode = "ON_DEMAND",
 		application = gtkApp,
