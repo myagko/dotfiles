@@ -32,6 +32,7 @@ local function create_notification(n, setup)
 			label = time(n.time)
 		},
 		gtkWidget.Button {
+			class_name = "dismiss-button",
 			on_clicked = function()
 				n:dismiss()
 			end,

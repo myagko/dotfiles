@@ -8,6 +8,7 @@ local map = require("lua.lib").map
 local time = require("lua.lib").time
 local file_exists = require("lua.lib").file_exists
 local varmap = require("lua.lib").varmap
+local text_icons = require("lua.text_icons")
 
 local notifd = AstalNotifd.get_default()
 
@@ -31,6 +32,7 @@ local function create_notification(n)
 			label = time(n.time)
 		},
 		gtkWidget.Button {
+			class_name = "dismiss-button",
 			on_clicked = function()
 				n:dismiss()
 			end,
@@ -127,10 +129,13 @@ return function()
 	end
 
 	return gtkWidget.Box {
+		class_name = "notification-list",
 		vertical = true,
 		spacing = 8,
 		gtkWidget.Box {
+			class_name = "header",
 			gtkWidget.Label {
+				class_name = "title",
 				label = notif_count():as(function(count)
 					return "Notifications " ..
 						(count > 0 and "(" .. tostring(count) .. ")" or "")
@@ -140,13 +145,14 @@ return function()
 				hexpand = true,
 				halign = "END",
 				gtkWidget.Button {
+					class_name = "clear-button",
 					on_clicked = function()
 						for _, n in ipairs(notifd:get_notifications()) do
 							n:dismiss()
 						end
 					end,
 					gtkWidget.Label {
-						label = "Clear"
+						label = "Clear " .. text_icons.trash
 					}
 				}
 			}
@@ -154,11 +160,11 @@ return function()
 		gtkWidget.Scrollable {
 			expand = true,
 			gtkWidget.Box {
-				class_name = "notifications",
 				vertical = true,
 				spacing = 8,
 				notif_map(),
 				gtkWidget.Box {
+					class_name = "empty-massage",
 					expand = true,
 					halign = "CENTER",
 					valign = "CENTER",

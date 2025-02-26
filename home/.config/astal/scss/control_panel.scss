@@ -1,66 +1,92 @@
 @use 'sass:string';
+@use "sass:color";
 @import "themes/placid";
 
 @function gtkalpha($c, $a) {
   @return string.unquote('alpha(#{$c},#{$a})');
 }
 
-$radius: 7px;
-
 window.control-panel {
-  all: unset;
-
   .mainbox {
     background-color: $bg;
     border: 1px solid #373737;
     margin: 7px;
     padding: 15px;
 
-    scrollable > viewport {
-      all: unset;
+    label {
+      font-size: 13pt;
+      color: $fg;
     }
 
-    .notifications {
+    //separator {
+    //  background-color: #ff0000;
+    //}
+
+    .notification-list {
+      scrollable > viewport {
+        all: unset;
+      }
+
+      .header {
+        .title {
+          color: $fg;
+          padding-left: 8px;
+        }
+
+        .clear-button {
+          all: unset;
+          color: $fg;
+          background-color: transparent;
+          padding: 8px;
+          transition: 200ms;
+
+          &:hover {
+            color: $fg;
+            background-color: color.adjust($fg, $alpha: -0.8);
+          }
+
+          &:active {
+            color: $fg;
+            background-color: color.adjust($fg, $alpha: -0.7);
+          }
+        }
+      }
+
+      .empty-massage {
+        label {
+          font-size: 18pt;
+          color: color.adjust($fg, $alpha: -0.5);
+        }
+      }
+
       .notification {
-        padding: 5px;
+        padding: 15px;
         background-color: $bg-alt;
 
         .header {
-          padding: .5rem;
           color: gtkalpha($fg, 0.5);
-
-          .app-icon {
-            margin: 0 .4rem;
-          }
+          margin-bottom: 5px;
 
           .app-name {
-            margin-right: .3rem;
             font-weight: bold;
-
-            &:first-child {
-              margin-left: .4rem;
-            }
           }
 
           .time {
-            margin: 0 .4rem;
+            margin-right: 8px;
           }
 
-          button {
-            padding: .2rem;
+          .dismiss-button {
             min-width: 0;
             min-height: 0;
           }
         }
 
-        separator {
-          margin: 0 .4rem;
-          background-color: gtkalpha($fg, .1);
-        }
+        //separator {
+        //  background-color: gtkalpha(#ff0000, .1);
+        //}
 
         .content {
-          margin: 1rem;
-          margin-top: .5rem;
+          margin-top: 5px;
 
           .summary {
             font-size: 1.2em;
@@ -73,22 +99,18 @@ window.control-panel {
 
           .image {
             border: 1px solid gtkalpha($fg, .02);
-            margin-right: .5rem;
-            border-radius: 9px;
-            min-width: 100px;
-            min-height: 100px;
+            min-width: 80px;
+            min-height: 80px;
             background-size: cover;
             background-position: center;
           }
         }
 
         .actions {
-          margin: 1rem;
-          margin-top: 0;
-          padding: .2rem;
+          margin-top: 5px;
 
           button {
-            margin: 0 .3rem;
+            margin: 0 3px;
 
             &:first-child {
               margin-left: 0;
@@ -98,6 +120,35 @@ window.control-panel {
               margin-right: 0;
             }
           }
+        }
+      }
+    }
+
+    .audio-sliders {
+      padding: 15px;
+      background-color: $bg-alt;
+
+      .mute-button {
+        all: unset;
+        padding: 5px;
+        transition: 200ms;
+
+        label {
+          transition: 200ms;
+        }
+
+        &:hover {
+          color: $fg;
+          background-color: color.adjust($fg, $alpha: -0.8);
+        }
+
+        &:active {
+          color: $fg;
+          background-color: color.adjust($fg, $alpha: -0.7);
+        }
+
+        &.muted > label {
+          color: color.adjust($fg, $alpha: -0.5);
         }
       }
     }

@@ -10,11 +10,17 @@ local microphone = WpAudio:get_default_microphone()
 
 return function()
 	return gtkWidget.Box {
+		class_name = "audio-sliders",
 		vertical = true,
+		spacing = 8,
 		gtkWidget.Box {
+			class_name = "speaker",
 			spacing = 10,
 			hexpand = true,
 			gtkWidget.Button {
+				class_name = bind(speaker, "mute"):as(function(m)
+					return "mute-button" .. (m and " muted" or "")
+				end),
 				on_clicked = function()
 					speaker:set_mute(not speaker:get_mute())
 				end,
@@ -25,6 +31,9 @@ return function()
 				}
 			},
 			gtkWidget.Slider {
+				class_name = bind(speaker, "mute"):as(function(m)
+					return "speaker-slider" .. (m and " muted" or "")
+				end),
 				hexpand = true,
 				value = bind(speaker, "volume"),
 				on_dragged = function(self)
@@ -39,9 +48,13 @@ return function()
 			}
 		},
 		gtkWidget.Box {
+			class_name = "speaker",
 			spacing = 10,
 			hexpand = true,
 			gtkWidget.Button {
+				class_name = bind(microphone, "mute"):as(function(m)
+					return "mute-button" .. (m and " muted" or "")
+				end),
 				on_clicked = function()
 					microphone:set_mute(not microphone:get_mute())
 				end,
@@ -52,6 +65,9 @@ return function()
 				}
 			},
 			gtkWidget.Slider {
+				class_name = bind(microphone, "mute"):as(function(m)
+					return "microphone-slider" .. (m and " muted" or "")
+				end),
 				hexpand = true,
 				value = bind(microphone, "volume"),
 				on_dragged = function(self)
