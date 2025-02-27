@@ -36,8 +36,8 @@ local function create_notification(n)
 			on_clicked = function()
 				n:dismiss()
 			end,
-			gtkWidget.Icon {
-				icon = "window-close-symbolic"
+			gtkWidget.Label {
+				label = text_icons.cross
 			}
 		}
 	}
@@ -65,19 +65,20 @@ local function create_notification(n)
 			gtkWidget.Label {
 				class_name = "summary",
 				halign = "START",
-				xalign = 0,
 				ellipsize = "END",
+				xalign = 0,
 				label = n.summary
 			},
 			gtkWidget.Label {
 				class_name = "body",
-				wrap = true,
-				use_markup = true,
 				halign = "START",
-				xalign = 0,
-				justify = "FILL",
+				wrap = true,
+				wrap_mode = "CHAR",
 				ellipsize = "END",
-				lines = 6,
+				justify = "FILL",
+				use_markup = true,
+				xalign = 0,
+				lines = 4,
 				label = n.body
 			}
 		}
@@ -95,6 +96,7 @@ local function create_notification(n)
 			class_name = "actions",
 			map(n.actions, function(action)
 				return gtkWidget.Button {
+					class_name = "action-button",
 					hexpand = true,
 					on_clicked = function()
 						return n:invoke(action.id)
@@ -120,12 +122,12 @@ return function()
 
 	notifd.on_notified = function(_, id)
 		notif_map.set(id, create_notification(notifd:get_notification(id)))
-		notif_count:set(notif_count:get() + 1)
+		notif_count:set(#notifd:get_notifications())
 	end
 
 	notifd.on_resolved = function(_, id)
 		notif_map.delete(id)
-		notif_count:set(notif_count:get() - 1)
+		notif_count:set(#notifd:get_notifications())
 	end
 
 	return gtkWidget.Box {
@@ -152,13 +154,13 @@ return function()
 						end
 					end,
 					gtkWidget.Label {
-						label = "Clear " .. text_icons.trash
+						label = text_icons.trash
 					}
 				}
 			}
 		},
 		gtkWidget.Scrollable {
-			expand = true,
+			vexpand = true,
 			gtkWidget.Box {
 				vertical = true,
 				spacing = 8,

@@ -9,25 +9,22 @@ $error: red;
 window.notifications {
   all: unset;
 
-  .notification {
-    min-width: 400px;
-    border-radius: 0;
-    border: 1px solid #373737;
-    background-color: $bg;
-    margin-right: 25px;
-    margin-left: 25px; 
-    margin-bottom: 10px;
-    padding: 15px;
+  eventbox.notification {
+    > box {
+      min-width: 400px;
+      border-radius: 0;
+      border: 1px solid #373737;
+      background-color: $bg;
+      margin-right: 25px;
+      margin-bottom: 10px;
+      padding: 15px;
+    }
 
-    &:first-child {
+    &:first-child > box {
       margin-top: 25px;
     }
 
-    &:last-child {
-      margin-bottom: 25px;
-    }
-
-    &.critical {
+    &.critical > box {
       border: 1pt solid gtkalpha($error, .4);
 
       .header {
@@ -50,14 +47,20 @@ window.notifications {
       }
 
       .dismiss-button {
+        all: unset;
         min-width: 0;
         min-height: 0;
+        color: $fg;
+        background-color: transparent;
+        padding: 4px;
+        transition: 200ms;
+
+        &:hover {
+          color: $bg;
+          background-color: $ac;
+        }
       }
     }
-
-    //separator {
-    //  background-color: gtkalpha(#ff0000, .1);
-    //}
 
     .content {
       margin-top: 5px;
@@ -72,19 +75,29 @@ window.notifications {
       }
 
       .image {
-        border: 1px solid gtkalpha($fg, .02);
         min-width: 80px;
         min-height: 80px;
         background-size: cover;
         background-position: center;
+        margin-right: 5px;
       }
     }
 
     .actions {
-      margin-top: 5px;
+      margin-top: 10px;
 
-      button {
+      .action-button {
+        all: unset;
+        color: $fg;
+        background-color: $bg-alt;
         margin: 0 3px;
+        padding: 5px;
+        transition: 200ms;
+
+        &:hover {
+          color: $bg;
+          background-color: $ac;
+        }
 
         &:first-child {
           margin-left: 0;

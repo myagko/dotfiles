@@ -5,51 +5,43 @@ local gtable = require("gears.table")
 local audio = {}
 local instance = nil
 
-function audio:vol_get_data(sink)
-	sink = sink or "@DEFAULT_SINK@"
-
+function audio:get_sink_data(sink)
 	awful.spawn.easy_async_with_shell("LANG=C pactl get-sink-volume " .. sink, function(stdout)
 		self.vol_value = tonumber(stdout:match("/%s+(%d+)"))
-		self:emit_signal("vol::value", self.vol_value, sink)
+		self:emit_signal("sink::value", sink, self.vol_value)
 	end)
 
 	awful.spawn.easy_async_with_shell("LANG=C pactl get-sink-mute " .. sink, function(stdout)
 		self.vol_mute = stdout:match("%s+(%w+)") == "yes"
-		self:emit_signal("vol::mute", self.vol_mute, sink)
+		self:emit_signal("sink::mute", sink, self.vol_mute)
 	end)
 end
 
-function audio:vol_set_value(value, sink)
-	sink = sink or "@DEFAULT_SINK@"
+function audio:set_sink_value(sink, value)
 	awful.spawn("pactl set-sink-volume " .. sink .. " " .. tostring(value) .. "%", false)
 end
 
-function audio:vol_toggle_mute(sink)
-	sink = sink or "@DEFAULT_SINK@"
+function audio:toggle_sink_mute(sink)
 	awful.spawn("pactl set-sink-mute " .. sink .. " toggle", false)
 end
 
-function audio:mic_get_data(source)
-	source = source or "@DEFAULT_SOURCE@"
-
+function audio:get_source_data(source)
 	awful.spawn.easy_async_with_shell("LANG=C pactl get-source-volume " .. source, function(stdout)
 		self.mic_value = tonumber(stdout:match("/%s+(%d+)"))
-		self:emit_signal("mic::value", self.mic_value, source)
+		self:emit_signal("source::value", source, self.mic_value)
 	end)
 
 	awful.spawn.easy_async_with_shell("LANG=C pactl get-source-mute " .. source, function(stdout)
 		self.mic_mute = stdout:match("%s+(%w+)") == "yes"
-		self:emit_signal("mic::mute", self.mic_mute, source)
+		self:emit_signal("source::mute", source, self.mic_mute)
 	end)
 end
 
-function audio:mic_set_value(value, source)
-	source = source or "@DEFAULT_SOURCE@"
+function audio:set_source_value(source, value)
 	awful.spawn("pactl set-source-volume " .. source .. " " .. tostring(value) .. "%", false)
 end
 
-function audio:mic_toggle_mute(source)
-	source = source or "@DEFAULT_SOURCE@"
+function audio:toggle_source_mute(source)
 	awful.spawn("pactl set-source-mute " .. source .. " toggle", false)
 end
 
@@ -57,8 +49,8 @@ local function new()
 	local ret = gobject {}
 	gtable.crush(ret, audio, true)
 
-	ret:vol_get_data()
-	ret:mic_get_data()
+	ret:get_sink_data("@DEFAULT_SINK@")
+	ret:get_source_data("@DEFAULT_SOURCE@")
 
 	return ret
 end

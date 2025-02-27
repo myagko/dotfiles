@@ -1,4 +1,5 @@
 @use 'sass:string';
+@use "sass:color";
 @import "themes/placid";
 
 @function gtkalpha($c, $a) {
@@ -40,8 +41,7 @@ window.launcher {
       color: $fg;
 
       label.name {
-        font-weight: bold;
-        font-size: 1.1em;
+        font-size: 13pt;
       }
 
       &:focus {
@@ -56,16 +56,9 @@ window.launcher {
     }
 
     box.not-found {
-      padding: 1rem;
-
-      icon {
-        font-size: 6em;
-        color: gtkalpha($fg, 0.7);
-      }
-
       label {
-        color: gtkalpha($fg, 0.9);
-        font-size: 1.2em;
+        color: color.adjust($fg, $alpha: -0.5);
+        font-size: 17pt;
       }
     }
   }

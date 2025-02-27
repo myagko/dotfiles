@@ -51,8 +51,8 @@ end
 function control_panel:open()
 	if self.state then return end
 	self.state = true
-	audio_daemon:vol_get_data()
-	audio_daemon:mic_get_data()
+	audio_daemon:get_sink_data("@DEFAULT_SINK@")
+	audio_daemon:get_source_data("@DEFAULT_SOURCE@")
 	self:setup_controls()
 	self.popup_widget.visible = true
 	self:emit_signal("state", self.state)

@@ -8,6 +8,7 @@ local map = require("lua.lib").map
 local time = require("lua.lib").time
 local file_exists = require("lua.lib").file_exists
 local varmap = require("lua.lib").varmap
+local text_icons = require("lua.text_icons")
 
 local notifd = AstalNotifd.get_default()
 local TIMEOUT_DELAY = 5000
@@ -36,8 +37,8 @@ local function create_notification(n, setup)
 			on_clicked = function()
 				n:dismiss()
 			end,
-			gtkWidget.Icon {
-				icon = "window-close-symbolic"
+			gtkWidget.Label {
+				label = text_icons.cross
 			}
 		}
 	}
@@ -65,48 +66,53 @@ local function create_notification(n, setup)
 			gtkWidget.Label {
 				class_name = "summary",
 				halign = "START",
-				xalign = 0,
 				ellipsize = "END",
+				xalign = 0,
 				label = n.summary
 			},
 			gtkWidget.Label {
 				class_name = "body",
-				wrap = true,
-				use_markup = true,
 				halign = "START",
-				xalign = 0,
-				justify = "FILL",
+				wrap = true,
+				wrap_mode = "CHAR",
 				ellipsize = "END",
-				lines = 6,
+				justify = "FILL",
+				use_markup = true,
+				xalign = 0,
+				lines = 4,
 				label = n.body
 			}
 		}
 	}
 
-	return gtkWidget.Box {
+	return gtkWidget.EventBox {
 		class_name = string.format("notification %s", string.lower(n.urgency)),
 		setup = setup,
-		vertical = true,
-		header,
-		gtkGtk.Separator {
-			visible = true
-		},
-		content,
-		#n.actions > 1 and gtkWidget.Box {
-			class_name = "actions",
-			map(n.actions, function(action)
-				return gtkWidget.Button {
-					hexpand = true,
-					on_clicked = function()
-						return n:invoke(action.id)
-					end,
-					gtkWidget.Label {
-						label = action.label,
-						halign = "CENTER",
-						hexpand = true
+		gtkWidget.Box {
+			vertical = true,
+			expand = true,
+			header,
+			gtkGtk.Separator {
+				visible = true
+			},
+			content,
+			#n.actions > 1 and gtkWidget.Box {
+				class_name = "actions",
+				map(n.actions, function(action)
+					return gtkWidget.Button {
+						class_name = "action-button",
+						hexpand = true,
+						on_clicked = function()
+							return n:invoke(action.id)
+						end,
+						gtkWidget.Label {
+							label = action.label,
+							halign = "CENTER",
+							hexpand = true
+						}
 					}
-				}
-			end)
+				end)
+			}
 		}
 	}
 end
@@ -132,6 +138,7 @@ return function(gdkmonitor)
 		class_name = "notifications",
 		gdkmonitor = gdkmonitor,
 		anchor = Anchor.TOP + Anchor.RIGHT,
+		exclusivity = "EXCLUSIVE",
 		gtkWidget.Box {
 			vertical = true,
 			notif_map()

@@ -32,7 +32,7 @@ return function()
 			},
 			gtkWidget.Slider {
 				class_name = bind(speaker, "mute"):as(function(m)
-					return "speaker-slider" .. (m and " muted" or "")
+					return "volume-slider" .. (m and " muted" or "")
 				end),
 				hexpand = true,
 				value = bind(speaker, "volume"),
@@ -41,6 +41,7 @@ return function()
 				end
 			},
 			gtkWidget.Label {
+				class_name = "volume-value",
 				width_chars = 4,
 				label = bind(speaker, "volume"):as(function(v)
 					return tostring(math.floor(v * 100)) .. "%"
@@ -48,7 +49,7 @@ return function()
 			}
 		},
 		gtkWidget.Box {
-			class_name = "speaker",
+			class_name = "microphone",
 			spacing = 10,
 			hexpand = true,
 			gtkWidget.Button {
@@ -66,7 +67,7 @@ return function()
 			},
 			gtkWidget.Slider {
 				class_name = bind(microphone, "mute"):as(function(m)
-					return "microphone-slider" .. (m and " muted" or "")
+					return "volume-slider" .. (m and " muted" or "")
 				end),
 				hexpand = true,
 				value = bind(microphone, "volume"),
@@ -75,6 +76,7 @@ return function()
 				end
 			},
 			gtkWidget.Label {
+				class_name = "volume-value",
 				width_chars = 4,
 				label = bind(microphone, "volume"):as(function(v)
 					return tostring(math.floor(v * 100)) .. "%"

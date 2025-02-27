@@ -10,7 +10,7 @@ local instance = nil
 local function new()
 	local ret = {}
 
-	local volume_widget = wibox.widget {
+	local speaker_widget = wibox.widget {
 		layout = wibox.layout.fixed.horizontal,
 		fill_space = true,
 		spacing = dpi(20),
@@ -42,40 +42,40 @@ local function new()
 		}
 	}
 
-	local volume_icon = volume_widget:get_children_by_id("icon")[1]
-	local volume_slider = volume_widget:get_children_by_id("slider")[1]
-	local volume_value = volume_widget:get_children_by_id("value")[1]
+	local speaker_icon = speaker_widget:get_children_by_id("icon")[1]
+	local speaker_slider = speaker_widget:get_children_by_id("slider")[1]
+	local speaker_value = speaker_widget:get_children_by_id("value")[1]
 
-	audio_daemon:connect_signal("vol::value", function(_, val)
-		volume_slider:set_value(tonumber(val)/5)
-		volume_value:set_markup(val .. "%")
+	audio_daemon:connect_signal("sink::value", function(_, _, val)
+		speaker_slider:set_value(tonumber(val)/5)
+		speaker_value:set_markup(val .. "%")
 	end)
 
-	audio_daemon:connect_signal("vol::mute", function(_, mute)
+	audio_daemon:connect_signal("sink::mute", function(_, _, mute)
 		if mute then
-			volume_icon:set_markup(text_icons.vol_off)
-			volume_slider:set_bar_active_color(beautiful.fg_alt)
-			volume_slider:set_handle_color(beautiful.fg_alt)
+			speaker_icon:set_markup(text_icons.vol_off)
+			speaker_slider:set_bar_active_color(beautiful.fg_alt)
+			speaker_slider:set_handle_color(beautiful.fg_alt)
 		else
-			volume_icon:set_markup(text_icons.vol_on)
-			volume_slider:set_bar_active_color(beautiful.accent)
-			volume_slider:set_handle_color(beautiful.accent)
+			speaker_icon:set_markup(text_icons.vol_on)
+			speaker_slider:set_bar_active_color(beautiful.accent)
+			speaker_slider:set_handle_color(beautiful.accent)
 		end
 	end)
 
-	volume_slider:connect_signal("property::value", function(_, new_value)
-		volume_value:set_markup(tostring(new_value*5) .. "%")
-		audio_daemon:vol_set_value(new_value*5)
+	speaker_slider:connect_signal("property::value", function(_, new_value)
+		speaker_value:set_markup(tostring(new_value*5) .. "%")
+		audio_daemon:set_sink_value("@DEFAULT_SINK@", new_value*5)
 	end)
 
-	volume_icon:buttons {
+	speaker_icon:buttons {
 		awful.button({}, 1, function()
-			audio_daemon:vol_toggle_mute()
-			audio_daemon:vol_get_data()
+			audio_daemon:toggle_sink_mute("@DEFAULT_SINK@")
+			audio_daemon:get_sink_data("@DEFAULT_SINK@")
 		end)
 	}
 
-	local micro_widget = wibox.widget {
+	local microphone_widget = wibox.widget {
 		layout = wibox.layout.fixed.horizontal,
 		fill_space = true,
 		spacing = dpi(20),
@@ -107,36 +107,36 @@ local function new()
 		}
 	}
 
-	local micro_icon = micro_widget:get_children_by_id("icon")[1]
-	local micro_slider = micro_widget:get_children_by_id("slider")[1]
-	local micro_value = micro_widget:get_children_by_id("value")[1]
+	local microphone_icon = microphone_widget:get_children_by_id("icon")[1]
+	local microphone_slider = microphone_widget:get_children_by_id("slider")[1]
+	local microphone_value = microphone_widget:get_children_by_id("value")[1]
 
-	audio_daemon:connect_signal("mic::value", function(_, val)
-		micro_slider:set_value(tonumber(val)/5)
-		micro_value:set_markup(val .. "%")
+	audio_daemon:connect_signal("source::value", function(_, _, val)
+		microphone_slider:set_value(tonumber(val)/5)
+		microphone_value:set_markup(val .. "%")
 	end)
 
-	audio_daemon:connect_signal("mic::mute", function(_, mute)
+	audio_daemon:connect_signal("source::mute", function(_, _, mute)
 		if mute then
-			micro_icon:set_markup(text_icons.mic_off)
-			micro_slider:set_bar_active_color(beautiful.fg_alt)
-			micro_slider:set_handle_color(beautiful.fg_alt)
+			microphone_icon:set_markup(text_icons.mic_off)
+			microphone_slider:set_bar_active_color(beautiful.fg_alt)
+			microphone_slider:set_handle_color(beautiful.fg_alt)
 		else
-			micro_icon:set_markup(text_icons.mic_on)
-			micro_slider:set_bar_active_color(beautiful.accent)
-			micro_slider:set_handle_color(beautiful.accent)
+			microphone_icon:set_markup(text_icons.mic_on)
+			microphone_slider:set_bar_active_color(beautiful.accent)
+			microphone_slider:set_handle_color(beautiful.accent)
 		end
 	end)
 
-	micro_slider:connect_signal("property::value", function(_, new_value)
-		micro_value:set_markup(tostring(new_value*5) .. "%")
-		audio_daemon:mic_set_value(new_value*5)
+	microphone_slider:connect_signal("property::value", function(_, new_value)
+		microphone_value:set_markup(tostring(new_value*5) .. "%")
+		audio_daemon:set_source_value("@DEFAULT_SOURCE@", new_value*5)
 	end)
 
-	micro_icon:buttons {
+	microphone_icon:buttons {
 		awful.button({}, 1, function()
-			audio_daemon:mic_toggle_mute()
-			audio_daemon:mic_get_data()
+			audio_daemon:toggle_source_mute("@DEFAULT_SOURCE@")
+			audio_daemon:get_source_data("@DEFAULT_SOURCE@")
 		end)
 	}
 
@@ -153,8 +153,8 @@ local function new()
 			},
 			{
 				layout = wibox.layout.fixed.vertical,
-				volume_widget,
-				micro_widget
+				speaker_widget,
+				microphone_widget
 			}
 		}
 	}

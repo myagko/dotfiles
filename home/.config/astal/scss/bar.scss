@@ -9,8 +9,7 @@ window.bar {
   border-top: 1px solid $bg-urg;
   background-color: $bg;
   color: $fg;
-  font-size: 1.1em;
-  font-weight: bold;
+  font-size: 13pt;
 
   label {
     margin: 0 10px;
@@ -56,11 +55,11 @@ window.bar {
         color: $fg;
         background-color: color.adjust($fg, $alpha: -0.8)
       }
-    }
 
-    .workspace.focused {
-      color: $bg;
-      background-color: $ac;
+      &.focused {
+        color: $bg;
+        background-color: $ac;
+      }
     }
   }
 
@@ -79,11 +78,11 @@ window.bar {
         color: $fg;
         background-color: color.adjust($fg, $alpha: -0.8)
       }
-    }
 
-    .client.focused {
-      color: $fg;
-      border-bottom: 2px solid $ac;
+      &.focused {
+        color: $fg;
+        border-bottom: 2px solid $ac;
+      }
     }
   }
 

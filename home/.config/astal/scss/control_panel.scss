@@ -13,15 +13,6 @@ window.control-panel {
     margin: 7px;
     padding: 15px;
 
-    label {
-      font-size: 13pt;
-      color: $fg;
-    }
-
-    //separator {
-    //  background-color: #ff0000;
-    //}
-
     .notification-list {
       scrollable > viewport {
         all: unset;
@@ -31,30 +22,32 @@ window.control-panel {
         .title {
           color: $fg;
           padding-left: 8px;
+          font-size: 13pt;
         }
 
         .clear-button {
           all: unset;
           color: $fg;
           background-color: transparent;
-          padding: 8px;
+          padding: 10px;
           transition: 200ms;
+          font-size: 13pt;
 
           &:hover {
-            color: $fg;
-            background-color: color.adjust($fg, $alpha: -0.8);
+            color: $bg;
+            background-color: $ac;
           }
 
           &:active {
-            color: $fg;
-            background-color: color.adjust($fg, $alpha: -0.7);
+            color: $bg;
+            background-color: color.adjust($ac, $alpha: -0.4);
           }
         }
       }
 
       .empty-massage {
         label {
-          font-size: 18pt;
+          font-size: 17pt;
           color: color.adjust($fg, $alpha: -0.5);
         }
       }
@@ -76,14 +69,20 @@ window.control-panel {
           }
 
           .dismiss-button {
+            all: unset;
             min-width: 0;
             min-height: 0;
+            color: $fg;
+            background-color: transparent;
+            padding: 4px;
+            transition: 200ms;
+
+            &:hover {
+              color: $bg;
+              background-color: $ac;
+            }
           }
         }
-
-        //separator {
-        //  background-color: gtkalpha(#ff0000, .1);
-        //}
 
         .content {
           margin-top: 5px;
@@ -98,19 +97,29 @@ window.control-panel {
           }
 
           .image {
-            border: 1px solid gtkalpha($fg, .02);
             min-width: 80px;
             min-height: 80px;
             background-size: cover;
             background-position: center;
+            margin-right: 5px;
           }
         }
 
         .actions {
-          margin-top: 5px;
+          margin-top: 10px;
 
-          button {
+          .action-button {
+            all: unset;
+            color: $fg;
+            background-color: $bg-urg;
             margin: 0 3px;
+            padding: 5px;
+            transition: 200ms;
+
+            &:hover {
+              color: $bg;
+              background-color: $ac;
+            }
 
             &:first-child {
               margin-left: 0;
@@ -127,28 +136,64 @@ window.control-panel {
     .audio-sliders {
       padding: 15px;
       background-color: $bg-alt;
+      
+      .speaker, .microphone {
 
-      .mute-button {
-        all: unset;
-        padding: 5px;
-        transition: 200ms;
+        .volume-slider {
+          trough {
+            background-color: $bg-urg;
+            border-radius: 0;
 
-        label {
+            highlight {
+              background-color: $ac;
+              border-radius: 0;
+              transition: 200ms;
+            }
+
+            slider {
+              background-color: $ac;
+              border-color: $bg-alt;
+              border-radius: 0;
+              border-width: 2px;
+              transition: 200ms;
+            }
+          }
+
+          &.muted {
+            trough highlight, trough slider {
+              background-color: $fg-alt;
+            }
+          }
+        }
+
+        .mute-button {
+          all: unset;
+          color: $fg;
+          background-color: transparent;
+          padding: 5px;
           transition: 200ms;
+
+          label {
+            transition: 200ms;
+          }
+
+          &:hover {
+            color: $fg;
+            background-color: color.adjust($fg, $alpha: -0.8);
+          }
+
+          &:active {
+            color: $fg;
+            background-color: color.adjust($fg, $alpha: -0.7);
+          }
+
+          &.muted > label {
+            color: color.adjust($fg, $alpha: -0.5);
+          }
         }
 
-        &:hover {
+        .volume-value {
           color: $fg;
-          background-color: color.adjust($fg, $alpha: -0.8);
-        }
-
-        &:active {
-          color: $fg;
-          background-color: color.adjust($fg, $alpha: -0.7);
-        }
-
-        &.muted > label {
-          color: color.adjust($fg, $alpha: -0.5);
         }
       }
     }

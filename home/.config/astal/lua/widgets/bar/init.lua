@@ -34,7 +34,7 @@ local function Workspaces()
 			return map(ws, function(w)
 				return not (w.id >= -99 and w.id <= -2) and gtkWidget.Button {
 					class_name = bind(hyprland, "focused-workspace"):as(function(fw)
-						return "workspace " .. (fw == w and "focused" or "")
+						return "workspace" .. (fw == w and " focused" or "")
 					end),
 					on_clicked = function()
 						if w ~= hyprland:get_focused_workspace() then
@@ -59,7 +59,7 @@ local function Clients()
 			return map(cs, function(c)
 				return gtkWidget.Button {
 					class_name = bind(hyprland, "focused-client"):as(function(fc)
-						return "client " .. (fc == c and "focused" or "" )
+						return "client" .. (fc == c and " focused" or "" )
 					end),
 					visible = bind(hyprland, "focused-workspace"):as(function(fw)
 						return fw == c:get_workspace()
@@ -84,9 +84,10 @@ local function Clients()
 					gtkWidget.Label {
 						max_width_chars = 15,
 						ellipsize = "END",
-						label = bind(c, "title"):as(function(t)
-							return (t ~= nil and t ~= "") and t or "untitled"
-						end)
+						label = c:get_initial_class() or "none",
+						--label = bind(c, "title"):as(function(t)
+						--	return (t ~= nil and t ~= "") and t or "untitled"
+						--end)
 					}
 				}
 			end)
@@ -190,16 +191,15 @@ return function(gdkmonitor)
 		gdkmonitor = gdkmonitor,
 		anchor = Anchor.BOTTOM + Anchor.LEFT + Anchor.RIGHT,
 		exclusivity = "EXCLUSIVE",
-		gtkWidget.CenterBox {
+		gtkWidget.Box {
 			class_name = "mainbox",
 			spacing = 6,
 			gtkWidget.Box {
+				hexpand = true,
 				halign = "START",
 				spacing = 6,
 				LauncherButton(),
 				Workspaces(),
-			},
-			gtkWidget.Box {
 				Clients()
 			},
 			gtkWidget.Box {
