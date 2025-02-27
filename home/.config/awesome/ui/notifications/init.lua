@@ -187,7 +187,7 @@ local function create_notification_popup(n)
 		maximum_height = dpi(280),
 		bg = beautiful.bg,
 		fg = beautiful.fg,
-		border_color = n.urgency == "critical" and beautiful.red or beautiful.border_color,
+		border_color = beautiful.border_color,
 		border_width = beautiful.border_width,
 		placement = function() return { 0, 0 } end,
 		widget = main_widget
