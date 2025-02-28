@@ -1,0 +1,6 @@
+[Nemo Action]
+Name=Set as wallpaper
+Exec=<"change_wallpapers.sh" %F>
+Terminal=false
+Selection=s
+Extensions=png;jpg;jpeg;

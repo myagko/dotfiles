@@ -1,0 +1,26 @@
+[font]
+size = 11.5
+
+[font.bold]
+family = "JetBrains Mono NL Slashed"
+style = "Regular"
+
+[font.bold_italic]
+family = "JetBrains Mono NL Slashed"
+style = "Regular"
+
+[font.italic]
+family = "JetBrains Mono NL Slashed"
+style = "Regular"
+
+[font.normal]
+family = "JetBrains Mono NL Slashed"
+style = "Regular"
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+[font.offset]
+x = 0
+y = 2

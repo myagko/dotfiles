@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Homepage</title>
+        <link rel="stylesheet" href="index.css">
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+    </head>
+    <body>
+        <div id="main-container">
+            <div id="search">
+                <div id="search-engine-cont">
+                    <select name="search-engine" class="button" id="search-engine-select">
+                        <option value="google">Google</option>
+                        <option value="bing">Bing</option>
+                        <option value="ddg" selected="selected">DuckDuckGo</option>
+                    </select>
+                </div>
+                <div id="search-input-cont">
+                    <input id="search-input" placeholder="Enter search term here" autofocus/>
+                </div>
+                <div id="search-button-cont">
+                    <button class="button" id="search-button" onclick="doSearch()">Search</button>
+                </div>
+            </div>
+            <div id="links">
+                <div class="link-group" id="general">
+                    <ul>
+                        <li class="link-group-title">General</li>
+                        <li><a href="https://www.gmail.com"><span class="link-text">Gmail</span></a></li>
+                        <li><a href="https://wttr.in"><span class="link-text">wttr.in</span></a></li>
+                        <li><a href="https://translate.google.com/?sl=en&tl=ru&op=translate"><span class="link-text">Translate</span></a></li>
+                        <li><a href="https://en.wikipedia.org"><span class="link-text">Wikipedia</span></a></li>
+                    </ul>
+                </div>
+                <div class="link-group" id="dev">
+                    <ul>
+                        <li class="link-group-title">Dev</li>
+                        <li><a href="https://www.github.com"><span class="link-text">GitHub</span></a></li>
+                        <li><a href="https://www.stackoverflow.com"><span class="link-text">Stack Overflow</span></a></li>
+                        <li><a href="https://wiki.archlinux.org"><span class="link-text">Arch Wiki</span></a></li>
+                        <li><a href="https://developer.mozilla.org"><span class="link-text">MDN Web Docs</span></a></li>
+                    </ul>
+                </div>
+                <div class="link-group" id="media">
+                    <ul>
+                        <li class="link-group-title">Media</li>
+                        <li><a href="https://www.youtube.com"><span class="link-text">YouTube</span></a></li>
+                        <li><a href="https://www.soundcloud.com"><span class="link-text">SoundCloud</span></a></li>
+                        <li><a href="https://open.spotify.com"><span class="link-text">Spotify Web</span></a></li>
+                        <li><a href="https://www.bandcamp.com"><span class="link-text">Bandcamp</span></a></li>
+                    </ul>
+                </div>
+                <div class="link-group" id="socials">
+                    <ul>
+                        <li class="link-group-title">Socials</li>
+                        <li><a href="https://web.telegram.org"><span class="link-text">Telegram</span></a></li>
+                        <li><a href="https://www.reddit.com"><span class="link-text">Reddit</span></a></li>
+                        <li><a href="https://www.discord.com"><span class="link-text">Discord</span></a></li>
+                        <li><a href="https://www.vk.com"><span class="link-text">VK</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="index.js"></script>
+</html>
