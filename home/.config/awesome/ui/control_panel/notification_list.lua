@@ -273,7 +273,7 @@ local function new()
 					layout = wibox.layout.align.horizontal,
 					{
 						widget = wibox.container.margin,
-						margins = dpi(5),
+						margins = { left = dpi(7) },
 						{
 							layout = wibox.layout.fixed.horizontal,
 							spacing = dpi(10),

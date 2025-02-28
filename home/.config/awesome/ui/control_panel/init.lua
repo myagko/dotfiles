@@ -41,7 +41,7 @@ function control_panel:setup_controls()
 		audio_sliders.main_widget,
 		wibox.widget {
 			layout = wibox.layout.flex.horizontal,
-			spacing = dpi(7),
+			spacing = dpi(10),
 			wifi_applet.control_button,
 			bluetooth_applet.control_button
 		}
@@ -84,7 +84,7 @@ local function new()
 		{
 			id = "main_layout",
 			layout = wibox.layout.fixed.vertical,
-			spacing = dpi(7)
+			spacing = dpi(10)
 		}
 	}
 
