@@ -12,6 +12,7 @@ window.bar {
   font-size: 13pt;
 
   label {
+    font-weight: bold;
     margin: 0 10px;
   }
 
@@ -40,10 +41,12 @@ window.bar {
 
   .workspaces  {
     background-color: $bg-alt;
+    border-radius: 5px;
 
     .workspace {
       all: unset;
       background-color: transparent;
+      border-radius: 5px;
       transition: 200ms;
 
       &:hover {
@@ -67,6 +70,7 @@ window.bar {
     .client {
       all: unset;
       background-color: $bg-alt;
+      border-radius: 5px;
       transition: 200ms;
 
       &:hover {
@@ -88,15 +92,13 @@ window.bar {
 
   .systray {
     background-color: $bg-alt;
-
-    label {
-      all: unset;
-    }
+    border-radius: 5px;
 
     .reveal-button, .item {
       all: unset;
       background-color: transparent;
-      padding: 0 8px;
+      border-radius: 5px;
+      padding: 0 6px;
       transition: 200ms;
 
       &:hover {
@@ -113,13 +115,17 @@ window.bar {
 
   .kblayout {
     background-color: $bg-alt;
+    border-radius: 5px;
   }
 
   .time {
     background-color: $bg-alt;
+    border-radius: 5px;
   }
 
   .launcher-button, .control-panel-button {
+    border-radius: 5px;
+    padding: 0 7px;
     transition: 200ms;
 
     label {

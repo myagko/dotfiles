@@ -5,7 +5,7 @@ local astal = require("astal")
 local App = require("astal.gtk3").App
 local src = require("lua.lib").src
 local Bar = require("lua.widgets.bar")
-local NotificationPopups = require("lua.widgets.notification_popups")
+local Notifications = require("lua.widgets.notifications")
 local Launcher = require("lua.widgets.launcher")
 local ControlPanel = require("lua.widgets.control_panel")
 
@@ -20,7 +20,7 @@ App:start {
 	main = function()
 		for _, monitor in pairs(App.monitors) do
 			Bar(monitor)
-			NotificationPopups(monitor)
+			Notifications(monitor)
 		end
 		Launcher()
 		ControlPanel()

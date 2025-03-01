@@ -2,7 +2,6 @@ local astal = require("astal")
 local bind = astal.bind
 local AstalWp = astal.require("AstalWp")
 local Widget = require("astal.gtk3").Widget
-local text_icons = require("lua.text_icons")
 
 local WpAudio = AstalWp.get_default():get_audio()
 local speaker = WpAudio:get_default_speaker()
@@ -24,9 +23,10 @@ return function()
 				on_clicked = function()
 					speaker:set_mute(not speaker:get_mute())
 				end,
-				Widget.Label {
-					label = bind(speaker, "mute"):as(function(m)
-						return m and text_icons.vol_off or text_icons.vol_on
+				Widget.Icon {
+					icon = bind(speaker, "mute"):as(function(m)
+						return m and "audio-volume-muted-symbolic"
+							or "audio-volume-high-symbolic"
 					end)
 				}
 			},
@@ -59,9 +59,10 @@ return function()
 				on_clicked = function()
 					microphone:set_mute(not microphone:get_mute())
 				end,
-				Widget.Label {
-					label = bind(microphone, "mute"):as(function(m)
-						return m and text_icons.mic_off or text_icons.mic_on
+				Widget.Icon {
+					icon = bind(microphone, "mute"):as(function(m)
+						return m and "audio-input-microphone-muted-symbolic"
+							or "audio-input-microphone-high-symbolic"
 					end)
 				}
 			},

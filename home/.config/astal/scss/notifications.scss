@@ -14,6 +14,7 @@ window.notifications {
     min-width: 400px;
     background-color: $bg;
     border: 1px solid $bg-urg;
+    border-radius: 10px;
     padding: 10px;
     margin-right: 25px;
     margin-top: 10px;
@@ -23,10 +24,8 @@ window.notifications {
     }
 
     &.critical {
-      .header {
-        .app-name {
-          color: gtkalpha($error, .8);
-        }
+      .header .app-name {
+        color: $ac-red;
       }
     }
 
@@ -43,9 +42,19 @@ window.notifications {
       }
 
       .dismiss-button {
+        all: unset;
         min-width: 0;
         min-height: 0;
+        color: $ac-red;
+        background-color: transparent;
         padding: 3px;
+        border-radius: 5px;
+        transition: 200ms;
+
+        &:hover {
+          color: $bg;
+          background-color: $ac-red;
+        }
       }
     }
 
@@ -79,6 +88,7 @@ window.notifications {
         background-color: $bg-alt;
         margin: 0 3px;
         padding: 5px;
+        border-radius: 5px;
         transition: 200ms;
 
         &:hover {

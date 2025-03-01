@@ -4,8 +4,8 @@ local Astal = require("astal.gtk3").Astal
 local Gdk = require("astal.gtk3").Gdk
 local Gtk = require("astal.gtk3").Gtk
 
-local NotificationList = require("lua.widgets.notification_list")
-local AudioSliders = require("lua.widgets.audio_sliders")
+local NotificationList = require("lua.widgets.control_panel.notification_list")
+local AudioSliders = require("lua.widgets.control_panel.audio_sliders")
 
 local function hide()
 	local panel = App:get_window("Control-panel")

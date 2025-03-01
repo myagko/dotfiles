@@ -8,7 +8,6 @@ local App = require("astal.gtk3").App
 local Widget = require("astal.gtk3").Widget
 local Astal = require("astal.gtk3").Astal
 local map = require("lua.lib").map
-local text_icons = require("lua.text_icons")
 
 local hyprland = AstalHyprland.get_default()
 local tray = AstalTray.get_default()
@@ -20,8 +19,8 @@ local function LauncherButton()
 			local launcher = App:get_window("Launcher")
 			if launcher then launcher:show() end
 		end,
-		Widget.Label {
-			label = text_icons.menu
+		Widget.Icon {
+			icon = "search-symbolic"
 		}
 	}
 end
@@ -84,10 +83,7 @@ local function Clients()
 					Widget.Label {
 						max_width_chars = 15,
 						ellipsize = "END",
-						label = c:get_initial_class() or "none",
-						--label = bind(c, "title"):as(function(t)
-						--	return (t ~= nil and t ~= "") and t or "untitled"
-						--end)
+						label = c:get_initial_class() or "none"
 					}
 				}
 			end)
@@ -123,9 +119,9 @@ local function SysTray()
 			on_clicked = function()
 				tray_visibility:set(not tray_visibility:get())
 			end,
-			Widget.Label {
-				label = bind(tray_visibility):as(function(v)
-					return v and text_icons.arrow_right or text_icons.arrow_left
+			Widget.Icon {
+				icon = bind(tray_visibility):as(function(v)
+					return v and "arrow-right" or "arrow-left"
 				end)
 			}
 		},
@@ -177,8 +173,8 @@ local function ControlPanelButton()
 			local panel = App:get_window("Control-panel")
 			if panel then panel:show() end
 		end,
-		Widget.Label {
-			label = text_icons.sliders
+		Widget.Icon {
+			icon = "multimedia-equalizer-symbolic"
 		}
 	}
 end
@@ -207,7 +203,7 @@ return function(gdkmonitor)
 				spacing = 6,
 				SysTray(),
 				KbLayout(),
-				Time("%e %b, %a - %H:%M"),
+				Time("%d %b, %a - %H:%M"),
 				ControlPanelButton()
 			}
 		}

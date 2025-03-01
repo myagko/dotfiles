@@ -5,7 +5,7 @@ local Widget = require("astal.gtk3").Widget
 local Astal = require("astal.gtk3").Astal
 local varmap = require("lua.lib").varmap
 
-local Notification = require("lua.widgets.notification")
+local Notification = require("lua.widgets.notifications.notification")
 local notifd = AstalNotifd.get_default()
 local TIMEOUT_DELAY = 5000
 

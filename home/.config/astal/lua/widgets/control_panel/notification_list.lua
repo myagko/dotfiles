@@ -3,9 +3,8 @@ local Variable = astal.Variable
 local AstalNotifd = astal.require("AstalNotifd")
 local Widget = require("astal.gtk3").Widget
 local varmap = require("lua.lib").varmap
-local text_icons = require("lua.text_icons")
 
-local Notification = require("lua.widgets.notification")
+local Notification = require("lua.widgets.notifications.notification")
 local notifd = AstalNotifd.get_default()
 
 return function()
@@ -49,8 +48,8 @@ return function()
 							n:dismiss()
 						end
 					end,
-					Widget.Label {
-						label = text_icons.trash
+					Widget.Icon {
+						icon = "trash-symbolic"
 					}
 				}
 			}
