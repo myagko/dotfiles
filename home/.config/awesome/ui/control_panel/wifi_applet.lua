@@ -10,7 +10,7 @@ local network_daemon = require("daemons.network")
 local wifi_applet = {}
 local instance = nil
 
-local function create_ap_widget(self, access_point)
+local function create_ap_widget(access_point, applet)
 	local name = wibox.widget {
 		widget = wibox.widget.textbox,
 		markup = access_point:is_active() and access_point.ssid .. " " .. text_icons.check
@@ -34,7 +34,7 @@ local function create_ap_widget(self, access_point)
 			margins = dpi(10),
 			buttons = {
 				awful.button({}, 1, function()
-					self:open_ap_menu(access_point)
+					applet:open_ap_menu(access_point)
 				end)
 			},
 			{
@@ -143,7 +143,7 @@ function wifi_applet:on_scan_success(access_points)
 	aps_layout:reset()
 
 	for _, access_point in pairs(access_points) do
-		local new_ap_widget = create_ap_widget(self, access_point)
+		local new_ap_widget = create_ap_widget(access_point, self)
 		table.insert(self.ap_widgets, new_ap_widget)
 
 		if access_point:is_active() then
@@ -450,7 +450,7 @@ local function new()
 		widget = wibox.container.background,
 		{
 			layout = wibox.layout.fixed.vertical,
-			spacing = dpi(20),
+			spacing = dpi(10),
 			{
 				widget = wibox.container.background,
 				forced_height = dpi(400),

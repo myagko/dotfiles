@@ -342,7 +342,7 @@ local function new()
 		widget = wibox.container.background,
 		{
 			layout = wibox.layout.fixed.vertical,
-			spacing = dpi(20),
+			spacing = dpi(10),
 			{
 				widget = wibox.container.background,
 				forced_height = dpi(400),
