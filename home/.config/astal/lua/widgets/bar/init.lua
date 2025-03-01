@@ -9,9 +9,6 @@ local Widget = require("astal.gtk3").Widget
 local Astal = require("astal.gtk3").Astal
 local map = require("lua.lib").map
 
-local hyprland = AstalHyprland.get_default()
-local tray = AstalTray.get_default()
-
 local function LauncherButton()
 	return Widget.Button {
 		class_name = "launcher-button",
@@ -26,6 +23,8 @@ local function LauncherButton()
 end
 
 local function Workspaces()
+	local hyprland = AstalHyprland.get_default()
+
 	return Widget.Box {
 		class_name = "workspaces",
 		bind(hyprland, "workspaces"):as(function(ws)
@@ -50,6 +49,8 @@ local function Workspaces()
 end
 
 local function Clients()
+	local hyprland = AstalHyprland.get_default()
+
 	return Widget.Box {
 		class_name = "clients",
 		spacing = 6,
@@ -92,6 +93,7 @@ local function Clients()
 end
 
 local function KbLayout()
+	local hyprland = AstalHyprland.get_default()
 	local layout_name = Variable("En")
 
 	return Widget.Box {
@@ -110,6 +112,7 @@ local function KbLayout()
 end
 
 local function SysTray()
+	local tray = AstalTray.get_default()
 	local tray_visibility = Variable()
 
 	return Widget.Box {

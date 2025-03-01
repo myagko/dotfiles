@@ -3,11 +3,11 @@ local bind = astal.bind
 local AstalWp = astal.require("AstalWp")
 local Widget = require("astal.gtk3").Widget
 
-local WpAudio = AstalWp.get_default():get_audio()
-local speaker = WpAudio:get_default_speaker()
-local microphone = WpAudio:get_default_microphone()
-
 return function()
+	local WpAudio = AstalWp.get_default():get_audio()
+	local speaker = WpAudio:get_default_speaker()
+	local microphone = WpAudio:get_default_microphone()
+
 	return Widget.Box {
 		class_name = "audio-sliders",
 		vertical = true,

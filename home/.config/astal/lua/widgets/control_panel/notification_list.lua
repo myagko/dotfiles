@@ -5,9 +5,9 @@ local Widget = require("astal.gtk3").Widget
 local varmap = require("lua.lib").varmap
 
 local Notification = require("lua.widgets.notifications.notification")
-local notifd = AstalNotifd.get_default()
 
 return function()
+	local notifd = AstalNotifd.get_default()
 	local notif_map = varmap({})
 	local notif_count = Variable(#notifd:get_notifications())
 

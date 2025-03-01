@@ -6,10 +6,10 @@ local Astal = require("astal.gtk3").Astal
 local varmap = require("lua.lib").varmap
 
 local Notification = require("lua.widgets.notifications.notification")
-local notifd = AstalNotifd.get_default()
-local TIMEOUT_DELAY = 5000
 
 return function(gdkmonitor)
+	local notifd = AstalNotifd.get_default()
+	local TIMEOUT_DELAY = 5000
 	local notif_map = varmap({})
 
 	notifd.on_notified = function(_, id)
