@@ -1,0 +1,28 @@
+[ColorEffects:Inactive]
+ChangeSelectionColor = true
+
+
+[Colors:Button]
+BackgroundNormal     = #171A1F
+ForegroundNormal     = #D9E2F2
+
+
+[Colors:Selection]
+BackgroundNormal     = #7AC9E8
+ForegroundNormal     = 0
+
+
+[Colors:View]
+BackgroundAlternate  = #171A1F
+BackgroundNormal     = #24272D
+ForegroundLink       = #7098E9
+ForegroundNormal     = #D9E2F2
+
+
+[Colors:Window]
+BackgroundNormal     = #171A1F
+ForegroundNormal     = #D9E2F2
+
+
+[General]
+Name                 = Haven

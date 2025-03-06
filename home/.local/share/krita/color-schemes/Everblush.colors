@@ -1,0 +1,28 @@
+[ColorEffects:Inactive]
+ChangeSelectionColor = true
+
+
+[Colors:Button]
+BackgroundNormal     = #141B1E
+ForegroundNormal     = #DADADA
+
+
+[Colors:Selection]
+BackgroundNormal     = #6CBFBF
+ForegroundNormal     = 0
+
+
+[Colors:View]
+BackgroundAlternate  = #141B1E
+BackgroundNormal     = #21282B
+ForegroundLink       = #67B0E8
+ForegroundNormal     = #DADADA
+
+
+[Colors:Window]
+BackgroundNormal     = #141B1E
+ForegroundNormal     = #DADADA
+
+
+[General]
+Name                 = Everblush
