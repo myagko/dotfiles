@@ -253,14 +253,14 @@ local function new()
 
 	ret.main_widget = wibox.widget {
 		widget = wibox.container.margin,
-		forced_width = dpi(290) + dpi(55) + dpi(10)*3,
-		margins = dpi(10),
+		forced_width = dpi(290) + dpi(55) + dpi(8)*3,
+		margins = dpi(8),
 		{
 			widget = wibox.container.background,
-			forced_height = dpi(55)*(rows + 1) + dpi(10),
+			forced_height = dpi(55)*(rows + 1) + dpi(8),
 			{
 				layout = wibox.layout.fixed.horizontal,
-				spacing = dpi(10),
+				spacing = dpi(8),
 				fill_space = true,
 				{
 					widget = wibox.container.background,
@@ -284,7 +284,7 @@ local function new()
 				},
 				{
 					layout = wibox.layout.fixed.vertical,
-					spacing = dpi(10),
+					spacing = dpi(8),
 					{
 						widget = wibox.container.background,
 						bg = beautiful.border_color,

@@ -451,7 +451,12 @@ function bar.set_primary(s)
 			},
 			{
 				widget = wibox.container.margin,
-				margins = { top = dpi(7), bottom = dpi(7), left = 0, right = dpi(7) },
+				margins = {
+					top = dpi(7),
+					bottom = dpi(7),
+					left = 0,
+					right = dpi(7)
+				},
 				{
 					layout = wibox.layout.fixed.horizontal,
 					spacing = dpi(7),

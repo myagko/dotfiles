@@ -257,7 +257,7 @@ local function new()
 		forced_width = dpi(450),
 		{
 			layout = wibox.layout.fixed.vertical,
-			spacing = dpi(10),
+			spacing = dpi(8),
 			{
 				widget = wibox.container.background,
 				forced_height = dpi(40),
@@ -285,7 +285,7 @@ local function new()
 						layout = wibox.layout.fixed.horizontal,
 						spacing = beautiful.sep_width,
 						spacing_widget = widgets.separator {
-							margins = { top = 6, bottom = 6 }
+							margins = { top = dpi(6), bottom = dpi(6) }
 						},
 						dnd_button,
 						clear_button
@@ -297,7 +297,7 @@ local function new()
 				layout = wibox.layout.overflow.vertical,
 				scrollbar_enabled = false,
 				step = 80,
-				spacing = dpi(10)
+				spacing = dpi(8)
 			}
 		}
 	}
