@@ -65,6 +65,56 @@ local function create_ap_widget(access_point, self)
 	return ap_widget
 end
 
+local function on_scan_success(access_points, self)
+	local aps_layout = self.main_widget:get_children_by_id("aps_layout")[1]
+	self.ap_widgets = {}
+	aps_layout:reset()
+
+	for _, access_point in pairs(access_points) do
+		local new_ap_widget = create_ap_widget(access_point, self)
+		table.insert(self.ap_widgets, new_ap_widget)
+
+		if access_point == network.wireless:get_active_access_point() then
+			aps_layout:insert(1, new_ap_widget)
+		else
+			aps_layout:add(new_ap_widget)
+		end
+	end
+end
+
+local function on_state_changed(state, self)
+	local aps_layout = self.main_widget:get_children_by_id("aps_layout")[1]
+	local control_button_sep = self.control_button:get_children_by_id("separator")[1]
+	local control_button_label = self.control_button:get_children_by_id("label")[1]
+	local bottombar_toggle_button = self.bottombar:get_children_by_id("toggle_button")[1]
+	self.ap_widgets = {}
+
+	if state then
+		bottombar_toggle_button:set_text(text_icons.switch_on)
+		self.control_button:set_bg(beautiful.ac)
+		self.control_button:set_fg(beautiful.bg)
+		control_button_sep:set_color(beautiful.bg)
+		control_button_label:set_markup("Enabled")
+		aps_layout:reset()
+		aps_layout:add(self.massage_widget)
+		self.massage_widget:set_text(text_icons.wait)
+		gtimer.start_new(5, function()
+			network.wireless:scan_access_points()
+			return false
+		end)
+	else
+		bottombar_toggle_button:set_text(text_icons.switch_off)
+		self.control_button:set_bg(beautiful.bg_alt)
+		self.control_button:set_fg(beautiful.fg)
+		control_button_sep:set_color(beautiful.bg_urg)
+		control_button_label:set_markup("Disabled")
+		aps_layout:reset()
+		aps_layout:add(self.massage_widget)
+		self.massage_widget:set_text("Wifi Disabled")
+		self.passwd_text_input:stop_keygrabber()
+	end
+end
+
 function wifi_applet:open_ap_menu(access_point)
 	local aps_layout = self.main_widget:get_children_by_id("aps_layout")[1]
 	local connect_widget_obscure = self.connect_widget:get_children_by_id("obscure")[1]
@@ -139,56 +189,6 @@ function wifi_applet:refresh()
 	self.ap_widgets = {}
 	self.passwd_text_input:stop_keygrabber()
 	network.wireless:scan_access_points()
-end
-
-local function on_scan_success(access_points, self)
-	local aps_layout = self.main_widget:get_children_by_id("aps_layout")[1]
-	self.ap_widgets = {}
-	aps_layout:reset()
-
-	for _, access_point in pairs(access_points) do
-		local new_ap_widget = create_ap_widget(access_point, self)
-		table.insert(self.ap_widgets, new_ap_widget)
-
-		if access_point == network.wireless:get_active_access_point() then
-			aps_layout:insert(1, new_ap_widget)
-		else
-			aps_layout:add(new_ap_widget)
-		end
-	end
-end
-
-local function on_state_changed(state, self)
-	local aps_layout = self.main_widget:get_children_by_id("aps_layout")[1]
-	local control_button_sep = self.control_button:get_children_by_id("separator")[1]
-	local control_button_label = self.control_button:get_children_by_id("label")[1]
-	local bottombar_toggle_button = self.bottombar:get_children_by_id("toggle_button")[1]
-	self.ap_widgets = {}
-
-	if state then
-		bottombar_toggle_button:set_text(text_icons.switch_on)
-		self.control_button:set_bg(beautiful.ac)
-		self.control_button:set_fg(beautiful.bg)
-		control_button_sep:set_color(beautiful.bg)
-		control_button_label:set_markup("Enabled")
-		aps_layout:reset()
-		aps_layout:add(self.massage_widget)
-		self.massage_widget:set_text(text_icons.wait)
-		gtimer.start_new(5, function()
-			network.wireless:scan_access_points()
-			return false
-		end)
-	else
-		bottombar_toggle_button:set_text(text_icons.switch_off)
-		self.control_button:set_bg(beautiful.bg_alt)
-		self.control_button:set_fg(beautiful.fg)
-		control_button_sep:set_color(beautiful.bg_urg)
-		control_button_label:set_markup("Disabled")
-		aps_layout:reset()
-		aps_layout:add(self.massage_widget)
-		self.massage_widget:set_text("Wifi Disabled")
-		self.passwd_text_input:stop_keygrabber()
-	end
 end
 
 local function new()

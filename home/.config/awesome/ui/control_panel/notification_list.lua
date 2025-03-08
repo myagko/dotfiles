@@ -162,15 +162,28 @@ local function create_notification_widget(n)
 	return widget
 end
 
-function notification_list:update_count()
+local function remove_notification(w, self)
 	local notifs_layout = self.main_widget:get_children_by_id("notifs_layout")[1]
-	local count = self.main_widget:get_children_by_id("count")[1]
-
-	if not self.is_empty then
-		count:set_markup("(" .. #notifs_layout.children .. ")")
-	else
-		count:set_markup("")
+	notifs_layout:remove_widgets(w)
+	if #notifs_layout.children == 0 then
+		notifs_layout:insert(1, self.empty_massage)
+		self.is_empty = true
 	end
+	self:update_count()
+end
+
+local function add_notification(n, self)
+	local notifs_layout = self.main_widget:get_children_by_id("notifs_layout")[1]
+	if #notifs_layout.children == 1 and self.is_empty then
+		notifs_layout:reset()
+		self.is_empty = false
+	end
+	local new_notification_widget = create_notification_widget(n)
+	notifs_layout:insert(1, new_notification_widget)
+	n:connect_signal("destroyed", function()
+		remove_notification(new_notification_widget, self)
+	end)
+	self:update_count()
 end
 
 function notification_list:clear_notifications()
@@ -182,34 +195,14 @@ function notification_list:clear_notifications()
 	naughty.destroy_all_notifications(nil, naughty.notification_closed_reason.silent)
 end
 
-function notification_list:remove_notification(w)
+function notification_list:update_count()
 	local notifs_layout = self.main_widget:get_children_by_id("notifs_layout")[1]
-	notifs_layout:remove_widgets(w)
-
-	if #notifs_layout.children == 0 then
-		notifs_layout:insert(1, self.empty_massage)
-		self.is_empty = true
+	local count = self.main_widget:get_children_by_id("count")[1]
+	if not self.is_empty then
+		count:set_markup("(" .. #notifs_layout.children .. ")")
+	else
+		count:set_markup("")
 	end
-
-	self:update_count()
-end
-
-function notification_list:add_notification(n)
-	local notifs_layout = self.main_widget:get_children_by_id("notifs_layout")[1]
-
-	if #notifs_layout.children == 1 and self.is_empty then
-		notifs_layout:reset()
-		self.is_empty = false
-	end
-
-	local new_notification_widget = create_notification_widget(n)
-	notifs_layout:insert(1, new_notification_widget)
-
-	n:connect_signal("destroyed", function()
-		self:remove_notification(new_notification_widget)
-	end)
-
-	self:update_count()
 end
 
 local function new()
@@ -314,7 +307,7 @@ local function new()
 	notifs_layout:insert(1, ret.empty_massage)
 
 	naughty.connect_signal("request::display", function(n)
-		ret:add_notification(n)
+		add_notification(n, ret)
 	end)
 
 	return ret
