@@ -66,7 +66,7 @@ local function new(args)
 	wp.border_hover = args.border_hover or
 		beautiful.fg_alt or "#ffffff"
 	wp.bg_hover = args.bg_hover or
-		beautiful.accent or "#bcbcbc"
+		beautiful.ac or "#bcbcbc"
 	wp.fg_hover = args.fg_hover or
 		beautiful.bg or "#000000"
 	wp.bg_normal = args.bg_normal or

@@ -58,8 +58,8 @@ local function new()
 			speaker_slider:set_handle_color(beautiful.fg_alt)
 		else
 			speaker_icon:set_markup(text_icons.vol_on)
-			speaker_slider:set_bar_active_color(beautiful.accent)
-			speaker_slider:set_handle_color(beautiful.accent)
+			speaker_slider:set_bar_active_color(beautiful.ac)
+			speaker_slider:set_handle_color(beautiful.ac)
 		end
 	end)
 
@@ -123,8 +123,8 @@ local function new()
 			microphone_slider:set_handle_color(beautiful.fg_alt)
 		else
 			microphone_icon:set_markup(text_icons.mic_on)
-			microphone_slider:set_bar_active_color(beautiful.accent)
-			microphone_slider:set_handle_color(beautiful.accent)
+			microphone_slider:set_bar_active_color(beautiful.ac)
+			microphone_slider:set_handle_color(beautiful.ac)
 		end
 	end)
 

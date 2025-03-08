@@ -81,10 +81,9 @@ theme.bg_alt = "#24272D"
 theme.bg_urg = "#383C43"
 theme.fg_alt = "#686E78"
 theme.fg = "#D9E2F2"
+theme.ac = theme.cyan
 
-theme.accent = theme.cyan
 theme.border_color = theme.bg_urg
-
 theme.sep_width = dpi(1)
 theme.border_width = dpi(1)
 theme.useless_gap = dpi(3)
@@ -92,7 +91,7 @@ theme.useless_gap = dpi(3)
 theme.bg_normal = theme.bg
 theme.fg_normal = theme.fg
 theme.border_color_normal = theme.bg_urg
-theme.border_color_active = theme.bg_urg
+theme.border_color_active = theme.fg_alt
 
 theme.titlebar_bg_normal = theme.bg
 theme.titlebar_bg_focus = theme.bg
@@ -107,7 +106,7 @@ theme.tooltip_border_width = theme.border_width
 theme.tooltip_border_color = theme.border_color
 
 theme.snap_border_width = theme.border_width*4
-theme.snap_bg = theme.accent
+theme.snap_bg = theme.ac
 theme.snapper_gap = dpi(6)
 theme.snap_shape = gshape.rectangle
 
@@ -118,7 +117,7 @@ theme.notification_timeout = 5
 theme.menu_submenu = theme.text_icons.arrow_right .. " "
 theme.menu_bg_normal = theme.bg
 theme.menu_fg_normal = theme.fg
-theme.menu_bg_focus = theme.accent
+theme.menu_bg_focus = theme.ac
 theme.menu_fg_focus = theme.bg
 theme.menu_border_width = theme.border_width
 theme.menu_border_color = theme.border_color

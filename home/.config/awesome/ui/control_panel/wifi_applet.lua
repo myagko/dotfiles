@@ -167,7 +167,7 @@ local function on_state_changed(state, self)
 
 	if state then
 		bottombar_toggle_button:set_text(text_icons.switch_on)
-		self.control_button:set_bg(beautiful.accent)
+		self.control_button:set_bg(beautiful.ac)
 		self.control_button:set_fg(beautiful.bg)
 		control_button_sep:set_color(beautiful.bg)
 		control_button_label:set_markup("Enabled")

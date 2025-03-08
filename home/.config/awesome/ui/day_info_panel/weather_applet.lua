@@ -181,7 +181,7 @@ local function create_hourly(data)
 						forced_height = dpi(40),
 						step_spacing = step_spacing,
 						step_width = step_width,
-						color = beautiful.accent,
+						color = beautiful.ac,
 						background_color = beautiful.bg_alt
 					},
 					{

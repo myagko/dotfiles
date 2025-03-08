@@ -259,7 +259,7 @@ local function taglist(s)
 		t_text.markup = t.index
 
 		if t.selected then
-			t_selection:set_bg(beautiful.accent)
+			t_selection:set_bg(beautiful.ac)
 			t_selection:set_fg(beautiful.bg)
 		elseif #t:clients() > 0 then
 			t_selection:set_bg(beautiful.bg_alt)
@@ -341,7 +341,7 @@ local function tasklist(s)
 				{
 					widget = wibox.container.background,
 					id = "c_selection",
-					bg = beautiful.accent
+					bg = beautiful.ac
 				}
 			}
 		}

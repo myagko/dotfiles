@@ -129,7 +129,7 @@ function launcher:update_entries()
 			}
 
 			if i == self.index_entry then
-				entry_widget:set_bg(beautiful.accent)
+				entry_widget:set_bg(beautiful.ac)
 				entry_widget:set_fg(beautiful.bg)
 			else
 				entry_widget:connect_signal("mouse::enter", function(w)

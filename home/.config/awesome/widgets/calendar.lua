@@ -44,7 +44,7 @@ local function day_widget(day, is_current, is_another_month)
 
 	if is_current then
 		fg_color = beautiful.bg
-		bg_color = beautiful.accent
+		bg_color = beautiful.ac
 	elseif is_another_month then
 		fg_color = beautiful.fg_alt
 		bg_color = beautiful.bg_alt
@@ -224,7 +224,7 @@ local function new(args)
 
 	for _, item in ipairs(hover_items) do
 		item:connect_signal("mouse::enter", function(w)
-			w:set_fg(beautiful.accent)
+			w:set_fg(beautiful.ac)
 		end)
 		item:connect_signal("mouse::leave", function(w)
 			w:set_fg(beautiful.fg)
