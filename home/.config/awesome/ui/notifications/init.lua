@@ -201,23 +201,24 @@ local function create_notification_popup(n)
 	}
 
 	table.insert(n.screen.notifications, popup_widget)
+	return popup_widget
+end
+
+function notifications:display(n)
+	local popup_widget = create_notification_popup(n)
 
 	local pos = get_preffered_position(popup_widget, n.screen)
 	popup_widget:geometry(pos)
 	popup_widget.visible = true
 
+	n:connect_signal("destroyed", function()
+		remove_notification_popup(popup_widget, n.screen)
+	end)
+
 	local display_timeout = beautiful.notification_timeout or 5
 	gtimer.start_new(display_timeout, function()
 		remove_notification_popup(popup_widget, n.screen)
 	end)
-
-	n:connect_signal("destroyed", function()
-		remove_notification_popup(popup_widget, n.screen)
-	end)
-end
-
-function notifications:display(n)
-	create_notification_popup(n)
 end
 
 function notifications:toggle_silent()
