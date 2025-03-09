@@ -346,7 +346,7 @@ local function new()
 		path = "/org/freedesktop/NetworkManager/Settings"
 	}
 
-	ret._private.client_properties_proxy = dbus_proxy.Proxy:new {
+	ret._private.properties_proxy = dbus_proxy.Proxy:new {
 		bus = dbus_proxy.Bus.SYSTEM,
 		name = "org.freedesktop.NetworkManager",
 		interface = "org.freedesktop.DBus.Properties",
@@ -425,7 +425,7 @@ local function new()
 		ret.wireless:emit_signal("access_point_removed", path)
 	end)
 
-	ret._private.client_properties_proxy:connect_signal("PropertiesChanged", function(_, _, props)
+	ret._private.properties_proxy:connect_signal("PropertiesChanged", function(_, _, props)
 		if props.NetworkingEnabled ~= nil then
 			ret:emit_signal("network_state", props.NetworkingEnabled)
 		end
