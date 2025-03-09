@@ -479,7 +479,7 @@ local function new()
 	end)
 
 	network:connect_signal("wireless_state", function(_, state)
-		if network:get_wireless_hardware_state() then
+		if network:get_wireless_hw_state() then
 			on_state_changed(state, ret)
 		end
 	end)

@@ -192,7 +192,7 @@ function network:get_wireless_state()
 	return self._private.client_proxy.WirelessEnabled
 end
 
-function network:get_wireless_hardware_state()
+function network:get_wireless_hw_state()
 	return self._private.client_proxy.WirelessHardwareEnabled
 end
 
@@ -433,7 +433,7 @@ local function new()
 			ret:emit_signal("wireless_state", props.WirelessEnabled)
 		end
 		if props.WirelessHardwareEnabled ~= nil then
-			ret:emit_signal("wireless_hardware_state", props.WirelessHardwareEnabled)
+			ret:emit_signal("wireless_hw_state", props.WirelessHardwareEnabled)
 		end
 	end)
 
@@ -446,9 +446,9 @@ local function new()
 	gtimer.delayed_call(function()
 		ret:emit_signal("network_state", ret:get_network_state())
 		ret:emit_signal("wireless_state", ret:get_wireless_state())
-		ret:emit_signal("wireless_hardware_state", ret:get_wireless_hardware_state())
+		ret:emit_signal("wireless_hw_state", ret:get_wireless_hw_state())
 
-		if ret:get_wireless_hardware_state() and ret:get_wireless_state() then
+		if ret:get_wireless_hw_state() and ret:get_wireless_state() then
 			local active_access_point = ret.wireless:get_active_access_point()
 			if active_access_point then
 				ret.wireless:emit_signal("access_point_connected", active_access_point)

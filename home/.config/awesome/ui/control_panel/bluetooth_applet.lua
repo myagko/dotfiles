@@ -14,29 +14,15 @@ local instance = nil
 local function create_dev_widget(path)
 	local dev = bluetooth:get_device(path)
 
-	local name = wibox.widget {
-		widget = wibox.widget.textbox,
-		markup = dev:get_connected() and dev:get_name() .. " " .. text_icons.check
-			or dev:get_name()
-	}
-
-	local icon = wibox.widget {
-		widget = wibox.widget.textbox,
-		markup = create_markup(dev:get_icon(), { fg = beautiful.fg_alt })
-	}
-
 	local connect_button = widgets.hover_button {
-		markup = "Connect",
 		margins = dpi(5)
 	}
 
 	local pair_button = widgets.hover_button {
-		markup = "Pair",
 		margins = dpi(5)
 	}
 
 	local trust_button = widgets.hover_button {
-		markup = "Trust",
 		margins = dpi(5)
 	}
 
@@ -67,13 +53,27 @@ local function create_dev_widget(path)
 				{
 					widget = wibox.container.constraint,
 					width = dpi(200),
-					name
+					{
+						widget = wibox.widget.textbox,
+						markup = dev:get_connected() and
+							dev:get_name() .. " " .. text_icons.check
+							or dev:get_name()
+					}
 				},
 				nil,
 				{
 					widget = wibox.container.constraint,
 					width = dpi(130),
-					icon
+					{
+						widget = wibox.container.constraint,
+						width = dpi(130),
+						{
+							id = "percentage",
+							widget = wibox.widget.textbox,
+							markup = dev:get_percentage() ~= nil and
+								string.format("%.0f%%", dev:get_percentage()) or ""
+						}
+					}
 				}
 			}
 		}
@@ -136,17 +136,26 @@ local function create_dev_widget(path)
 		end)
 	}
 
-	local function on_update()
-		connect_button:set_text(dev:get_connected() and "Disconnect" or "Connect")
-		pair_button:set_text(dev:get_paired() and "Unpair" or "Pair")
-		trust_button:set_text(dev:get_trusted() and "Untrust" or "Trust")
-	end
-
-	dev:connect_signal("updated", function()
-		on_update()
+	dev:connect_signal("property::connected", function(_, cnd)
+		connect_button:set_text(cnd and "Disconnect" or "Connect")
 	end)
 
-	on_update()
+	dev:connect_signal("property::paired", function(_, prd)
+		pair_button:set_text(prd and "Unpair" or "Pair")
+	end)
+
+	dev:connect_signal("property::trusted", function(_, trd)
+		trust_button:set_text(trd and "Untrust" or "Trust")
+	end)
+
+	connect_button:set_text(dev:get_connected() and "Disconnect" or "Connect")
+	pair_button:set_text(dev:get_paired() and "Unpair" or "Pair")
+	trust_button:set_text(dev:get_trusted() and "Untrust" or "Trust")
+
+	dev:connect_signal("property::percentage", function(_, perc)
+		local perc_textbox = dev_widget_header:get_children_by_id("percentage")[1]
+		perc_textbox:set_markup(perc ~= nil and	string.format("%.0f%%", perc) or "")
+	end)
 
 	return dev_widget
 end
@@ -230,7 +239,7 @@ local function new()
 					forced_width = dpi(150),
 					buttons = {
 						awful.button({}, 1, function()
-							bluetooth:set_powered(not bluetooth:get_powered())
+							bluetooth:set_state(not bluetooth:get_state())
 						end)
 					},
 					{
@@ -271,14 +280,14 @@ local function new()
 	}
 
 	ret.control_button:connect_signal("mouse::enter", function(w)
-		if not bluetooth:get_powered() then
+		if not bluetooth:get_state() then
 			w:set_bg(beautiful.bg_urg)
 			w:get_children_by_id("separator")[1]:set_color(beautiful.fg_alt)
 		end
 	end)
 
 	ret.control_button:connect_signal("mouse::leave", function(w)
-		if not bluetooth:get_powered() then
+		if not bluetooth:get_state() then
 			w:set_bg(beautiful.bg_alt)
 			w:get_children_by_id("separator")[1]:set_color(beautiful.bg_urg)
 		end
@@ -297,7 +306,7 @@ local function new()
 					forced_height = dpi(55),
 					buttons = {
 						awful.button({}, 1, function()
-							bluetooth:set_powered(not bluetooth:get_powered())
+							bluetooth:set_state(not bluetooth:get_state())
 						end)
 					}
 				}
@@ -378,11 +387,11 @@ local function new()
 		remove_device(path, ret)
 	end)
 
-	bluetooth:connect_signal("property::powered", function(_, powered)
-		on_state_changed(powered, ret)
+	bluetooth:connect_signal("state", function(_, state)
+		on_state_changed(state, ret)
 	end)
 
-	on_state_changed(bluetooth:get_powered(), ret)
+	on_state_changed(bluetooth:get_state(), ret)
 
 	return ret
 end

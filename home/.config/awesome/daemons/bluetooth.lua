@@ -21,7 +21,14 @@ local function create_device_object(path)
 		path = path
 	}
 
-	device_object._private.device_properties_proxy = dbus_proxy.Proxy:new {
+	device_object._private.battery_proxy = dbus_proxy.Proxy:new {
+		bus = dbus_proxy.Bus.SYSTEM,
+		name = "org.bluez",
+		interface = "org.bluez.Battery1",
+		path = path
+	}
+
+	device_object._private.properties_proxy = dbus_proxy.Proxy:new {
 		bus = dbus_proxy.Bus.SYSTEM,
 		name = "org.bluez",
 		interface = "org.freedesktop.DBus.Properties",
@@ -29,9 +36,7 @@ local function create_device_object(path)
 	}
 
 	if device_object._private.device_proxy.Name ~= "" and device_object._private.device_proxy.Name ~= nil then
-		device_object._private.device_properties_proxy:connect_signal("PropertiesChanged", function(_, _, props)
-			device_object:emit_signal("updated")
-
+		device_object._private.properties_proxy:connect_signal("PropertiesChanged", function(_, _, props)
 			if props.Connected ~= nil then
 				device_object:emit_signal("property::connected", props.Connected)
 			end
@@ -41,20 +46,23 @@ local function create_device_object(path)
 			if props.Trusted ~= nil then
 				device_object:emit_signal("property::trusted", props.Trusted)
 			end
+			if props.Percentage ~= nil then
+				device_object:emit_signal("property::percentage", props.Percentage)
+			end
 		end)
 
 		return device_object
 	end
 end
 
-function bluetooth:set_powered(value)
+function bluetooth:set_state(state)
 	if self._private.adapter_proxy.Set then
-		self._private.adapter_proxy:Set("org.bluez.Adapter1", "Powered", lgi.GLib.Variant("b", value))
-		self._private.adapter_proxy.Powered = { signature = "b", value = value }
+		self._private.adapter_proxy:Set("org.bluez.Adapter1", "Powered", lgi.GLib.Variant("b", state))
+		self._private.adapter_proxy.Powered = { signature = "b", value = state }
 	end
 end
 
-function bluetooth:get_powered()
+function bluetooth:get_state()
 	return self._private.adapter_proxy.Powered
 end
 
@@ -82,10 +90,10 @@ function device:toggle_connect()
 end
 
 function device:toggle_trust()
-	local is_trusted = self._private.device_proxy.Trusted
+	local trusted = self._private.device_proxy.Trusted
 	if self._private.device_proxy.Set then
-		self._private.device_proxy:Set("org.bluez.Device1", "Trusted", lgi.GLib.Variant("b", not is_trusted))
-		self._private.device_proxy.Trusted = { signature = "b", value = not is_trusted }
+		self._private.device_proxy:Set("org.bluez.Device1", "Trusted", lgi.GLib.Variant("b", not trusted))
+		self._private.device_proxy.Trusted = { signature = "b", value = not trusted }
 	end
 end
 
@@ -121,6 +129,10 @@ function device:get_address()
 	return self._private.device_proxy.Address
 end
 
+function device:get_percentage()
+	return self._private.battery_proxy.Percentage
+end
+
 function device:get_path()
 	return self._private.device_proxy.object_path
 end
@@ -145,7 +157,7 @@ local function new()
 			path = "/org/bluez/hci0"
 		}
 
-		ret._private.adapter_proxy_properties = dbus_proxy.Proxy:new {
+		ret._private.properties_proxy = dbus_proxy.Proxy:new {
 			bus = dbus_proxy.Bus.SYSTEM,
 			name = "org.bluez",
 			interface = "org.freedesktop.DBus.Properties",
@@ -177,15 +189,15 @@ local function new()
 			end
 		end)
 
-		ret._private.adapter_proxy_properties:connect_signal("PropertiesChanged", function(_, _, props)
+		ret._private.properties_proxy:connect_signal("PropertiesChanged", function(_, _, props)
 			if props.Powered ~= nil then
-				ret:emit_signal("property::powered", props.Powered)
+				ret:emit_signal("state", props.Powered)
 			end
 		end)
 	end
 
 	gtimer.delayed_call(function()
-		ret:emit_signal("property::powered", ret:get_powered())
+		ret:emit_signal("state", ret:get_state())
 	end)
 
 	return ret
