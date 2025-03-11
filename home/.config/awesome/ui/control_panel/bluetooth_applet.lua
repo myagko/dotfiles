@@ -410,10 +410,6 @@ local function new()
 		on_discovering(dsc, ret)
 	end)
 
-	local refresh_button = ret.bottombar:get_children_by_id("refresh_button")[1]
-	refresh_button:set_fg_normal(bluetooth:get_discovering() and beautiful.fg_alt or beautiful.fg)
-	refresh_button:set_bg_hover(bluetooth:get_discovering() and beautiful.fg_alt or beautiful.ac)
-
 	bluetooth:connect_signal("state", function(_, state)
 		on_state_changed(state, ret)
 	end)
