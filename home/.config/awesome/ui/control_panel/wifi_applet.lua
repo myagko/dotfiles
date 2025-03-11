@@ -302,7 +302,9 @@ local function new()
 						forced_height = dpi(55),
 						buttons = {
 							awful.button({}, 1, function()
-								ret:refresh()
+								if network:get_wireless_hw_state() and network:get_wireless_state() then
+									ret:refresh()
+								end
 							end)
 						}
 					}

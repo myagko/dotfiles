@@ -135,16 +135,16 @@ local function create_dev_widget(path)
 
 	name:set_markup(dev:get_name() .. (dev:get_connected() and " " .. text_icons.check or ""))
 
-	dev:connect_signal("property::connected", function(_, cnd)
-		connect_button:set_text(cnd and "Disconnect" or "Connect")
-	end)
-
 	dev:connect_signal("property::percentage", function(_, perc)
 		local perc_textbox = dev_widget_header:get_children_by_id("percentage")[1]
 		perc_textbox:set_markup(perc ~= nil and	string.format("%.0f%%", perc) or "")
 	end)
 
 	percentage:set_markup(dev:get_percentage() ~= nil and string.format("%.0f%%", dev:get_percentage()) or "")
+
+	dev:connect_signal("property::connected", function(_, cnd)
+		connect_button:set_text(cnd and "Disconnect" or "Connect")
+	end)
 
 	dev:connect_signal("property::paired", function(_, prd)
 		pair_button:set_text(prd and "Unpair" or "Pair")
@@ -202,6 +202,10 @@ local function on_state_changed(state, self)
 	local control_button_label = self.control_button:get_children_by_id("label")[1]
 	local bottombar_toggle_button = self.bottombar:get_children_by_id("toggle_button")[1]
 	local devs_layout = self.main_widget:get_children_by_id("devs_layout")[1]
+	local refresh_button = self.bottombar:get_children_by_id("refresh_button")[1]
+
+	refresh_button:set_fg_normal(bluetooth:get_discovering() and beautiful.fg_alt or beautiful.fg)
+	refresh_button:set_bg_hover(bluetooth:get_discovering() and beautiful.fg_alt or beautiful.ac)
 
 	if state then
 		bottombar_toggle_button:set_text(text_icons.switch_on)
@@ -224,6 +228,8 @@ local function on_state_changed(state, self)
 		devs_layout:reset()
 		devs_layout:add(self.massage_widget)
 		self.massage_widget:set_text("Bluetooth disabled")
+		refresh_button:set_fg(beautiful.fg)
+		refresh_button:set_bg(beautiful.bg_alt)
 	end
 end
 
@@ -333,10 +339,12 @@ local function new()
 						forced_height = dpi(55),
 						buttons = {
 							awful.button({}, 1, function()
-								if bluetooth:get_discovering() then
-									bluetooth:stop_discovery()
-								else
-									bluetooth:start_discovery()
+								if bluetooth:get_state() then
+									if bluetooth:get_discovering() then
+										bluetooth:stop_discovery()
+									else
+										bluetooth:start_discovery()
+									end
 								end
 							end)
 						}
