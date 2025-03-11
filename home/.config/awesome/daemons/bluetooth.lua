@@ -67,10 +67,17 @@ function bluetooth:get_state()
 end
 
 function bluetooth:start_discovery()
-	if self._private.adapter_proxy == nil then
-		return
-	end
+	if not self._private.adapter_proxy then return end
 	self._private.adapter_proxy:StartDiscovery()
+end
+
+function bluetooth:stop_discovery()
+	if not self._private.adapter_proxy then return end
+	self._private.adapter_proxy:StopDiscovery()
+end
+
+function bluetooth:get_discovering()
+	return self._private.adapter_proxy.Discovering
 end
 
 function bluetooth:get_devices()
@@ -192,6 +199,9 @@ local function new()
 		ret._private.properties_proxy:connect_signal("PropertiesChanged", function(_, _, props)
 			if props.Powered ~= nil then
 				ret:emit_signal("state", props.Powered)
+			end
+			if props.Discovering ~= nil then
+				ret:emit_signal("property::discovering", props.Discovering)
 			end
 		end)
 	end

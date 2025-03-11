@@ -6,13 +6,20 @@ local widgets = require("widgets")
 local bluetooth = require("daemons.bluetooth")
 local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
-local create_markup = require("helpers").create_markup
 
 local bluetooth_applet = {}
 local instance = nil
 
 local function create_dev_widget(path)
 	local dev = bluetooth:get_device(path)
+
+	local name = wibox.widget {
+		widget = wibox.widget.textbox
+	}
+
+	local percentage = wibox.widget {
+		widget = wibox.widget.textbox
+	}
 
 	local connect_button = widgets.hover_button {
 		margins = dpi(5)
@@ -53,12 +60,7 @@ local function create_dev_widget(path)
 				{
 					widget = wibox.container.constraint,
 					width = dpi(200),
-					{
-						widget = wibox.widget.textbox,
-						markup = dev:get_connected() and
-							dev:get_name() .. " " .. text_icons.check
-							or dev:get_name()
-					}
+					name
 				},
 				nil,
 				{
@@ -67,12 +69,7 @@ local function create_dev_widget(path)
 					{
 						widget = wibox.container.constraint,
 						width = dpi(130),
-						{
-							id = "percentage",
-							widget = wibox.widget.textbox,
-							markup = dev:get_percentage() ~= nil and
-								string.format("%.0f%%", dev:get_percentage()) or ""
-						}
+						percentage
 					}
 				}
 			}
@@ -136,9 +133,18 @@ local function create_dev_widget(path)
 		end)
 	}
 
+	name:set_markup(dev:get_name() .. (dev:get_connected() and " " .. text_icons.check or ""))
+
 	dev:connect_signal("property::connected", function(_, cnd)
 		connect_button:set_text(cnd and "Disconnect" or "Connect")
 	end)
+
+	dev:connect_signal("property::percentage", function(_, perc)
+		local perc_textbox = dev_widget_header:get_children_by_id("percentage")[1]
+		perc_textbox:set_markup(perc ~= nil and	string.format("%.0f%%", perc) or "")
+	end)
+
+	percentage:set_markup(dev:get_percentage() ~= nil and string.format("%.0f%%", dev:get_percentage()) or "")
 
 	dev:connect_signal("property::paired", function(_, prd)
 		pair_button:set_text(prd and "Unpair" or "Pair")
@@ -152,15 +158,10 @@ local function create_dev_widget(path)
 	pair_button:set_text(dev:get_paired() and "Unpair" or "Pair")
 	trust_button:set_text(dev:get_trusted() and "Untrust" or "Trust")
 
-	dev:connect_signal("property::percentage", function(_, perc)
-		local perc_textbox = dev_widget_header:get_children_by_id("percentage")[1]
-		perc_textbox:set_markup(perc ~= nil and	string.format("%.0f%%", perc) or "")
-	end)
-
 	return dev_widget
 end
 
-local function add_device(path, self)
+local function on_device_added(path, self)
 	local devs_layout = self.main_widget:get_children_by_id("devs_layout")[1]
 	local dev_widget = create_dev_widget(path)
 
@@ -176,7 +177,7 @@ local function add_device(path, self)
 	end
 end
 
-local function remove_device(path, self)
+local function on_device_removed(path, self)
 	local devs_layout = self.main_widget:get_children_by_id("devs_layout")[1]
 
 	for _, dev_w in ipairs(devs_layout.children) do
@@ -188,6 +189,12 @@ local function remove_device(path, self)
 		devs_layout:add(self.massage_widget)
 		self.massage_widget:set_text(text_icons.wait)
 	end
+end
+
+local function on_discovering(discovering, self)
+	local refresh_button = self.bottombar:get_children_by_id("refresh_button")[1]
+	refresh_button:set_fg_normal(discovering and beautiful.fg_alt or beautiful.fg)
+	refresh_button:set_bg_hover(discovering and beautiful.fg_alt or beautiful.ac)
 end
 
 local function on_state_changed(state, self)
@@ -206,7 +213,7 @@ local function on_state_changed(state, self)
 		devs_layout:add(self.massage_widget)
 		self.massage_widget:set_text(text_icons.wait)
 		for _, dev in pairs(bluetooth:get_devices()) do
-			add_device(dev:get_path(), self)
+			on_device_added(dev:get_path(), self)
 		end
 	else
 		bottombar_toggle_button:set_text(text_icons.switch_off)
@@ -326,7 +333,11 @@ local function new()
 						forced_height = dpi(55),
 						buttons = {
 							awful.button({}, 1, function()
-								bluetooth:start_discovery()
+								if bluetooth:get_discovering() then
+									bluetooth:stop_discovery()
+								else
+									bluetooth:start_discovery()
+								end
 							end)
 						}
 					}
@@ -380,12 +391,20 @@ local function new()
 
 
 	bluetooth:connect_signal("device_added", function(_, path)
-		add_device(path, ret)
+		on_device_added(path, ret)
 	end)
 
 	bluetooth:connect_signal("device_removed", function(_, path)
-		remove_device(path, ret)
+		on_device_removed(path, ret)
 	end)
+
+	bluetooth:connect_signal("property::discovering", function(_, dsc)
+		on_discovering(dsc, ret)
+	end)
+
+	local refresh_button = ret.bottombar:get_children_by_id("refresh_button")[1]
+	refresh_button:set_fg_normal(bluetooth:get_discovering() and beautiful.fg_alt or beautiful.fg)
+	refresh_button:set_bg_hover(bluetooth:get_discovering() and beautiful.fg_alt or beautiful.ac)
 
 	bluetooth:connect_signal("state", function(_, state)
 		on_state_changed(state, ret)

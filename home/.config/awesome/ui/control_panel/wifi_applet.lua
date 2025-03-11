@@ -11,26 +11,27 @@ local dpi = beautiful.xresources.apply_dpi
 local wifi_applet = {}
 local instance = nil
 
-local function create_ap_widget(access_point, self)
+local function create_ap_widget(ap, self)
 	local active_ap = network.wireless:get_active_access_point()
-	local ap_ssid = access_point:get_ssid()
-	local ap_strength = access_point:get_strength()
+	local is_active = active_ap == ap
+	local ssid = ap:get_ssid()
+	local strength = ap:get_strength()
 
 	local name = wibox.widget {
 		widget = wibox.widget.textbox,
-		markup = active_ap == access_point and ap_ssid .. " " .. text_icons.check or ap_ssid
+		markup = is_active and ssid .. " " .. text_icons.check or ssid
 	}
 
 	local strenght = wibox.widget {
 		widget = wibox.widget.textbox,
-		markup = ap_strength > 70 and "▂▄▆█"
-			or ap_strength > 45 and "▂▄▆"
-			or ap_strength > 20 and "▂▄"
+		markup = strength > 70 and "▂▄▆█"
+			or strength > 45 and "▂▄▆"
+			or strength > 20 and "▂▄"
 			or "▂"
 	}
 
 	local ap_widget = wibox.widget {
-		active = access_point == active_ap,
+		active = is_active,
 		widget = wibox.container.background,
 		{
 			widget = wibox.container.margin,
@@ -38,7 +39,7 @@ local function create_ap_widget(access_point, self)
 			margins = dpi(10),
 			buttons = {
 				awful.button({}, 1, function()
-					self:open_ap_menu(access_point)
+					self:open_ap_menu(ap)
 				end)
 			},
 			{
@@ -65,19 +66,19 @@ local function create_ap_widget(access_point, self)
 	return ap_widget
 end
 
-local function on_scan_success(access_points, self)
+local function on_scan_success(aps, self)
 	local aps_layout = self.main_widget:get_children_by_id("aps_layout")[1]
 	self.ap_widgets = {}
 	aps_layout:reset()
 
-	for _, access_point in pairs(access_points) do
-		local new_ap_widget = create_ap_widget(access_point, self)
-		table.insert(self.ap_widgets, new_ap_widget)
+	for _, ap in pairs(aps) do
+		local ap_widget = create_ap_widget(ap, self)
+		table.insert(self.ap_widgets, ap_widget)
 
-		if access_point == network.wireless:get_active_access_point() then
-			aps_layout:insert(1, new_ap_widget)
+		if ap == network.wireless:get_active_access_point() then
+			aps_layout:insert(1, ap_widget)
 		else
-			aps_layout:add(new_ap_widget)
+			aps_layout:add(ap_widget)
 		end
 	end
 end
@@ -115,55 +116,58 @@ local function on_state_changed(state, self)
 	end
 end
 
-function wifi_applet:open_ap_menu(access_point)
+function wifi_applet:open_ap_menu(ap)
 	local aps_layout = self.main_widget:get_children_by_id("aps_layout")[1]
 	local connect_widget_obscure = self.connect_widget:get_children_by_id("obscure")[1]
 	local connect_widget_auto_connect = self.connect_widget:get_children_by_id("auto_connect")[1]
 	local connect_widget_connect_button = self.connect_widget:get_children_by_id("connect_button")[1]
 	local ap_menu_title = self.ap_menu:get_children_by_id("title")[1]
 	local ap_menu_container = self.ap_menu:get_children_by_id("container")[1]
-
 	local obscure = true
 	local auto_connect = true
 
 	aps_layout:reset()
 	aps_layout:add(self.ap_menu)
-	ap_menu_title:set_markup(access_point:get_ssid())
+	ap_menu_title:set_markup(ap:get_ssid())
 
 	connect_widget_obscure:set_markup(text_icons.eye_off)
-	connect_widget_obscure:buttons { awful.button({}, 1, function()
-		obscure = not obscure
-		self.passwd_text_input:set_obscure(obscure)
-
-		if obscure then
-			connect_widget_obscure:set_markup(text_icons.eye_off)
-		else
-			connect_widget_obscure:set_markup(text_icons.eye_on)
-		end
-	end) }
+	connect_widget_obscure:buttons {
+		awful.button({}, 1, function()
+			obscure = not obscure
+			self.passwd_text_input:set_obscure(obscure)
+			if obscure then
+				connect_widget_obscure:set_markup(text_icons.eye_off)
+			else
+				connect_widget_obscure:set_markup(text_icons.eye_on)
+			end
+		end)
+	}
 
 	connect_widget_auto_connect:set_markup(text_icons.check_on)
-	connect_widget_auto_connect:buttons { awful.button({}, 1, function()
-		auto_connect = not auto_connect
+	connect_widget_auto_connect:buttons {
+		awful.button({}, 1, function()
+			auto_connect = not auto_connect
+			if auto_connect then
+				connect_widget_auto_connect:set_markup(text_icons.check_on)
+			else
+				connect_widget_auto_connect:set_markup(text_icons.check_off)
+			end
+		end)
+	}
 
-		if auto_connect then
-			connect_widget_auto_connect:set_markup(text_icons.check_on)
-		else
-			connect_widget_auto_connect:set_markup(text_icons.check_off)
-		end
-	end) }
-
-	if access_point == network.wireless:get_active_access_point() then
+	if ap == network.wireless:get_active_access_point() then
 		ap_menu_container:set_widget(self.disconnect_widget)
 	else
 		ap_menu_container:set_widget(self.connect_widget)
 		self.passwd_text_input.exe_callback = function(input)
-			network:connect_access_point(access_point, input, auto_connect)
+			network:connect_access_point(ap, input, auto_connect)
 		end
-		connect_widget_connect_button:buttons { awful.button({}, 1, function()
-			network:connect_access_point(access_point, self.passwd_text_input:get_input(), auto_connect)
-			self:close_ap_menu()
-		end) }
+		connect_widget_connect_button:buttons {
+			awful.button({}, 1, function()
+				network:connect_access_point(ap, self.passwd_text_input:get_input(), auto_connect)
+				self:close_ap_menu()
+			end)
+		}
 		self.passwd_text_input:run_keygrabber()
 	end
 end

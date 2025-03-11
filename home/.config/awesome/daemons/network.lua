@@ -307,6 +307,10 @@ function connection:get_filename()
 	return self._private.connection_proxy.Filename
 end
 
+function connection:get_path()
+	return self._private.connection_proxy.object_path
+end
+
 function access_point:get_ssid()
 	return NM.utils_ssid_to_utf8(self._private.access_point_proxy.Ssid)
 end
@@ -325,6 +329,10 @@ end
 
 function access_point:get_strength()
 	return self._private.access_point_proxy.Strength
+end
+
+function access_point:get_path()
+	return self._private.access_point_proxy.object_path
 end
 
 local function new()
