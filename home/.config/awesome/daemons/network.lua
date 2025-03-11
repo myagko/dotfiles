@@ -185,15 +185,13 @@ function network:get_network_state()
 end
 
 function network:set_network_state(state)
-	self._private.client_proxy:Enable(state)
+	if self._private.client_proxy.Enable then
+		self._private.client_proxy:Enable(state)
+	end
 end
 
 function network:get_wireless_state()
 	return self._private.client_proxy.WirelessEnabled
-end
-
-function network:get_wireless_hw_state()
-	return self._private.client_proxy.WirelessHardwareEnabled
 end
 
 function network:set_wireless_state(state)
@@ -201,8 +199,10 @@ function network:set_wireless_state(state)
 		self:set_network_state(true)
 	end
 
-	self._private.client_proxy:Set("org.freedesktop.NetworkManager", "WirelessEnabled", lgi.GLib.Variant("b", state))
-	self._private.client_proxy.WirelessEnabled = { signature = "b", value = state }
+	if self._private.client_proxy.Set then
+		self._private.client_proxy:Set("org.freedesktop.NetworkManager", "WirelessEnabled", lgi.GLib.Variant("b", state))
+		self._private.client_proxy.WirelessEnabled = { signature = "b", value = state }
+	end
 end
 
 function network:get_connections()
@@ -260,7 +260,9 @@ function network:connect_access_point(ap, password, auto_connect)
 end
 
 function network:disconnect_active_access_point()
-	self._private.client_proxy:DeactivateConnection(self.wireless._private.device_proxy.ActiveConnection)
+	self._private.client_proxy:DeactivateConnection(
+		self.wireless._private.device_proxy.ActiveConnection
+	)
 end
 
 function wired:get_hw_address()
@@ -361,7 +363,17 @@ local function new()
 		path = "/org/freedesktop/NetworkManager"
 	}
 
+	ret._private.properties_proxy:connect_signal("PropertiesChanged", function(_, _, props)
+		if props.NetworkingEnabled ~= nil then
+			ret:emit_signal("network_state", props.NetworkingEnabled)
+		end
+		if props.WirelessEnabled ~= nil then
+			ret:emit_signal("wireless_state", props.WirelessEnabled)
+		end
+	end)
+
 	ret.connections = {}
+
 	local connection_paths = ret._private.settings_proxy:ListConnections()
 	for _, connection_path in ipairs(connection_paths) do
 		local connection_object = create_connection_object(connection_path)
@@ -379,6 +391,14 @@ local function new()
 		ret:emit_signal("connection_removed", path)
 	end)
 
+	ret.wired = gobject {}
+	gtable.crush(ret.wired, wired, true)
+	ret.wired._private = {}
+
+	ret.wireless = gobject {}
+	gtable.crush(ret.wireless, wireless, true)
+	ret.wireless._private = {}
+
 	local device_paths = ret._private.client_proxy:GetDevices()
 	for _, device_path in ipairs(device_paths) do
 		local device_proxy = dbus_proxy.Proxy:new {
@@ -389,79 +409,63 @@ local function new()
 		}
 
 		if device_proxy.DeviceType == network.DeviceType.ETHERNET then
-			local wired_device_object = gobject {}
-			gtable.crush(wired_device_object, wired, true)
-			wired_device_object._private = {}
-			wired_device_object._private.device_proxy = device_proxy
-			wired_device_object._private.wired_proxy = dbus_proxy.Proxy:new {
+			ret.wired._private.device_proxy = device_proxy
+			ret.wired._private.wired_proxy = dbus_proxy.Proxy:new {
 				bus = dbus_proxy.Bus.SYSTEM,
 				name = "org.freedesktop.NetworkManager",
 				interface = "org.freedesktop.NetworkManager.Device.Wired",
 				path = device_path,
 			}
-			ret.wired = wired_device_object
 		elseif device_proxy.DeviceType == network.DeviceType.WIFI then
-			local wireless_device_object = gobject {}
-			gtable.crush(wireless_device_object, wireless, true)
-			wireless_device_object._private = {}
-			wireless_device_object._private.device_proxy = device_proxy
-			wireless_device_object._private.wireless_proxy = dbus_proxy.Proxy:new {
+			ret.wireless._private.device_proxy = device_proxy
+			ret.wireless._private.wireless_proxy = dbus_proxy.Proxy:new {
 				bus = dbus_proxy.Bus.SYSTEM,
 				name = "org.freedesktop.NetworkManager",
 				interface = "org.freedesktop.NetworkManager.Device.Wireless",
 				path = device_path,
 			}
-			wireless_device_object.access_points = {}
-			ret.wireless = wireless_device_object
+			ret.wireless.access_points = {}
 		end
 	end
 
-	local access_point_paths = ret.wireless._private.device_proxy:GetAccessPoints()
-	for _, access_point_path in ipairs(access_point_paths) do
-		local access_point_object = create_access_point_object(access_point_path)
-		ret.wireless.access_points[access_point_path] = access_point_object
+	if ret.wireless._private.device_proxy then
+
+		local access_point_paths = ret.wireless._private.device_proxy:GetAccessPoints()
+		for _, access_point_path in ipairs(access_point_paths) do
+			local access_point_object = create_access_point_object(access_point_path)
+			ret.wireless.access_points[access_point_path] = access_point_object
+		end
+
+		--ret.wireless._private.device_proxy:connect_signal("StateChanged", function(_, new_state, old_state, reason)
+		--	if new_state == network.DeviceState.ACTIVATED then
+		--		ret.wireless:emit_signal("access_point_connected", ret.wireless:get_active_access_point())
+		--	end
+		--end)
 	end
 
-	ret.wireless._private.wireless_proxy:connect_signal("AccessPointAdded", function(_, path)
-		local access_point_object = create_access_point_object(path)
-		ret.wireless.access_points[path] = access_point_object
-		ret.wireless:emit_signal("access_point_added", path)
-	end)
+	if ret.wireless._private.wireless_proxy then
+		ret.wireless._private.wireless_proxy:connect_signal("AccessPointAdded", function(_, path)
+			local access_point_object = create_access_point_object(path)
+			ret.wireless.access_points[path] = access_point_object
+			ret.wireless:emit_signal("access_point_added", path)
+		end)
 
-	ret.wireless._private.wireless_proxy:connect_signal("AccessPointRemoved", function(_, path)
-		ret.wireless.access_points[path] = nil
-		ret.wireless:emit_signal("access_point_removed", path)
-	end)
-
-	ret._private.properties_proxy:connect_signal("PropertiesChanged", function(_, _, props)
-		if props.NetworkingEnabled ~= nil then
-			ret:emit_signal("network_state", props.NetworkingEnabled)
-		end
-		if props.WirelessEnabled ~= nil then
-			ret:emit_signal("wireless_state", props.WirelessEnabled)
-		end
-		if props.WirelessHardwareEnabled ~= nil then
-			ret:emit_signal("wireless_hw_state", props.WirelessHardwareEnabled)
-		end
-	end)
-
-	ret.wireless._private.device_proxy:connect_signal("StateChanged", function(_, new_state, old_state, reason)
-		if new_state == network.DeviceState.ACTIVATED then
-			ret.wireless:emit_signal("access_point_connected", ret.wireless:get_active_access_point())
-		end
-	end)
+		ret.wireless._private.wireless_proxy:connect_signal("AccessPointRemoved", function(_, path)
+			ret.wireless.access_points[path] = nil
+			ret.wireless:emit_signal("access_point_removed", path)
+		end)
+	end
 
 	gtimer.delayed_call(function()
 		ret:emit_signal("network_state", ret:get_network_state())
 		ret:emit_signal("wireless_state", ret:get_wireless_state())
-		ret:emit_signal("wireless_hw_state", ret:get_wireless_hw_state())
 
-		if ret:get_wireless_hw_state() and ret:get_wireless_state() then
-			local active_access_point = ret.wireless:get_active_access_point()
-			if active_access_point then
-				ret.wireless:emit_signal("access_point_connected", active_access_point)
-			end
-		end
+		--if ret:get_wireless_state() and ret.wireless._private.device_proxy then
+		--	local active_access_point = ret.wireless:get_active_access_point()
+		--	if active_access_point then
+		--		ret.wireless:emit_signal("access_point_connected", active_access_point)
+		--	end
+		--end
 	end)
 
 	return ret
