@@ -429,18 +429,19 @@ local function new()
 	end
 
 	if ret.wireless._private.device_proxy then
-
 		local access_point_paths = ret.wireless._private.device_proxy:GetAccessPoints()
 		for _, access_point_path in ipairs(access_point_paths) do
 			local access_point_object = create_access_point_object(access_point_path)
 			ret.wireless.access_points[access_point_path] = access_point_object
 		end
 
-		--ret.wireless._private.device_proxy:connect_signal("StateChanged", function(_, new_state, old_state, reason)
-		--	if new_state == network.DeviceState.ACTIVATED then
-		--		ret.wireless:emit_signal("access_point_connected", ret.wireless:get_active_access_point())
-		--	end
-		--end)
+		--[[
+		ret.wireless._private.device_proxy:connect_signal("StateChanged", function(_, new_state, old_state, reason)
+			if new_state == network.DeviceState.ACTIVATED then
+				ret.wireless:emit_signal("access_point_connected", ret.wireless:get_active_access_point())
+			end
+		end)
+		]]
 	end
 
 	if ret.wireless._private.wireless_proxy then
@@ -460,12 +461,14 @@ local function new()
 		ret:emit_signal("network_state", ret:get_network_state())
 		ret:emit_signal("wireless_state", ret:get_wireless_state())
 
-		--if ret:get_wireless_state() and ret.wireless._private.device_proxy then
-		--	local active_access_point = ret.wireless:get_active_access_point()
-		--	if active_access_point then
-		--		ret.wireless:emit_signal("access_point_connected", active_access_point)
-		--	end
-		--end
+		--[[
+		if ret:get_wireless_state() and ret.wireless._private.device_proxy then
+			local active_access_point = ret.wireless:get_active_access_point()
+			if active_access_point then
+				ret.wireless:emit_signal("access_point_connected", active_access_point)
+			end
+		end
+		]]
 	end)
 
 	return ret
