@@ -32,7 +32,9 @@ local function new()
 				handle_border_width = dpi(4),
 				handle_margins = { top = dpi(7), bottom = dpi(7) },
 				bar_color = beautiful.bg_urg,
-				handle_border_color = beautiful.bg_alt
+				handle_border_color = beautiful.bg_alt,
+				handle_shape = beautiful.rbar(),
+				bar_shape = beautiful.rbar()
 			}
 		},
 		{
@@ -97,7 +99,9 @@ local function new()
 				handle_border_width = dpi(4),
 				handle_margins = { top = dpi(7), bottom = dpi(7) },
 				bar_color = beautiful.bg_urg,
-				handle_border_color = beautiful.bg_alt
+				handle_border_color = beautiful.bg_alt,
+				handle_shape = beautiful.rbar(),
+				bar_shape = beautiful.rbar()
 			}
 		},
 		{
@@ -143,6 +147,7 @@ local function new()
 	ret.main_widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
+		shape = beautiful.rrect(dpi(8)),
 		{
 			widget = wibox.container.margin,
 			margins = {

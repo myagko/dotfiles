@@ -22,15 +22,18 @@ local function create_dev_widget(path)
 	}
 
 	local connect_button = widgets.hover_button {
-		margins = dpi(5)
+		margins = dpi(5),
+		shape = beautiful.rrect(dpi(8))
 	}
 
 	local pair_button = widgets.hover_button {
-		margins = dpi(5)
+		margins = dpi(5),
+		shape = beautiful.rrect(dpi(8))
 	}
 
 	local trust_button = widgets.hover_button {
-		margins = dpi(5)
+		margins = dpi(5),
+		shape = beautiful.rrect(dpi(8))
 	}
 
 	local buttons_widget = wibox.widget {
@@ -52,6 +55,7 @@ local function create_dev_widget(path)
 	local dev_widget_header = wibox.widget {
 		widget = wibox.container.background,
 		forced_height = dpi(40),
+		shape = beautiful.rrect(dpi(8)),
 		{
 			widget = wibox.container.margin,
 			margins = { left = dpi(10), right = dpi(10) },
@@ -85,6 +89,7 @@ local function create_dev_widget(path)
 		path = path,
 		widget = wibox.container.background,
 		forced_height = dpi(40),
+		shape = beautiful.rrect(dpi(8)),
 		dev_widget_layout
 	}
 
@@ -239,9 +244,10 @@ local function new()
 
 	ret.control_button = wibox.widget {
 		widget = wibox.container.background,
+		forced_height = dpi(55),
 		bg = beautiful.bg_alt,
 		fg = beautiful.fg,
-		forced_height = dpi(55),
+		shape = beautiful.rrect(dpi(8)),
 		{
 			widget = wibox.container.margin,
 			margins = { left = dpi(15) },
@@ -310,6 +316,7 @@ local function new()
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
 		forced_height = dpi(55),
+		shape = beautiful.rrect(dpi(8)),
 		{
 			layout = wibox.layout.align.horizontal,
 			{
@@ -317,6 +324,7 @@ local function new()
 				widget = widgets.hover_button {
 					forced_width = dpi(55),
 					forced_height = dpi(55),
+					shape = beautiful.rrect(dpi(8)),
 					buttons = {
 						awful.button({}, 1, function()
 							bluetooth:set_state(not bluetooth:get_state())
@@ -337,6 +345,7 @@ local function new()
 						markup = text_icons.reboot,
 						forced_width = dpi(55),
 						forced_height = dpi(55),
+						shape = beautiful.rrect(dpi(8)),
 						buttons = {
 							awful.button({}, 1, function()
 								if bluetooth:get_state() then
@@ -355,7 +364,8 @@ local function new()
 					widget = widgets.hover_button {
 						markup = text_icons.arrow_left,
 						forced_width = dpi(55),
-						forced_height = dpi(55)
+						forced_height = dpi(55),
+						shape = beautiful.rrect(dpi(8))
 					}
 				}
 			}

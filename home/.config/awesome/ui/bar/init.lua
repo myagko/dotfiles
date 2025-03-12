@@ -1,6 +1,7 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
+local gshape = require("gears.shape")
 local widgets = require("widgets")
 local launcher = require("ui.launcher")
 local control_panel = require("ui.control_panel")
@@ -24,6 +25,7 @@ local function launcher_button()
 		bg_hover = beautiful.bg_urg,
 		fg_normal = beautiful.fg,
 		fg_hover = beautiful.fg,
+		shape = beautiful.rrect(dpi(5)),
 		markup = text_icons.menu,
 	}
 
@@ -42,6 +44,7 @@ local function control_panel_button()
 		bg_hover = beautiful.bg_urg,
 		fg_normal = beautiful.fg,
 		fg_hover = beautiful.fg,
+		shape = beautiful.rrect(dpi(5)),
 		markup = text_icons.sliders,
 	}
 
@@ -52,6 +55,7 @@ local function time()
 	local widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
+		shape = beautiful.rrect(dpi(5)),
 		buttons = {
 			awful.button({}, 1, function()
 				day_info_panel:toggle()
@@ -109,6 +113,7 @@ local function tray()
 	local widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
+		shape = beautiful.rrect(dpi(5)),
 		{
 			widget = wibox.container.margin,
 			margins = { left = dpi(8), right = dpi(8) },
@@ -159,6 +164,7 @@ local function kblayout()
 	local widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
+		shape = beautiful.rrect(dpi(5)),
 		{
 			widget = awful.widget.keyboardlayout {}
 		}
@@ -179,6 +185,7 @@ local function layoutbox(s)
 	local widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
+		shape = beautiful.rrect(dpi(5)),
 		buttons = {
 			awful.button({ }, 1, function()
 				awful.layout.inc(1)
@@ -186,7 +193,7 @@ local function layoutbox(s)
 		},
 		{
 			widget = wibox.container.margin,
-			margins = dpi(7),
+			margins = { left = dpi(7), right = dpi(7) },
 			{
 				widget = awful.widget.layoutbox {
 					screen = s
@@ -240,9 +247,10 @@ local function taglist(s)
 		widget_template = {
 			id = "t_selection",
 			widget = wibox.container.background,
+			shape = beautiful.rrect(dpi(5)),
 			{
 				widget = wibox.container.margin,
-				margins = { left = dpi(8), right = dpi(8) },
+				margins = { left = dpi(9), right = dpi(9) },
 				{
 					id = "t_text",
 					widget = wibox.widget.textbox,
@@ -298,7 +306,14 @@ local function taglist(s)
 		t_callback(tw, t)
 	end
 
-	return widget
+	return wibox.widget {
+		widget = wibox.container.background,
+		bg = beautiful.bg_alt,
+		shape = beautiful.rrect(dpi(5)),
+		{
+			widget = widget
+		}
+	}
 end
 
 local function tasklist(s)
@@ -316,14 +331,14 @@ local function tasklist(s)
 		},
 		layout = {
 			layout = wibox.layout.fixed.horizontal,
-			spacing = dpi(7),
+			spacing = dpi(5),
 		},
 		widget_template = {
 			id = "c_container",
 			widget = wibox.container.background,
+			shape = beautiful.rrect(dpi(5)),
 			{
-				layout = wibox.layout.align.vertical,
-				nil,
+				layout = wibox.layout.stack,
 				{
 					widget = wibox.container.margin,
 					margins = { left = dpi(8), right = dpi(8) },
@@ -339,9 +354,21 @@ local function tasklist(s)
 					}
 				},
 				{
-					widget = wibox.container.background,
-					id = "c_selection",
-					bg = beautiful.ac
+					layout = wibox.layout.align.vertical,
+					nil,
+					nil,
+					{
+						widget = wibox.container.margin,
+						margins = { left = dpi(8), right = dpi(8) },
+						{
+							id = "c_pointer",
+							widget = wibox.container.background,
+							shape = beautiful.rounded and function(cr, w, h)
+								gshape.partially_rounded_rect(cr, w, h, true, true, false, false, dpi(3))
+							end or nil,
+							bg = beautiful.ac
+						}
+					}
 				}
 			}
 		}
@@ -349,7 +376,7 @@ local function tasklist(s)
 
 	local function c_callback(tw, c)
 		local c_container = tw:get_children_by_id("c_container")[1]
-		local c_selection = tw:get_children_by_id("c_selection")[1]
+		local c_pointer = tw:get_children_by_id("c_pointer")[1]
 		local c_text = tw:get_children_by_id("c_text")[1]
 
 		c_text:set_markup(c.class or "untitled")
@@ -362,9 +389,9 @@ local function tasklist(s)
 		end
 
 		if c.active then
-			c_selection:set_forced_height(dpi(2))
+			c_pointer:set_forced_height(dpi(3))
 		else
-			c_selection:set_forced_height(0)
+			c_pointer:set_forced_height(0)
 		end
 	end
 
@@ -408,8 +435,8 @@ function bar.set_secondary(s)
 				margins = dpi(7),
 				{
 					layout = wibox.layout.fixed.horizontal,
-					spacing = dpi(7),
-					layoutbox(s),
+					spacing = dpi(5),
+					--layoutbox(s),
 					taglist(s),
 					tasklist(s)
 				}
@@ -442,9 +469,9 @@ function bar.set_primary(s)
 				margins = dpi(7),
 				{
 					layout = wibox.layout.fixed.horizontal,
-					spacing = dpi(7),
+					spacing = dpi(5),
 					launcher_button(),
-					layoutbox(s),
+					--layoutbox(s),
 					taglist(s),
 					tasklist(s)
 				}
@@ -459,7 +486,7 @@ function bar.set_primary(s)
 				},
 				{
 					layout = wibox.layout.fixed.horizontal,
-					spacing = dpi(7),
+					spacing = dpi(5),
 					tray(),
 					kblayout(),
 					time(),

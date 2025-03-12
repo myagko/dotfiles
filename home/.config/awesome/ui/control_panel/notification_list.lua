@@ -35,6 +35,7 @@ local function create_actions_widget(n)
 			},
 			margins = dpi(5),
 			bg_normal = beautiful.bg_urg,
+			shape = beautiful.rrect(dpi(5)),
 			markup = action.name
 		}
 		actions_layout:add(button)
@@ -67,6 +68,7 @@ local function create_notification_widget(n)
 		resize = true,
 		halign = "center",
 		valign = "center",
+		clip_shape = beautiful.rrect(dpi(5)),
 		image = n.icon
 	}
 
@@ -87,6 +89,7 @@ local function create_notification_widget(n)
 		{
 			widget = wibox.container.background,
 			bg = beautiful.bg_alt,
+			shape = beautiful.rrect(dpi(8)),
 			{
 				widget = wibox.container.margin,
 				margins = dpi(15),
@@ -214,6 +217,7 @@ local function new()
 		markup = text_icons.bell_on,
 		bg_normal = beautiful.bg,
 		margins = { right = dpi(11), left = dpi(11) },
+		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				notifications:toggle_silent()
@@ -232,6 +236,7 @@ local function new()
 		bg_normal = beautiful.bg,
 		bg_hover = beautiful.red,
 		margins = { right = dpi(11), left = dpi(11) },
+		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				ret:clear_notifications()
@@ -285,7 +290,7 @@ local function new()
 						layout = wibox.layout.fixed.horizontal,
 						spacing = beautiful.sep_width,
 						spacing_widget = widgets.separator {
-							margins = { top = dpi(6), bottom = dpi(6) }
+							margins = { top = dpi(8), bottom = dpi(8) }
 						},
 						dnd_button,
 						clear_button

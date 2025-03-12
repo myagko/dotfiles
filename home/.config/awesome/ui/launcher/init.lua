@@ -106,6 +106,7 @@ function launcher:update_entries()
 			local entry_widget = wibox.widget {
 				widget = wibox.container.background,
 				forced_height = dpi(55),
+				shape = beautiful.rrect(dpi(8)),
 				{
 					widget = wibox.container.margin,
 					margins = dpi(10),
@@ -216,6 +217,7 @@ local function new()
 		markup = text_icons.home,
 		forced_width = dpi(55),
 		forced_height = dpi(55),
+		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				awful.spawn("xdg-open " .. os.getenv("HOME"))
@@ -228,6 +230,7 @@ local function new()
 		markup = text_icons.image,
 		forced_width = dpi(55),
 		forced_height = dpi(55),
+		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				if user.wallpapers_folder then
@@ -244,6 +247,7 @@ local function new()
 		forced_height = dpi(55),
 		fg_normal = beautiful.red,
 		bg_hover = beautiful.red,
+		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				powermenu:open()
@@ -253,19 +257,20 @@ local function new()
 
 	ret.main_widget = wibox.widget {
 		widget = wibox.container.margin,
-		forced_width = dpi(290) + dpi(55) + dpi(8)*3,
-		margins = dpi(8),
+		forced_width = dpi(290) + dpi(55) + dpi(6)*3,
+		margins = dpi(10),
 		{
 			widget = wibox.container.background,
-			forced_height = dpi(55)*(rows + 1) + dpi(8),
+			forced_height = dpi(55)*(rows + 1) + dpi(6),
 			{
 				layout = wibox.layout.fixed.horizontal,
-				spacing = dpi(8),
+				spacing = dpi(6),
 				fill_space = true,
 				{
 					widget = wibox.container.background,
 					bg = beautiful.bg_alt,
 					forced_width = dpi(55),
+					shape = beautiful.rrect(dpi(8)),
 					{
 						layout = wibox.layout.align.vertical,
 						sidebar_poweroff_button,
@@ -284,7 +289,7 @@ local function new()
 				},
 				{
 					layout = wibox.layout.fixed.vertical,
-					spacing = dpi(8),
+					spacing = dpi(6),
 					{
 						widget = wibox.container.background,
 						bg = beautiful.border_color,
@@ -330,6 +335,7 @@ local function new()
 		screen = capi.screen.primary,
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_color,
+		shape = beautiful.rrect(dpi(14)),
 		placement = function(d)
 			awful.placement.bottom_left(d, {
 				honor_workarea = true,

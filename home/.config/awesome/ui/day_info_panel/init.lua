@@ -39,14 +39,19 @@ local function new()
 	gtable.crush(ret, day_info, true)
 
 	ret.calendar = widgets.calendar {
-		sun_start = false
+		sun_start = false,
+		shape = beautiful.rrect(dpi(8))
 	}
 
 	ret.main_widget = wibox.widget {
-		layout = wibox.layout.fixed.vertical,
-		spacing = dpi(8),
-		weather_applet.main_widget,
-		ret.calendar
+		widget = wibox.container.margin,
+		margins = dpi(15),
+		{
+			layout = wibox.layout.fixed.vertical,
+			spacing = dpi(8),
+			weather_applet.main_widget,
+			ret.calendar
+		}
 	}
 
 	ret.popup_widget = awful.popup {
@@ -55,17 +60,14 @@ local function new()
 		screen = capi.screen.primary,
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_color,
+		shape = beautiful.rrect(dpi(20)),
 		placement = function(d)
 			awful.placement.bottom_right(d, {
 				honor_workarea = true,
 				margins = beautiful.useless_gap*2
 			})
 		end,
-		widget = {
-			widget = wibox.container.margin,
-			margins = dpi(15),
-			ret.main_widget
-		}
+		widget = ret.main_widget
 	}
 
 	return ret
