@@ -1,7 +1,6 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local gshape = require("gears.shape")
 local widgets = require("widgets")
 local launcher = require("ui.launcher")
 local control_panel = require("ui.control_panel")
@@ -363,9 +362,7 @@ local function tasklist(s)
 						{
 							id = "c_pointer",
 							widget = wibox.container.background,
-							shape = beautiful.rounded and function(cr, w, h)
-								gshape.partially_rounded_rect(cr, w, h, true, true, false, false, dpi(3))
-							end or nil,
+							shape = beautiful.prrect(true, true, false, false, dpi(3)),
 							bg = beautiful.ac
 						}
 					}

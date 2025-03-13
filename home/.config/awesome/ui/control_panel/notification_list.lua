@@ -262,7 +262,7 @@ local function new()
 		forced_width = dpi(450),
 		{
 			layout = wibox.layout.fixed.vertical,
-			spacing = dpi(8),
+			spacing = dpi(6),
 			{
 				widget = wibox.container.background,
 				forced_height = dpi(40),
@@ -302,7 +302,7 @@ local function new()
 				layout = wibox.layout.overflow.vertical,
 				scrollbar_enabled = false,
 				step = 80,
-				spacing = dpi(8)
+				spacing = dpi(6)
 			}
 		}
 	}

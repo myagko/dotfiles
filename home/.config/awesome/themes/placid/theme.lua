@@ -143,4 +143,10 @@ function theme.rrect(rad)
 	end or nil
 end
 
+function theme.prrect(tl, tr, br, bl, rad)
+	return theme.rounded and function(cr, w, h)
+		gshape.partially_rounded_rect(cr, w, h, tl, tr, br, bl, rad)
+	end or nil
+end
+
 return theme

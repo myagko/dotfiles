@@ -48,7 +48,7 @@ local function new()
 		margins = dpi(15),
 		{
 			layout = wibox.layout.fixed.vertical,
-			spacing = dpi(8),
+			spacing = dpi(6),
 			weather_applet.main_widget,
 			ret.calendar
 		}
