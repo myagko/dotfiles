@@ -4,10 +4,10 @@ local widgets = require("widgets")
 local json = require("external.json")
 local user = require("user")
 
-local weather_daemon = {}
+local weather = {}
 local instance = nil
 
-function weather_daemon:set_remote_watch()
+function weather:set_remote_watch()
 	local wp = self._private
 	local cmd = "curl -sf 'https://api.open-meteo.com/v1/forecast?" ..
 		"latitude=" .. self.lat .. "&longitude=" .. self.lon ..
@@ -28,7 +28,7 @@ end
 local function new(args)
 	args = args or {}
 	local ret = gobject {}
-	gtable.crush(ret, weather_daemon, true)
+	gtable.crush(ret, weather, true)
 	ret._private = {}
 
 	ret.lat = args.lat or 0
