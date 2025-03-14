@@ -4,13 +4,14 @@ local beautiful = require("beautiful")
 local widgets = require("widgets")
 local gobject = require("gears.object")
 local gtable = require("gears.table")
-local audio_daemon = require("daemons.audio")
+local audio = require("services.audio")
+local dpi = beautiful.xresources.apply_dpi
+local capi = { screen = screen }
+
 local notification_list = require("ui.control_panel.notification_list")
 local audio_sliders = require("ui.control_panel.audio_sliders")
 local wifi_applet = require("ui.control_panel.wifi_applet")
 local bluetooth_applet = require("ui.control_panel.bluetooth_applet")
-local dpi = beautiful.xresources.apply_dpi
-local capi = { screen = screen }
 
 local control_panel = {}
 local instance = nil
@@ -49,8 +50,8 @@ end
 function control_panel:open()
 	if self.state then return end
 	self.state = true
-	audio_daemon:get_sink_data("@DEFAULT_SINK@")
-	audio_daemon:get_source_data("@DEFAULT_SOURCE@")
+	audio:get_sink_data("@DEFAULT_SINK@")
+	audio:get_source_data("@DEFAULT_SOURCE@")
 	self:setup_controls()
 	self.popup_widget.visible = true
 	self:emit_signal("state", self.state)
@@ -92,7 +93,6 @@ local function new()
 		screen = capi.screen.primary,
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_color,
-		shape = beautiful.rrect(dpi(20)),
 		placement = function(d)
 			awful.placement.bottom_right(d, {
 				honor_workarea = true,

@@ -2,7 +2,7 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 local gtable = require("gears.table")
 local widgets = require("widgets")
-local weather_daemon = require("daemons.weather")
+local weather = require("services.weather")
 local text_icons = require("beautiful").text_icons
 local dpi = beautiful.xresources.apply_dpi
 local create_markup = require("helpers").create_markup
@@ -330,14 +330,13 @@ local function new()
 		widget = wibox.container.background,
 		forced_width = dpi(370),
 		bg = beautiful.bg_alt,
-		shape = beautiful.rrect(dpi(8)),
 		{
 			id = "main_layout",
 			layout = wibox.layout.fixed.vertical
 		}
 	}
 
-	weather_daemon:connect_signal("data_received", function(_, data)
+	weather:connect_signal("data_received", function(_, data)
 		ret:setup_widget(data)
 	end)
 

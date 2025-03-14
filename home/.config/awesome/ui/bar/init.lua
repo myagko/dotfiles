@@ -2,13 +2,14 @@ local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local widgets = require("widgets")
+local text_icons = beautiful.text_icons
+local dpi = beautiful.xresources.apply_dpi
+local modkey = "Mod4"
+
 local launcher = require("ui.launcher")
 local control_panel = require("ui.control_panel")
 local day_info_panel = require("ui.day_info_panel")
 local menu = require("ui.menu")
-local text_icons = beautiful.text_icons
-local dpi = beautiful.xresources.apply_dpi
-local modkey = "Mod4"
 
 local bar = {}
 
@@ -24,7 +25,6 @@ local function launcher_button()
 		bg_hover = beautiful.bg_urg,
 		fg_normal = beautiful.fg,
 		fg_hover = beautiful.fg,
-		shape = beautiful.rrect(dpi(5)),
 		markup = text_icons.menu,
 	}
 
@@ -43,7 +43,6 @@ local function control_panel_button()
 		bg_hover = beautiful.bg_urg,
 		fg_normal = beautiful.fg,
 		fg_hover = beautiful.fg,
-		shape = beautiful.rrect(dpi(5)),
 		markup = text_icons.sliders,
 	}
 
@@ -54,7 +53,6 @@ local function time()
 	local widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
-		shape = beautiful.rrect(dpi(5)),
 		buttons = {
 			awful.button({}, 1, function()
 				day_info_panel:toggle()
@@ -112,7 +110,6 @@ local function tray()
 	local widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
-		shape = beautiful.rrect(dpi(5)),
 		{
 			widget = wibox.container.margin,
 			margins = { left = dpi(8), right = dpi(8) },
@@ -163,7 +160,6 @@ local function kblayout()
 	local widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
-		shape = beautiful.rrect(dpi(5)),
 		{
 			widget = awful.widget.keyboardlayout {}
 		}
@@ -184,7 +180,6 @@ local function layoutbox(s)
 	local widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
-		shape = beautiful.rrect(dpi(5)),
 		buttons = {
 			awful.button({ }, 1, function()
 				awful.layout.inc(1)
@@ -246,7 +241,6 @@ local function taglist(s)
 		widget_template = {
 			id = "t_selection",
 			widget = wibox.container.background,
-			shape = beautiful.rrect(dpi(5)),
 			{
 				widget = wibox.container.margin,
 				margins = { left = dpi(9), right = dpi(9) },
@@ -308,7 +302,6 @@ local function taglist(s)
 	return wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
-		shape = beautiful.rrect(dpi(5)),
 		{
 			widget = widget
 		}
@@ -335,7 +328,6 @@ local function tasklist(s)
 		widget_template = {
 			id = "c_container",
 			widget = wibox.container.background,
-			shape = beautiful.rrect(dpi(5)),
 			{
 				layout = wibox.layout.stack,
 				{
@@ -362,7 +354,6 @@ local function tasklist(s)
 						{
 							id = "c_pointer",
 							widget = wibox.container.background,
-							shape = beautiful.prrect(true, true, false, false, dpi(3)),
 							bg = beautiful.ac
 						}
 					}

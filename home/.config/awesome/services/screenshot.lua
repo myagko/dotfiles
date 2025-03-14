@@ -8,10 +8,10 @@ local gtable = require("gears.table")
 local user = require("user")
 local file_exists = require("helpers").file_exists
 
-local screenshot_daemon = {}
+local screenshot = {}
 local instance = nil
 
-function screenshot_daemon:take(args)
+function screenshot:take(args)
 	local name = os.date("%F-%H%M%S") .. ".png"
 	local dir = (string.match(user.screenshots_folder, "/$") and
 		user.screenshots_folder or user.screenshots_folder .. "/")
@@ -25,20 +25,20 @@ function screenshot_daemon:take(args)
 	end)
 end
 
-function screenshot_daemon:take_full()
+function screenshot:take_full()
 	self:take("-u")
 end
 
-function screenshot_daemon:take_delay(delay)
+function screenshot:take_delay(delay)
 	delay = delay or 1
 	self:take("-u -d " .. delay)
 end
 
-function screenshot_daemon:take_select()
+function screenshot:take_select()
 	self:take("-s -u")
 end
 
-function screenshot_daemon:copy_screenshot(path)
+function screenshot:copy_screenshot(path)
 	local image = GdkPixbuf.Pixbuf.new_from_file(path)
 	if image then
 		self._private.clipboard:set_image(image)
@@ -48,7 +48,7 @@ end
 
 local function new()
 	local ret = gobject {}
-	gtable.crush(ret, screenshot_daemon, true)
+	gtable.crush(ret, screenshot, true)
 	ret._private = {}
 
 	ret._private.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)

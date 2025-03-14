@@ -6,12 +6,13 @@ local beautiful = require("beautiful")
 local gobject = require("gears.object")
 local gtable = require("gears.table")
 local widgets = require("widgets")
-local powermenu = require("ui.powermenu")
 local user = require("user")
 local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
 local lua_escape = require("helpers").lua_escape
 local capi = { screen = screen }
+
+local powermenu = require("ui.powermenu")
 
 local launcher = {}
 local instance = nil
@@ -106,7 +107,6 @@ function launcher:update_entries()
 			local entry_widget = wibox.widget {
 				widget = wibox.container.background,
 				forced_height = dpi(55),
-				shape = beautiful.rrect(dpi(8)),
 				{
 					widget = wibox.container.margin,
 					margins = dpi(10),
@@ -217,7 +217,6 @@ local function new()
 		markup = text_icons.home,
 		forced_width = dpi(55),
 		forced_height = dpi(55),
-		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				awful.spawn("xdg-open " .. os.getenv("HOME"))
@@ -230,7 +229,6 @@ local function new()
 		markup = text_icons.image,
 		forced_width = dpi(55),
 		forced_height = dpi(55),
-		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				if user.wallpapers_folder then
@@ -247,7 +245,6 @@ local function new()
 		forced_height = dpi(55),
 		fg_normal = beautiful.red,
 		bg_hover = beautiful.red,
-		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				powermenu:open()
@@ -270,7 +267,6 @@ local function new()
 					widget = wibox.container.background,
 					bg = beautiful.bg_alt,
 					forced_width = dpi(55),
-					shape = beautiful.rrect(dpi(8)),
 					{
 						layout = wibox.layout.align.vertical,
 						sidebar_poweroff_button,
@@ -335,7 +331,6 @@ local function new()
 		screen = capi.screen.primary,
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_color,
-		shape = beautiful.rrect(dpi(16)),
 		placement = function(d)
 			awful.placement.bottom_left(d, {
 				honor_workarea = true,

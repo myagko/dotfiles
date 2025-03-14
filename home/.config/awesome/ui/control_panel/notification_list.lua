@@ -4,10 +4,11 @@ local naughty = require("naughty")
 local beautiful = require("beautiful")
 local gtable = require("gears.table")
 local widgets = require("widgets")
-local notifications = require("ui.notifications")
 local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
 local create_markup = require("helpers").create_markup
+
+local notifications = require("ui.notifications")
 
 local notification_list = {}
 local instance = nil
@@ -35,7 +36,6 @@ local function create_actions_widget(n)
 			},
 			margins = dpi(5),
 			bg_normal = beautiful.bg_urg,
-			shape = beautiful.rrect(dpi(5)),
 			markup = action.name
 		}
 		actions_layout:add(button)
@@ -68,7 +68,6 @@ local function create_notification_widget(n)
 		resize = true,
 		halign = "center",
 		valign = "center",
-		clip_shape = beautiful.rrect(dpi(5)),
 		image = n.icon
 	}
 
@@ -89,7 +88,6 @@ local function create_notification_widget(n)
 		{
 			widget = wibox.container.background,
 			bg = beautiful.bg_alt,
-			shape = beautiful.rrect(dpi(8)),
 			{
 				widget = wibox.container.margin,
 				margins = dpi(15),
@@ -217,7 +215,6 @@ local function new()
 		markup = text_icons.bell_on,
 		bg_normal = beautiful.bg,
 		margins = { right = dpi(11), left = dpi(11) },
-		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				notifications:toggle_silent()
@@ -236,7 +233,6 @@ local function new()
 		bg_normal = beautiful.bg,
 		bg_hover = beautiful.red,
 		margins = { right = dpi(11), left = dpi(11) },
-		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				ret:clear_notifications()

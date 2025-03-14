@@ -1,6 +1,9 @@
 local awful = require("awful")
 local naughty = require("naughty")
 local user = require("user")
+local has_common_values = require("helpers").has_common_values
+local capi = { screen = screen, client = client }
+
 local Titlebar = require("ui.titlebars")
 local Wallpaper = require("ui.wallpaper")
 local bar = require("ui.bar")
@@ -10,16 +13,11 @@ local powermenu = require("ui.powermenu")
 local control_panel = require("ui.control_panel")
 local day_info_panel = require("ui.day_info_panel")
 local menu = require("ui.menu")
-local has_common_values = require("helpers").has_common_values
-local capi = {
-	screen = screen,
-	client = client
-}
 
 local function set_wibar_hideaway(wibar)
 	local function hide_wibar(client)
 		local focused_screen = awful.screen.focused({ client = true })
-		if wibar.screen == focused_screen and 
+		if wibar.screen == focused_screen and
 		has_common_values(client:tags(), focused_screen.selected_tags) then
 			if client.fullscreen then
 				wibar.visible = false

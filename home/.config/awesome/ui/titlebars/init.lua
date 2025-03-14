@@ -3,9 +3,10 @@ local wibox = require("wibox")
 local gtimer = require("gears.timer")
 local widgets = require("widgets")
 local beautiful = require("beautiful")
-local menu = require("ui.menu")
 local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
+
+local menu = require("ui.menu")
 
 return function(c)
 	if c.requests_no_titlebar then return end
@@ -39,7 +40,6 @@ return function(c)
 		bg_normal = beautiful.bg,
 		fg_hover = beautiful.bg,
 		bg_hover = beautiful.red,
-		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				c:kill()
@@ -54,7 +54,6 @@ return function(c)
 		bg_normal = beautiful.bg,
 		fg_hover = beautiful.bg,
 		bg_hover = beautiful.yellow,
-		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				c.maximized = not c.maximized
@@ -70,7 +69,6 @@ return function(c)
 		bg_normal = beautiful.bg,
 		fg_hover = beautiful.bg,
 		bg_hover = beautiful.green,
-		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				gtimer.delayed_call(function()

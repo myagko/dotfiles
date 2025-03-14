@@ -1,8 +1,8 @@
 local awful = require("awful")
 local naughty = require("naughty")
-local screenshot_daemon = require("daemons.screenshot")
+local screenshot = require("services.screenshot")
 
-screenshot_daemon:connect_signal("saved", function(_, dir, name)
+screenshot:connect_signal("saved", function(_, dir, name)
 	local view_file = naughty.action { name = "View" }
 	local open_dir = naughty.action { name = "Folder" }
 	local copy = naughty.action { name = "Copy" }
@@ -16,7 +16,7 @@ screenshot_daemon:connect_signal("saved", function(_, dir, name)
 	end)
 
 	copy:connect_signal("invoked", function()
-		screenshot_daemon:copy_screenshot(dir .. name)
+		screenshot:copy_screenshot(dir .. name)
 	end)
 
 	local display_dir = dir:gsub(tostring(os.getenv("HOME")), "~")

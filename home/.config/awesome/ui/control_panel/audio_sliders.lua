@@ -1,7 +1,7 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local audio_daemon = require("daemons.audio")
+local audio = require("services.audio")
 local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
 
@@ -32,9 +32,7 @@ local function new()
 				handle_border_width = dpi(4),
 				handle_margins = { top = dpi(7), bottom = dpi(7) },
 				bar_color = beautiful.bg_urg,
-				handle_border_color = beautiful.bg_alt,
-				handle_shape = beautiful.rbar(),
-				bar_shape = beautiful.rbar()
+				handle_border_color = beautiful.bg_alt
 			}
 		},
 		{
@@ -48,12 +46,12 @@ local function new()
 	local speaker_slider = speaker_widget:get_children_by_id("slider")[1]
 	local speaker_value = speaker_widget:get_children_by_id("value")[1]
 
-	audio_daemon:connect_signal("sink::value", function(_, _, val)
+	audio:connect_signal("sink::value", function(_, _, val)
 		speaker_slider:set_value(tonumber(val)/5)
 		speaker_value:set_markup(val .. "%")
 	end)
 
-	audio_daemon:connect_signal("sink::mute", function(_, _, mute)
+	audio:connect_signal("sink::mute", function(_, _, mute)
 		if mute then
 			speaker_icon:set_markup(text_icons.vol_off)
 			speaker_slider:set_bar_active_color(beautiful.fg_alt)
@@ -67,13 +65,13 @@ local function new()
 
 	speaker_slider:connect_signal("property::value", function(_, new_value)
 		speaker_value:set_markup(tostring(new_value*5) .. "%")
-		audio_daemon:set_sink_value("@DEFAULT_SINK@", new_value*5)
+		audio:set_sink_value("@DEFAULT_SINK@", new_value*5)
 	end)
 
 	speaker_icon:buttons {
 		awful.button({}, 1, function()
-			audio_daemon:toggle_sink_mute("@DEFAULT_SINK@")
-			audio_daemon:get_sink_data("@DEFAULT_SINK@")
+			audio:toggle_sink_mute("@DEFAULT_SINK@")
+			audio:get_sink_data("@DEFAULT_SINK@")
 		end)
 	}
 
@@ -99,9 +97,7 @@ local function new()
 				handle_border_width = dpi(4),
 				handle_margins = { top = dpi(7), bottom = dpi(7) },
 				bar_color = beautiful.bg_urg,
-				handle_border_color = beautiful.bg_alt,
-				handle_shape = beautiful.rbar(),
-				bar_shape = beautiful.rbar()
+				handle_border_color = beautiful.bg_alt
 			}
 		},
 		{
@@ -115,12 +111,12 @@ local function new()
 	local microphone_slider = microphone_widget:get_children_by_id("slider")[1]
 	local microphone_value = microphone_widget:get_children_by_id("value")[1]
 
-	audio_daemon:connect_signal("source::value", function(_, _, val)
+	audio:connect_signal("source::value", function(_, _, val)
 		microphone_slider:set_value(tonumber(val)/5)
 		microphone_value:set_markup(val .. "%")
 	end)
 
-	audio_daemon:connect_signal("source::mute", function(_, _, mute)
+	audio:connect_signal("source::mute", function(_, _, mute)
 		if mute then
 			microphone_icon:set_markup(text_icons.mic_off)
 			microphone_slider:set_bar_active_color(beautiful.fg_alt)
@@ -134,20 +130,19 @@ local function new()
 
 	microphone_slider:connect_signal("property::value", function(_, new_value)
 		microphone_value:set_markup(tostring(new_value*5) .. "%")
-		audio_daemon:set_source_value("@DEFAULT_SOURCE@", new_value*5)
+		audio:set_source_value("@DEFAULT_SOURCE@", new_value*5)
 	end)
 
 	microphone_icon:buttons {
 		awful.button({}, 1, function()
-			audio_daemon:toggle_source_mute("@DEFAULT_SOURCE@")
-			audio_daemon:get_source_data("@DEFAULT_SOURCE@")
+			audio:toggle_source_mute("@DEFAULT_SOURCE@")
+			audio:get_source_data("@DEFAULT_SOURCE@")
 		end)
 	}
 
 	ret.main_widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
-		shape = beautiful.rrect(dpi(8)),
 		{
 			widget = wibox.container.margin,
 			margins = {

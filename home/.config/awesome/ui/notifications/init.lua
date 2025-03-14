@@ -69,7 +69,6 @@ local function create_actions_widget(n)
 				end)
 			},
 			margins = dpi(5),
-			shape = beautiful.rrect(dpi(5)),
 			markup = action.name
 		}
 		actions_layout:add(button)
@@ -102,7 +101,6 @@ local function create_notification_popup(n)
 		resize = true,
 		halign = "center",
 		valign = "center",
-		clip_shape = beautiful.rrect(dpi(5)),
 		image = n.icon
 	}
 
@@ -192,7 +190,6 @@ local function create_notification_popup(n)
 		fg = beautiful.fg,
 		border_color = beautiful.border_color,
 		border_width = beautiful.border_width,
-		shape = beautiful.rrect(dpi(14)),
 		placement = function() return { 0, 0 } end,
 		widget = main_widget
 	}

@@ -3,14 +3,12 @@ local awful = require("awful")
 local beautiful = require("beautiful")
 local gfilesystem = require("gears.filesystem")
 local gtimer = require("gears.timer")
-local screenshot_daemon = require("daemons.screenshot")
-local powermenu = require("ui.powermenu")
+local screenshot = require("services.screenshot")
 local user = require("user")
 local dpi = beautiful.xresources.apply_dpi
-local capi = {
-	awesome = awesome,
-	client = client
-}
+local capi = { awesome = awesome, client = client }
+
+local powermenu = require("ui.powermenu")
 
 local menu = {}
 
@@ -29,9 +27,9 @@ local function create_desktop_menu()
 				{ "power", function() powermenu:toggle() end }
 			} },
 			{ "screenshot", {
-				{ "full", function() screenshot_daemon:take_full() end },
-				{ "full 5s delay", function() screenshot_daemon:take_delay(5) end },
-				{ "select area", function() screenshot_daemon:take_select() end }
+				{ "full", function() screenshot:take_full() end },
+				{ "full 5s delay", function() screenshot:take_delay(5) end },
+				{ "select area", function() screenshot:take_select() end }
 			} },
 			{ "terminal", function() awful.spawn(user.terminal) end },
 			{ "files", function() awful.spawn("xdg-open " .. os.getenv("HOME")) end },

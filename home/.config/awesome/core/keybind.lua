@@ -1,15 +1,13 @@
 local awful = require("awful")
 local modkey = "Mod4"
-local screenshot_daemon = require("daemons.screenshot")
+local screenshot = require("services.screenshot")
+local user = require("user")
+local capi = { awesome = awesome, client = client }
+
 local menu = require("ui.menu")
 local launcher = require("ui.launcher")
 local powermenu = require("ui.powermenu")
 local control_panel = require("ui.control_panel")
-local user = require("user")
-local capi = {
-	awesome = awesome,
-	client = client
-}
 
 awful.mouse.snap.edge_enabled = false
 
@@ -141,10 +139,10 @@ awful.keyboard.append_global_keybindings {
 		powermenu:open()
 	end),
 	awful.key({}, "Print", function()
-		screenshot_daemon:take_full()
+		screenshot:take_full()
 	end),
 	awful.key({"Shift"}, "Print", function()
-		screenshot_daemon:take_select()
+		screenshot:take_select()
 	end)
 }
 

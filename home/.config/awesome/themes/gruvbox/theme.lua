@@ -110,8 +110,7 @@ theme.tooltip_border_color = theme.border_color
 theme.snap_border_width = theme.border_width*4
 theme.snap_bg = theme.ac
 theme.snapper_gap = dpi(6)
-theme.snap_shape = theme.rounded and gshape.rounded_rect
-	or gshape.rectangle
+theme.snap_shape = gshape.rectangle
 
 theme.notification_margins = dpi(30)
 theme.notification_spacing = dpi(10)
@@ -130,23 +129,5 @@ theme.layout_tile = gcolor.recolor_image(icons_path .. "layout_tile.png", theme.
 
 theme.systray_icon_spacing = dpi(6)
 theme.bg_systray = theme.bg_alt
-
-function theme.rbar()
-	return theme.rounded and function(cr, w, h)
-		gshape.rounded_bar(cr, w, h)
-	end or nil
-end
-
-function theme.rrect(rad)
-	return theme.rounded and function(cr, w, h)
-		gshape.rounded_rect(cr, w, h, rad)
-	end or nil
-end
-
-function theme.prrect(tl, tr, br, bl, rad)
-	return theme.rounded and function(cr, w, h)
-		gshape.partially_rounded_rect(cr, w, h, tl, tr, br, bl, rad)
-	end or nil
-end
 
 return theme

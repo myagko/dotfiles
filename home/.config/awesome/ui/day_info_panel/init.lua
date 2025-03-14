@@ -4,9 +4,10 @@ local beautiful = require("beautiful")
 local gobject = require("gears.object")
 local gtable = require("gears.table")
 local widgets = require("widgets")
-local weather_applet = require("ui.day_info_panel.weather_applet")
 local dpi = beautiful.xresources.apply_dpi
 local capi = { screen = screen }
+
+local weather_applet = require("ui.day_info_panel.weather_applet")
 
 local day_info = {}
 local instance = nil
@@ -39,8 +40,7 @@ local function new()
 	gtable.crush(ret, day_info, true)
 
 	ret.calendar = widgets.calendar {
-		sun_start = false,
-		shape = beautiful.rrect(dpi(8))
+		sun_start = false
 	}
 
 	ret.main_widget = wibox.widget {
@@ -60,7 +60,6 @@ local function new()
 		screen = capi.screen.primary,
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_color,
-		shape = beautiful.rrect(dpi(20)),
 		placement = function(d)
 			awful.placement.bottom_right(d, {
 				honor_workarea = true,

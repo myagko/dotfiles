@@ -54,7 +54,6 @@ local function day_widget(day, is_current, is_another_month)
 		widget = wibox.container.background,
 		fg = fg_color,
 		bg = bg_color,
-		shape = beautiful.rrect(dpi(5)),
 		{
 			widget = wibox.container.margin,
 			margins = dpi(10),
@@ -133,7 +132,6 @@ local function new(args)
 	widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
-		shape = args.shape,
 		{
 			widget = wibox.container.margin,
 			margins = dpi(20),
