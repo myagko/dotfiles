@@ -1,13 +1,14 @@
 #!/bin/lua
 
 local home = os.getenv("HOME")
-local moz_default = "tm9d9sgu.default-release"
+local moz_default = "466tdvp3.default-release"
 local themes = {
 	["haven"] = true,
 	["nymph"] = true,
 	["gruvbox"] = true,
 	["everblush"] = true,
-	["placid"] = true
+	["placid"] = true,
+	["astel"] = true
 }
 
 local function editlines(file, pattern, repl)

@@ -32,7 +32,8 @@ local plugins = {
 	{ dir = '~/.config/nvim/themes/haven' },
 	{ dir = '~/.config/nvim/themes/everblush' },
 	{ dir = '~/.config/nvim/themes/gruvbox' },
-	{ dir = '~/.config/nvim/themes/placid' }
+	{ dir = '~/.config/nvim/themes/placid' },
+	{ dir = '~/.config/nvim/themes/astel' }
 }
 
 require("lazy").setup(plugins)

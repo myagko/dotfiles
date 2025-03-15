@@ -7,7 +7,8 @@ local themes = {
 	["gruvbox"] = true,
 	["haven"] = true,
 	["placid"] = true,
-	["nymph"] = true
+	["nymph"] = true,
+	["astel"] = true
 }
 
 local theme_name = themes[user.theme] and user.theme or "placid"
