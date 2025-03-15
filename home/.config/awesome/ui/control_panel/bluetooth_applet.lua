@@ -195,6 +195,8 @@ local function on_discovering(discovering, self)
 	local refresh_button = self.bottombar:get_children_by_id("refresh_button")[1]
 	refresh_button:set_fg_normal(discovering and beautiful.fg_alt or beautiful.fg)
 	refresh_button:set_bg_hover(discovering and beautiful.fg_alt or beautiful.ac)
+	refresh_button:set_fg(discovering and beautiful.fg_alt or beautiful.fg)
+	refresh_button:set_bg(beautiful.bg_alt)
 end
 
 local function on_state_changed(state, self)
@@ -206,6 +208,8 @@ local function on_state_changed(state, self)
 
 	refresh_button:set_fg_normal(bluetooth:get_discovering() and beautiful.fg_alt or beautiful.fg)
 	refresh_button:set_bg_hover(bluetooth:get_discovering() and beautiful.fg_alt or beautiful.ac)
+	refresh_button:set_fg(bluetooth:get_discovering() and beautiful.fg_alt or beautiful.fg)
+	refresh_button:set_bg(beautiful.bg_alt)
 
 	if state then
 		bottombar_toggle_button:set_text(text_icons.switch_on)
