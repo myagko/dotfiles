@@ -106,10 +106,8 @@ local function create_current(data)
 	return wibox.widget {
 		widget = wibox.container.margin,
 		margins = {
-			left = dpi(15),
-			right = dpi(25),
-			top = dpi(15),
-			bottom = dpi(10)
+			left = dpi(15), right = dpi(25),
+			top = dpi(15), bottom = dpi(10)
 		},
 		{
 			layout = wibox.layout.fixed.horizontal,
@@ -160,7 +158,10 @@ local function create_hourly(data)
 
 	local widget = wibox.widget {
 		widget = wibox.container.margin,
-		margins = { top = 0, bottom = dpi(15), left = dpi(15), right = dpi(15) },
+		margins = {
+			top = 0, bottom = dpi(15),
+			left = dpi(15), right = dpi(15)
+		},
 		{
 			layout = wibox.layout.overflow.horizontal,
 			scrollbar_enabled = false,
@@ -298,8 +299,7 @@ function weather_applet:setup_widget(data)
 			widgets.separator {
 				vertical = true,
 				margins = {
-					left = dpi(10),
-					right = dpi(10)
+					left = dpi(10), right = dpi(10)
 				}
 			},
 			create_daily(data)

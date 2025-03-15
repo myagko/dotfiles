@@ -146,10 +146,8 @@ local function new()
 		{
 			widget = wibox.container.margin,
 			margins = {
-				left = dpi(20),
-				right = dpi(20),
-				top = dpi(10),
-				bottom = dpi(10)
+				left = dpi(20), right = dpi(20),
+				top = dpi(10), bottom = dpi(10)
 			},
 			{
 				layout = wibox.layout.fixed.vertical,

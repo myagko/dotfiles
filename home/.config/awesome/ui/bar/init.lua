@@ -14,7 +14,7 @@ local menu = require("ui.menu")
 local bar = {}
 
 local function launcher_button()
-	local widget = widgets.hover_button {
+	return widgets.hover_button {
 		buttons = {
 			awful.button({}, 1, function()
 				launcher:toggle()
@@ -27,12 +27,10 @@ local function launcher_button()
 		fg_hover = beautiful.fg,
 		markup = text_icons.menu,
 	}
-
-	return widget
 end
 
 local function control_panel_button()
-	local widget = widgets.hover_button {
+	return widgets.hover_button {
 		buttons = {
 			awful.button({}, 1, function()
 				control_panel:toggle()
@@ -45,8 +43,6 @@ local function control_panel_button()
 		fg_hover = beautiful.fg,
 		markup = text_icons.sliders,
 	}
-
-	return widget
 end
 
 local function time()
@@ -187,7 +183,7 @@ local function layoutbox(s)
 		},
 		{
 			widget = wibox.container.margin,
-			margins = { left = dpi(7), right = dpi(7) },
+			margins = dpi(7),
 			{
 				widget = awful.widget.layoutbox {
 					screen = s
@@ -208,7 +204,7 @@ local function layoutbox(s)
 end
 
 local function taglist(s)
-	local widget = awful.widget.taglist {
+	local taglist_widget = awful.widget.taglist {
 		screen = s,
 		filter = awful.widget.taglist.filter.all,
 		buttons = {
@@ -278,7 +274,7 @@ local function taglist(s)
 		end
 	end
 
-	widget.widget_template.create_callback = function(tw, t)
+	taglist_widget.widget_template.create_callback = function(tw, t)
 		t_callback(tw, t)
 		local t_selection = tw:get_children_by_id("t_selection")[1]
 
@@ -295,7 +291,7 @@ local function taglist(s)
 		end)
 	end
 
-	widget.widget_template.update_callback = function(tw, t)
+	taglist_widget.widget_template.update_callback = function(tw, t)
 		t_callback(tw, t)
 	end
 
@@ -303,13 +299,13 @@ local function taglist(s)
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
 		{
-			widget = widget
+			widget = taglist_widget
 		}
 	}
 end
 
 local function tasklist(s)
-	local tasklist_w = awful.widget.tasklist {
+	local tasklist_widget = awful.widget.tasklist {
 		screen = s,
 		filter = awful.widget.tasklist.filter.currenttags,
 		buttons = {
@@ -350,7 +346,7 @@ local function tasklist(s)
 					nil,
 					{
 						widget = wibox.container.margin,
-						margins = { left = dpi(8), right = dpi(8) },
+						margins = { left = dpi(10), right = dpi(10) },
 						{
 							id = "c_pointer",
 							widget = wibox.container.background,
@@ -383,7 +379,7 @@ local function tasklist(s)
 		end
 	end
 
-	tasklist_w.widget_template.create_callback = function(tw, c)
+	tasklist_widget.widget_template.create_callback = function(tw, c)
 		c_callback(tw, c)
 
 		tw:connect_signal("mouse::enter", function(w)
@@ -395,11 +391,11 @@ local function tasklist(s)
 		end)
 	end
 
-	tasklist_w.widget_template.update_callback = function(tw, c)
+	tasklist_widget.widget_template.update_callback = function(tw, c)
 		c_callback(tw, c)
 	end
 
-	return tasklist_w
+	return tasklist_widget
 end
 
 function bar.set_secondary(s)
@@ -411,10 +407,8 @@ function bar.set_secondary(s)
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_color,
 		margins = {
-			left = -beautiful.border_width,
-			right = -beautiful.border_width,
-			top = 0,
-			bottom = -beautiful.border_width
+			left = -beautiful.border_width, right = -beautiful.border_width,
+			top = 0, bottom = -beautiful.border_width
 		},
 		widget = {
 			layout = wibox.layout.fixed.horizontal,
@@ -444,10 +438,8 @@ function bar.set_primary(s)
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_color,
 		margins = {
-			left = -beautiful.border_width,
-			right = -beautiful.border_width,
-			top = 0,
-			bottom = -beautiful.border_width
+			left = -beautiful.border_width, right = -beautiful.border_width,
+			top = 0, bottom = -beautiful.border_width
 		},
 		widget = {
 			layout = wibox.layout.align.horizontal,
@@ -467,10 +459,8 @@ function bar.set_primary(s)
 			{
 				widget = wibox.container.margin,
 				margins = {
-					top = dpi(7),
-					bottom = dpi(7),
-					left = 0,
-					right = dpi(7)
+					top = dpi(7), bottom = dpi(7),
+					left = 0, right = dpi(7)
 				},
 				{
 					layout = wibox.layout.fixed.horizontal,
