@@ -1,5 +1,5 @@
 @use "sass:color";
-@import "themes/placid";
+@import "themes/astel";
 
 @function gtkalpha($c, $a) {
   @return string.unquote('alpha(#{$c}, #{$a})');

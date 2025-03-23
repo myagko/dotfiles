@@ -1,5 +1,5 @@
 @use "sass:string";
-@import "themes/placid";
+@import "themes/astel";
 
 @function gtkalpha($c, $a) {
   @return string.unquote("alpha(#{$c},#{$a})");
@@ -48,6 +48,7 @@ window.notifications {
         color: $ac-red;
         background-color: transparent;
         padding: 3px;
+        border-radius: 6px;
         transition: 200ms;
 
         &:hover {
