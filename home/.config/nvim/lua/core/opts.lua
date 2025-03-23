@@ -75,4 +75,4 @@ vim.diagnostic.config({
 
 -- Colors --
 vim.opt.termguicolors = true
-vim.cmd.colorscheme("everblush")
+vim.cmd.colorscheme("astel")

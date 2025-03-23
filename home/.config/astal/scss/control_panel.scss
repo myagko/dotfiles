@@ -10,7 +10,8 @@ window.control-panel {
   .mainbox {
     background-color: $bg;
     margin: 7px;
-    border: 1px solid $bg-urg;
+    border: 2px solid $bg-urg;
+    border-radius: 25px;
     padding: 15px;
 
     .notification-list {
@@ -54,6 +55,7 @@ window.control-panel {
 
       .notification {
         background-color: $bg-alt;
+        border-radius: 10px;
         padding: 10px;
 
         &.critical {
@@ -120,6 +122,7 @@ window.control-panel {
             background-color: $bg-urg;
             margin: 0 3px;
             padding: 5px;
+            border-radius: 8px;
             transition: 200ms;
 
             &:hover {
@@ -142,9 +145,11 @@ window.control-panel {
     .audio-sliders {
       background-color: $bg-alt;
       padding: 15px;
+      border-radius: 10px;
       
       .speaker, .microphone {
 
+        /*
         .volume-slider {
           trough {
             background-color: $bg-urg;
@@ -167,13 +172,16 @@ window.control-panel {
             }
           }
         }
+        */
 
         .mute-button {
           all: unset;
           color: $fg;
           background-color: transparent;
           padding: 5px;
+          border-radius: 8px;
           transition: 200ms;
+          margin-right: 5px;
 
           label {
             transition: 200ms;
@@ -196,6 +204,7 @@ window.control-panel {
 
         .volume-value {
           color: $fg;
+          margin-left: 10px;
         }
       }
     }

@@ -24,7 +24,7 @@ screenshot:connect_signal("saved", function(_, dir, name)
 	naughty.notification {
 		app_name = "Screenshot",
 		title = "Screenshot taken",
-		text = display_dir,
+		text = "Saved to: " .. display_dir,
 		icon = dir .. name,
 		actions = { view_file, open_dir, copy }
 	}

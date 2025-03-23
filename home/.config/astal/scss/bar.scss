@@ -6,19 +6,12 @@
 }
 
 window.bar {
-  border-top: 1px solid $bg-urg;
-  background-color: $bg;
-  color: $fg;
-  font-size: 13pt;
-
-  label {
-    font-weight: bold;
-    margin: 0 10px;
-  }
+  min-height: 30px;
 
   button {
     all: unset;
     padding: 0 8px;
+    border-radius: 8px;
     color: $fg;
     background-color: $bg-alt;
 
@@ -34,17 +27,23 @@ window.bar {
   }
 
   .mainbox {
-    min-height: 30px;
+    border-top: 2px solid $bg-urg;
+    background-color: $bg;
+    color: $fg;
+    font-size: 13pt;
     padding: 8px;
-    padding-top: 9px;
   }
 
   .workspaces  {
     background-color: $bg-alt;
+    padding: 4px;
+    border-radius: 8px;
 
     .workspace {
       all: unset;
       background-color: transparent;
+      padding: 0 7px;
+      border-radius: 5px;
       transition: 200ms;
 
       &:hover {
@@ -68,6 +67,8 @@ window.bar {
     .client {
       all: unset;
       background-color: $bg-alt;
+      padding: 0 8px;
+      border-radius: 8px;
       transition: 200ms;
 
       &:hover {
@@ -89,11 +90,13 @@ window.bar {
 
   .systray {
     background-color: $bg-alt;
+    border-radius: 8px;
 
     .reveal-button, .item {
       all: unset;
       background-color: transparent;
       padding: 0 6px;
+      border-radius: 8px;
       transition: 200ms;
 
       &:hover {
@@ -110,10 +113,14 @@ window.bar {
 
   .kblayout {
     background-color: $bg-alt;
+    padding: 0 8px;
+    border-radius: 8px;
   }
 
   .time {
     background-color: $bg-alt;
+    padding: 0 8px;
+    border-radius: 8px;
   }
 
   .launcher-button, .control-panel-button {

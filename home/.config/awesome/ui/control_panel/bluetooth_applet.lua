@@ -22,15 +22,18 @@ local function create_dev_widget(path)
 	}
 
 	local connect_button = common.hover_button {
-		margins = dpi(5)
+		margins = { left = dpi(15), right = dpi(15) },
+		shape = beautiful.rrect(dpi(10))
 	}
 
 	local pair_button = common.hover_button {
-		margins = dpi(5)
+		margins = { left = dpi(15), right = dpi(15) },
+		shape = beautiful.rrect(dpi(10))
 	}
 
 	local trust_button = common.hover_button {
-		margins = dpi(5)
+		margins = { left = dpi(15), right = dpi(15) },
+		shape = beautiful.rrect(dpi(10))
 	}
 
 	local buttons_widget = wibox.widget {
@@ -52,9 +55,10 @@ local function create_dev_widget(path)
 	local dev_widget_header = wibox.widget {
 		widget = wibox.container.background,
 		forced_height = dpi(40),
+		shape = beautiful.rrect(dpi(10)),
 		{
 			widget = wibox.container.margin,
-			margins = { left = dpi(10), right = dpi(10) },
+			margins = { left = dpi(15), right = dpi(15) },
 			{
 				layout = wibox.layout.align.horizontal,
 				{
@@ -246,6 +250,7 @@ local function new()
 		forced_height = dpi(55),
 		bg = beautiful.bg_alt,
 		fg = beautiful.fg,
+		shape = beautiful.rrect(dpi(10)),
 		{
 			widget = wibox.container.margin,
 			margins = { left = dpi(15) },
@@ -278,7 +283,7 @@ local function new()
 					{
 						id = "separator",
 						widget = common.separator {
-							margins = { top = dpi(10), bottom = dpi(10) }
+							margins = { top = dpi(12), bottom = dpi(12) }
 						}
 					},
 					{
@@ -312,8 +317,9 @@ local function new()
 
 	ret.bottombar = wibox.widget {
 		widget = wibox.container.background,
-		bg = beautiful.bg_alt,
 		forced_height = dpi(55),
+		bg = beautiful.bg_alt,
+		shape = beautiful.rrect(dpi(10)),
 		{
 			layout = wibox.layout.align.horizontal,
 			{
@@ -321,6 +327,7 @@ local function new()
 				widget = common.hover_button {
 					forced_width = dpi(55),
 					forced_height = dpi(55),
+					shape = beautiful.rrect(dpi(10)),
 					buttons = {
 						awful.button({}, 1, function()
 							bluetooth:set_state(not bluetooth:get_state())
@@ -333,7 +340,7 @@ local function new()
 				layout = wibox.layout.fixed.horizontal,
 				spacing = beautiful.sep_width,
 				spacing_widget = common.separator {
-					margins = { top = dpi(10), bottom = dpi(10) }
+					margins = { top = dpi(12), bottom = dpi(12) }
 				},
 				{
 					id = "refresh_button",
@@ -341,6 +348,7 @@ local function new()
 						markup = text_icons.reboot,
 						forced_width = dpi(55),
 						forced_height = dpi(55),
+						shape = beautiful.rrect(dpi(10)),
 						buttons = {
 							awful.button({}, 1, function()
 								if bluetooth:get_state() then
@@ -360,6 +368,7 @@ local function new()
 						markup = text_icons.arrow_left,
 						forced_width = dpi(55),
 						forced_height = dpi(55),
+						shape = beautiful.rrect(dpi(10))
 					}
 				}
 			}

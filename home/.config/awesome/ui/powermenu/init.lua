@@ -68,6 +68,7 @@ function powermenu:update_elements()
 			widget = wibox.container.background,
 			forced_width = dpi(120),
 			forced_height = dpi(120),
+			shape = beautiful.rrect(dpi(15)),
 			buttons = {
 				awful.button({}, 1, function()
 					if self.index_element == i then
@@ -160,13 +161,12 @@ local function new()
 	ret.main_widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg,
-		forced_width = dpi(120)*3 + dpi(15)*2,
-		forced_height = dpi(120) + dpi(15)*2,
 		{
 			widget = wibox.container.margin,
 			margins = dpi(15),
 			{
 				id = "elements_container",
+				spacing = dpi(4),
 				layout = wibox.layout.fixed.horizontal
 			}
 		}
@@ -178,6 +178,7 @@ local function new()
 		screen = capi.screen.primary,
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_color,
+		shape = beautiful.rrect(dpi(30)),
 		placement = function(d)
 			awful.placement.centered(d, {
 				honor_workarea = true

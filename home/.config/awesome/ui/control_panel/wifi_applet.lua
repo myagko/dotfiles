@@ -33,10 +33,11 @@ local function create_ap_widget(ap, self)
 	local ap_widget = wibox.widget {
 		active = is_active,
 		widget = wibox.container.background,
+		shape = beautiful.rrect(dpi(10)),
 		{
 			widget = wibox.container.margin,
 			forced_height = dpi(50),
-			margins = dpi(10),
+			margins = dpi(15),
 			buttons = {
 				awful.button({}, 1, function()
 					self:open_ap_menu(ap)
@@ -205,6 +206,7 @@ local function new()
 		forced_height = dpi(55),
 		bg = beautiful.bg_alt,
 		fg = beautiful.fg,
+		shape = beautiful.rrect(dpi(10)),
 		{
 			widget = wibox.container.margin,
 			margins = { left = dpi(15) },
@@ -237,7 +239,7 @@ local function new()
 					{
 						id = "separator",
 						widget = common.separator {
-							margins = { top = dpi(10), bottom = dpi(10) }
+							margins = { top = dpi(12), bottom = dpi(12) }
 						}
 					},
 					{
@@ -271,8 +273,9 @@ local function new()
 
 	ret.bottombar = wibox.widget {
 		widget = wibox.container.background,
-		bg = beautiful.bg_alt,
 		forced_height = dpi(55),
+		bg = beautiful.bg_alt,
+		shape = beautiful.rrect(dpi(10)),
 		{
 			layout = wibox.layout.align.horizontal,
 			{
@@ -280,6 +283,7 @@ local function new()
 				widget = common.hover_button {
 					forced_width = dpi(55),
 					forced_height = dpi(55),
+					shape = beautiful.rrect(dpi(10)),
 					buttons = {
 						awful.button({}, 1, function()
 							network:set_wireless_state(not network:get_wireless_state())
@@ -292,7 +296,7 @@ local function new()
 				layout = wibox.layout.fixed.horizontal,
 				spacing = beautiful.sep_width,
 				spacing_widget = common.separator {
-					margins = { top = dpi(10), bottom = dpi(10) }
+					margins = { top = dpi(12), bottom = dpi(12) }
 				},
 				{
 					id = "refresh_button",
@@ -300,6 +304,7 @@ local function new()
 						markup = text_icons.reboot,
 						forced_width = dpi(55),
 						forced_height = dpi(55),
+						shape = beautiful.rrect(dpi(10)),
 						buttons = {
 							awful.button({}, 1, function()
 								if network:get_wireless_state() then
@@ -315,6 +320,7 @@ local function new()
 						markup = text_icons.arrow_left,
 						forced_width = dpi(55),
 						forced_height = dpi(55),
+						shape = beautiful.rrect(dpi(10))
 					}
 				}
 			}
@@ -342,6 +348,7 @@ local function new()
 		{
 			widget = wibox.container.background,
 			bg = beautiful.bg_alt,
+			shape = beautiful.rrect(dpi(10)),
 			{
 				widget = wibox.container.margin,
 				margins = dpi(15),
@@ -394,6 +401,7 @@ local function new()
 			id = "connect_button",
 			widget = common.hover_button {
 				margins = dpi(10),
+				shape = beautiful.rrect(dpi(10)),
 				markup = "Connect"
 			}
 		}
@@ -416,6 +424,7 @@ local function new()
 		common.hover_button {
 			markup = "Disonnect",
 			margins = dpi(10),
+			shape = beautiful.rrect(dpi(10)),
 			buttons = {
 				awful.button({}, 1, function()
 					network:disconnect_active_access_point()

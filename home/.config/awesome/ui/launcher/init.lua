@@ -107,9 +107,10 @@ function launcher:update_entries()
 			local entry_widget = wibox.widget {
 				widget = wibox.container.background,
 				forced_height = dpi(55),
+				shape = beautiful.rrect(dpi(10)),
 				{
 					widget = wibox.container.margin,
-					margins = dpi(10),
+					margins = dpi(15),
 					{
 						widget = wibox.widget.textbox,
 						markup = app:get_name()
@@ -217,6 +218,7 @@ local function new()
 		markup = text_icons.home,
 		forced_width = dpi(55),
 		forced_height = dpi(55),
+		shape = beautiful.rrect(dpi(10)),
 		buttons = {
 			awful.button({}, 1, function()
 				awful.spawn("xdg-open " .. os.getenv("HOME"))
@@ -229,6 +231,7 @@ local function new()
 		markup = text_icons.image,
 		forced_width = dpi(55),
 		forced_height = dpi(55),
+		shape = beautiful.rrect(dpi(10)),
 		buttons = {
 			awful.button({}, 1, function()
 				if user.wallpapers_folder then
@@ -245,6 +248,7 @@ local function new()
 		forced_height = dpi(55),
 		fg_normal = beautiful.red,
 		bg_hover = beautiful.red,
+		shape = beautiful.rrect(dpi(10)),
 		buttons = {
 			awful.button({}, 1, function()
 				powermenu:open()
@@ -254,19 +258,18 @@ local function new()
 
 	ret.main_widget = wibox.widget {
 		widget = wibox.container.margin,
-		forced_width = dpi(290) + dpi(55) + dpi(6)*3,
 		margins = dpi(10),
 		{
 			widget = wibox.container.background,
-			forced_height = dpi(55)*(rows + 1) + dpi(6),
 			{
 				layout = wibox.layout.fixed.horizontal,
 				spacing = dpi(6),
 				fill_space = true,
 				{
 					widget = wibox.container.background,
-					bg = beautiful.bg_alt,
 					forced_width = dpi(55),
+					bg = beautiful.bg_alt,
+					shape = beautiful.rrect(dpi(10)),
 					{
 						layout = wibox.layout.align.vertical,
 						sidebar_poweroff_button,
@@ -276,7 +279,7 @@ local function new()
 							spacing = beautiful.sep_width,
 							spacing_widget = common.separator {
 								vertical = true,
-								margins = { left = dpi(10), right = dpi(10) }
+								margins = { left = dpi(12), right = dpi(12) }
 							},
 							sidebar_wallpapers_button,
 							sidebar_home_button,
@@ -308,7 +311,9 @@ local function new()
 					{
 						id = "entries_container",
 						layout = wibox.layout.fixed.vertical,
+						spacing = dpi(3),
 						forced_width = dpi(290),
+						forced_height = dpi(55)*rows + dpi(3)*(rows - 1),
 						buttons = {
 							awful.button({}, 4, function()
 								ret:back()
@@ -331,6 +336,7 @@ local function new()
 		screen = capi.screen.primary,
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_color,
+		shape = beautiful.rrect(dpi(20)),
 		placement = function(d)
 			awful.placement.bottom_left(d, {
 				honor_workarea = true,

@@ -1,20 +1,22 @@
 local awful = require("awful")
 local rclient = require("ruled.client")
+local beautiful = require("beautiful")
+local dpi = beautiful.xresources.apply_dpi
 local capi = { client = client }
 
 require("awful.autofocus")
 
 capi.client.connect_signal("request::manage", function(c)
 	if c.fullscreen then
-		c.x = c.screen.geometry.x
-		c.y = c.screen.geometry.y
-		c.width = c.screen.geometry.width
-		c.height = c.screen.geometry.height
+		c:set_x(c.screen.geometry.x)
+		c:set_y(c.screen.geometry.y)
+		c:set_width(c.screen.geometry.width)
+		c:set_height(c.screen.geometry.height)
 	elseif c.maximized then
-		c.x = c.screen.workarea.x
-		c.y = c.screen.workarea.y
-		c.width = c.screen.workarea.width
-		c.height = c.screen.workarea.height
+		c:set_x(c.screen.workarea.x)
+		c:set_y(c.screen.workarea.y)
+		c:set_width(c.screen.workarea.width)
+		c:set_height(c.screen.workarea.height)
 	end
 
 	if c.transient_for then
@@ -23,6 +25,18 @@ capi.client.connect_signal("request::manage", function(c)
 			awful.placement.no_offscreen(d)
 		end
 	end
+
+	local cshape = beautiful.rrect(dpi(15))
+
+	c:connect_signal("property::maximized", function()
+		c:set_shape(not (c.maximized or c.fullscreen) and cshape or nil)
+	end)
+
+	c:connect_signal("property::fullscreen", function()
+		c:set_shape(not (c.fullscreen or c.maximized) and cshape or nil)
+	end)
+
+	c:set_shape(not (c.maximized or c.fullscreen) and cshape or nil)
 end)
 
 rclient.connect_signal("request::rules", function()

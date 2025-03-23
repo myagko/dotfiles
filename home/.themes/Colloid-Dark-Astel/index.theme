@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Colloid-Astel-Dark-Gruvbox
+Comment=An Flat Gtk+ theme based on Elegant Design
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=Colloid-Astel-Dark-Gruvbox
+MetacityTheme=Colloid-Astel-Dark-Gruvbox
+IconTheme=Colloid-Gruvbox-Dark
+CursorTheme=Colloid-Astel-cursors
+ButtonLayout=close,minimize,maximize:menu

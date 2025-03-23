@@ -40,6 +40,7 @@ return function(c)
 		bg_normal = beautiful.bg,
 		fg_hover = beautiful.bg,
 		bg_hover = beautiful.red,
+		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				c:kill()
@@ -54,6 +55,7 @@ return function(c)
 		bg_normal = beautiful.bg,
 		fg_hover = beautiful.bg,
 		bg_hover = beautiful.yellow,
+		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				c.maximized = not c.maximized
@@ -69,6 +71,7 @@ return function(c)
 		bg_normal = beautiful.bg,
 		fg_hover = beautiful.bg,
 		bg_hover = beautiful.green,
+		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				gtimer.delayed_call(function()
@@ -93,7 +96,7 @@ return function(c)
 			margins = dpi(5),
 			{
 				layout = wibox.layout.fixed.horizontal,
-				spacing = dpi(5),
+				spacing = dpi(3),
 				minimize_button,
 				maximize_button,
 				close_button

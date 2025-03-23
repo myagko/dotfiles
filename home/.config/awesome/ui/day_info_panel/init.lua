@@ -40,7 +40,9 @@ local function new()
 	gtable.crush(ret, day_info, true)
 
 	ret.calendar = common.calendar {
-		sun_start = false
+		sun_start = false,
+		shape = beautiful.rrect(dpi(10)),
+		day_shape = beautiful.rrect(dpi(8))
 	}
 
 	ret.main_widget = wibox.widget {
@@ -60,6 +62,7 @@ local function new()
 		screen = capi.screen.primary,
 		border_width = beautiful.border_width,
 		border_color = beautiful.border_color,
+		shape = beautiful.rrect(dpi(25)),
 		placement = function(d)
 			awful.placement.bottom_right(d, {
 				honor_workarea = true,

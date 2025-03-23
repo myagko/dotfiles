@@ -3,7 +3,6 @@ local dbus_proxy = require("external.dbus_proxy")
 local gobject = require("gears.object")
 local gtable = require("gears.table")
 local gtimer = require("gears.timer")
-local gdebug = require("gears.debug")
 local string_trim = require("helpers").string_trim
 
 local _NM_status, NM = pcall(function()
@@ -11,11 +10,6 @@ local _NM_status, NM = pcall(function()
 end)
 
 if not _NM_status or not NM then
-	gdebug.print_warning(
-		"Can't load NetworkManager introspection. "
-			.. "Seems like NetworkManager is not installed or `lua-lgi` was built with an incompatible NetworkManager version. "
-			.. "Network related UI will not work!"
-	)
 	return gobject {}
 end
 

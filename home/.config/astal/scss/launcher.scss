@@ -11,25 +11,18 @@ window.launcher {
 
   .mainbox {
     background-color: $bg;
-    border: 1px solid #373737;
-    margin: 7px;
+    border: 2px solid $bg-urg;
+    border-radius: 18px;
     padding: 10px;
+    margin: 7px;
 
     scrollable > viewport {
       all: unset;
     }
 
     entry {
-      all: unset;
-      background-color: $bg-alt;
-      border: 1px solid transparent;
-      padding: 8px 10px 8px 8px;
+      border-radius: 8px;
       margin-bottom: 10px;
-      transition: 200ms;
-
-      &:focus {
-        border: 1px solid $ac;
-      }
     }
 
     .app-button {
@@ -38,6 +31,7 @@ window.launcher {
       min-width: 0;
       min-height: 0;
       padding: 15px;
+      border-radius: 8px;
       transition: 200ms;
 
       label.name {

@@ -27,12 +27,15 @@ local function new()
 				id = "slider",
 				widget = wibox.widget.slider,
 				maximum = 20,
-				bar_height = dpi(7),
+				bar_height = dpi(2),
 				handle_width = dpi(20),
-				handle_border_width = dpi(4),
+				handle_border_width = dpi(2),
 				handle_margins = { top = dpi(7), bottom = dpi(7) },
 				bar_color = beautiful.bg_urg,
-				handle_border_color = beautiful.bg_alt
+				handle_color = beautiful.bg_alt,
+				handle_border_color = beautiful.ac,
+				handle_shape = beautiful.crcl(9),
+				bar_shape = beautiful.rbar()
 			}
 		},
 		{
@@ -55,11 +58,11 @@ local function new()
 		if mute then
 			speaker_icon:set_markup(text_icons.vol_off)
 			speaker_slider:set_bar_active_color(beautiful.fg_alt)
-			speaker_slider:set_handle_color(beautiful.fg_alt)
+			speaker_slider:set_handle_border_color(beautiful.fg_alt)
 		else
 			speaker_icon:set_markup(text_icons.vol_on)
 			speaker_slider:set_bar_active_color(beautiful.ac)
-			speaker_slider:set_handle_color(beautiful.ac)
+			speaker_slider:set_handle_border_color(beautiful.ac)
 		end
 	end)
 
@@ -92,12 +95,15 @@ local function new()
 				id = "slider",
 				widget = wibox.widget.slider,
 				maximum = 20,
-				bar_height = dpi(7),
+				bar_height = dpi(2),
 				handle_width = dpi(20),
-				handle_border_width = dpi(4),
+				handle_border_width = dpi(2),
 				handle_margins = { top = dpi(7), bottom = dpi(7) },
 				bar_color = beautiful.bg_urg,
-				handle_border_color = beautiful.bg_alt
+				handle_color = beautiful.bg_alt,
+				handle_border_color = beautiful.ac,
+				handle_shape = beautiful.crcl(9),
+				bar_shape = beautiful.rbar()
 			}
 		},
 		{
@@ -120,11 +126,11 @@ local function new()
 		if mute then
 			microphone_icon:set_markup(text_icons.mic_off)
 			microphone_slider:set_bar_active_color(beautiful.fg_alt)
-			microphone_slider:set_handle_color(beautiful.fg_alt)
+			microphone_slider:set_handle_border_color(beautiful.fg_alt)
 		else
 			microphone_icon:set_markup(text_icons.mic_on)
 			microphone_slider:set_bar_active_color(beautiful.ac)
-			microphone_slider:set_handle_color(beautiful.ac)
+			microphone_slider:set_handle_border_color(beautiful.ac)
 		end
 	end)
 
@@ -143,6 +149,7 @@ local function new()
 	ret.main_widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
+		shape = beautiful.rrect(dpi(10)),
 		{
 			widget = wibox.container.margin,
 			margins = {

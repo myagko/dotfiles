@@ -153,13 +153,14 @@ return function()
 				Widget.Box {
 					vertical = true,
 					width_request = 400,
-					height_request = 500,
+					height_request = 480,
 					class_name = "mainbox",
 					entry,
 					Widget.Scrollable {
 						expand = true,
 						Widget.Box {
 							vertical = true,
+							spacing = 3,
 							app_list:as(function(list)
 								return map(list, function(app)
 									return AppButton(app)

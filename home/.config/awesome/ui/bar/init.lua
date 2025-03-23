@@ -25,6 +25,7 @@ local function launcher_button()
 		bg_hover = beautiful.bg_urg,
 		fg_normal = beautiful.fg,
 		fg_hover = beautiful.fg,
+		shape = beautiful.rrect(dpi(8)),
 		markup = text_icons.menu,
 	}
 end
@@ -41,6 +42,7 @@ local function control_panel_button()
 		bg_hover = beautiful.bg_urg,
 		fg_normal = beautiful.fg,
 		fg_hover = beautiful.fg,
+		shape = beautiful.rrect(dpi(8)),
 		markup = text_icons.sliders,
 	}
 end
@@ -49,6 +51,7 @@ local function time()
 	local widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
+		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({}, 1, function()
 				day_info_panel:toggle()
@@ -68,7 +71,7 @@ local function time()
 					id = "separator",
 					widget = common.separator {
 						size = beautiful.sep_width,
-						margins = { top = dpi(5), bottom = dpi(5) }
+						margins = { top = dpi(6), bottom = dpi(6) }
 					}
 				},
 				{
@@ -106,6 +109,7 @@ local function tray()
 	local widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
+		shape = beautiful.rrect(dpi(8)),
 		{
 			widget = wibox.container.margin,
 			margins = { left = dpi(8), right = dpi(8) },
@@ -156,6 +160,7 @@ local function kblayout()
 	local widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
+		shape = beautiful.rrect(dpi(8)),
 		{
 			widget = awful.widget.keyboardlayout {}
 		}
@@ -176,6 +181,7 @@ local function layoutbox(s)
 	local widget = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
+		shape = beautiful.rrect(dpi(8)),
 		buttons = {
 			awful.button({ }, 1, function()
 				awful.layout.inc(1)
@@ -232,14 +238,16 @@ local function taglist(s)
 			end),
 		},
 		layout = {
-			layout = wibox.layout.fixed.horizontal
+			layout = wibox.layout.fixed.horizontal,
+			spacing = dpi(2)
 		},
 		widget_template = {
 			id = "t_background",
 			widget = wibox.container.background,
+			shape = beautiful.rrect(dpi(5)),
 			{
 				widget = wibox.container.margin,
-				margins = { left = dpi(9), right = dpi(9) },
+				margins = { left = dpi(7), right = dpi(7) },
 				{
 					id = "t_text",
 					widget = wibox.widget.textbox,
@@ -298,8 +306,13 @@ local function taglist(s)
 	return wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
+		shape = beautiful.rrect(dpi(8)),
 		{
-			widget = taglist_widget
+			widget = wibox.container.margin,
+			margins = dpi(4),
+			{
+				widget = taglist_widget
+			}
 		}
 	}
 end
@@ -324,6 +337,7 @@ local function tasklist(s)
 		widget_template = {
 			id = "c_background",
 			widget = wibox.container.background,
+			shape = beautiful.rrect(dpi(8)),
 			{
 				layout = wibox.layout.stack,
 				{
@@ -345,9 +359,14 @@ local function tasklist(s)
 					nil,
 					nil,
 					{
-						id = "c_pointer",
-						widget = wibox.container.background,
-						bg = beautiful.ac
+						widget = wibox.container.margin,
+						margins = { left = dpi(12), right = dpi(12) },
+						{
+							id = "c_pointer",
+							widget = wibox.container.background,
+							shape = beautiful.prrect(true, true, false, false, dpi(2)),
+							bg = beautiful.ac
+						}
 					}
 				}
 			}
@@ -369,7 +388,7 @@ local function tasklist(s)
 		end
 
 		if c.active then
-			c_pointer:set_forced_height(dpi(2))
+			c_pointer:set_forced_height(dpi(3))
 		else
 			c_pointer:set_forced_height(0)
 		end

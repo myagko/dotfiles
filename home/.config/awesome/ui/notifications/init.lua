@@ -69,6 +69,7 @@ local function create_actions_widget(n)
 				end)
 			},
 			margins = dpi(5),
+			shape = beautiful.rrect(dpi(8)),
 			markup = action.name
 		}
 		actions_layout:add(button)
@@ -101,6 +102,7 @@ local function create_notification_popup(n)
 		resize = true,
 		halign = "center",
 		valign = "center",
+		clip_shape = beautiful.rrect(dpi(5)),
 		image = n.icon
 	}
 
@@ -190,6 +192,7 @@ local function create_notification_popup(n)
 		fg = beautiful.fg,
 		border_color = beautiful.border_color,
 		border_width = beautiful.border_width,
+		shape = beautiful.rrect(dpi(22)),
 		placement = function() return { 0, 0 } end,
 		widget = main_widget
 	}
@@ -207,13 +210,13 @@ end
 function notifications:display(n)
 	local popup_widget = create_notification_popup(n)
 
-	local pos = get_preffered_position(popup_widget, n.screen)
-	popup_widget:geometry(pos)
-	popup_widget.visible = true
-
 	n:connect_signal("destroyed", function()
 		remove_notification_popup(popup_widget, n.screen)
 	end)
+
+	local pos = get_preffered_position(popup_widget, n.screen)
+	popup_widget:geometry(pos)
+	popup_widget.visible = true
 
 	local display_timeout = beautiful.notification_timeout or 5
 	gtimer.start_new(display_timeout, function()

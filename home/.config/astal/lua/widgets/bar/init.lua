@@ -27,6 +27,7 @@ local function Workspaces()
 
 	return Widget.Box {
 		class_name = "workspaces",
+		spacing = 3,
 		bind(hyprland, "workspaces"):as(function(ws)
 			table.sort(ws, function(a, b) return a.id < b.id end)
 			return map(ws, function(w)
@@ -39,9 +40,11 @@ local function Workspaces()
 							w:focus()
 						end
 					end,
-					label = bind(w, "id"):as(function(id)
-						return type(id) == "number" and string.format("%.0f", id) or id
-					end)
+					Widget.Label {
+						label = bind(w, "id"):as(function(id)
+							return type(id) == "number" and string.format("%.0f", id) or id
+						end)
+					}
 				}
 			end)
 		end)

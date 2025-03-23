@@ -4,7 +4,7 @@ local AstalWp = astal.require("AstalWp")
 local Widget = require("astal.gtk3").Widget
 
 return function()
-	local WpAudio = AstalWp.get_default():get_audio()
+	local WpAudio = AstalWp.get_default()
 	local speaker = WpAudio:get_default_speaker()
 	local microphone = WpAudio:get_default_microphone()
 
@@ -44,7 +44,7 @@ return function()
 				class_name = "volume-value",
 				width_chars = 4,
 				label = bind(speaker, "volume"):as(function(v)
-					return tostring(math.floor(v * 100)) .. "%"
+					return string.format("%.0f%%", tostring(v * 100))
 				end)
 			}
 		},
@@ -80,7 +80,7 @@ return function()
 				class_name = "volume-value",
 				width_chars = 4,
 				label = bind(microphone, "volume"):as(function(v)
-					return tostring(math.floor(v * 100)) .. "%"
+					return string.format("%.0f%%", tostring(v * 100))
 				end)
 			}
 		}

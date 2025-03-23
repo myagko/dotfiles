@@ -83,9 +83,11 @@ theme.fg_alt = "#6E6E72"
 theme.fg = "#E5E7ED"
 theme.ac = theme.blue
 
+theme.rounded = true
+
 theme.border_color = theme.bg_urg
 theme.sep_width = dpi(1)
-theme.border_width = dpi(1)
+theme.border_width = dpi(2)
 theme.useless_gap = dpi(3)
 
 theme.bg_normal = theme.bg
@@ -127,5 +129,29 @@ theme.layout_tile = gcolor.recolor_image(icons_path .. "layout_tile.png", theme.
 
 theme.systray_icon_spacing = dpi(6)
 theme.bg_systray = theme.bg_alt
+
+function theme.rrect(rad)
+	return theme.rounded and function(cr, w, h)
+		gshape.rounded_rect(cr, w, h, rad)
+	end or nil
+end
+
+function theme.rbar()
+	return theme.rounded and function(cr, w, h)
+		gshape.rounded_bar(cr, w, h)
+	end or nil
+end
+
+function theme.prrect(tl, tr, br, bl, rad)
+	return theme.rounded and function(cr, w, h)
+		gshape.partially_rounded_rect(cr, w, h, tl, tr, br, bl, rad)
+	end
+end
+
+function theme.crcl(rad)
+	return theme.rounded and function(cr, w, h)
+		gshape.circle(cr, w, h, rad)
+	end
+end
 
 return theme
