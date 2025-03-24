@@ -1,28 +1,29 @@
 local astal = require("astal")
-local Variable = astal.Variable
 local AstalNotifd = astal.require("AstalNotifd")
 local Widget = require("astal.gtk3").Widget
-local varmap = require("lua.lib").varmap
+local varlist = require("lua.lib").varlist
 
 local Notification = require("lua.widgets.notifications.notification")
 
 return function()
 	local notifd = AstalNotifd.get_default()
-	local notif_map = varmap({})
-	local notif_count = Variable(#notifd:get_notifications())
+	local notif_list = varlist({})
 
 	for _, n in ipairs(notifd:get_notifications()) do
-		notif_map.set(n:get_id(), Notification(n))
+		notif_list.insert(Notification(n, function(self)
+			self:hook(n, "resolved", function()
+				notif_list.remove(self)
+			end)
+		end))
 	end
 
 	notifd.on_notified = function(_, id)
-		notif_map.set(id, Notification(notifd:get_notification(id)))
-		notif_count:set(#notifd:get_notifications())
-	end
-
-	notifd.on_resolved = function(_, id)
-		notif_map.delete(id)
-		notif_count:set(#notifd:get_notifications())
+		local n = notifd:get_notification(id)
+		notif_list.insert(1, Notification(n, function(self)
+			self:hook(n, "resolved", function()
+				notif_list.remove(self)
+			end)
+		end))
 	end
 
 	return Widget.Box {
@@ -33,9 +34,9 @@ return function()
 			class_name = "header",
 			Widget.Label {
 				class_name = "title",
-				label = notif_count():as(function(count)
+				label = notif_list():as(function(l)
 					return "Notifications " ..
-						(count > 0 and "(" .. tostring(count) .. ")" or "")
+						(#l > 0 and "(" .. tostring(#l) .. ")" or "")
 				end)
 			},
 			Widget.Box {
@@ -59,13 +60,13 @@ return function()
 			Widget.Box {
 				vertical = true,
 				spacing = 8,
-				notif_map(),
+				notif_list(),
 				Widget.Box {
 					class_name = "empty-massage",
 					expand = true,
 					halign = "CENTER",
 					valign = "CENTER",
-					visible = notif_map():as(function(v)
+					visible = notif_list():as(function(v)
 						return #v == 0
 					end),
 					Widget.Label {

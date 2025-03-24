@@ -19,35 +19,38 @@ function M.map(array, func)
 	return new_arr
 end
 
-function M.varmap(initial)
-	local map = initial
+function M.varlist(initial)
+	local list = initial
 	local var = Variable()
 
 	local function var_set()
 		local arr = {}
-		for _, value in pairs(map) do
+		for _, value in pairs(list) do
 			table.insert(arr, value)
 		end
 		var:set(arr)
 	end
 
-	local function var_delete(key)
-		if Gtk.Widget:is_type_of(map[key]) then
-			map[key]:destroy()
-		end
-		map[key] = nil
-	end
-
 	var_set()
 
 	return setmetatable({
-		set = function(key, value)
-			var_delete(key)
-			map[key] = value
+		insert = function(pos, item)
+			if item then
+				table.insert(list, pos, item)
+			else
+				table.insert(list, pos)
+			end
 			var_set()
 		end,
-		delete = function(key)
-			var_delete(key)
+		remove = function(item)
+			for i, v in ipairs(list) do
+				if v == item then
+					if Gtk.Widget:is_type_of(v) then
+						v:destroy()
+					end
+					table.remove(list, i)
+				end
+			end
 			var_set()
 		end,
 		get = function()
@@ -74,6 +77,14 @@ end
 
 function M.lua_escape(str)
 	return str:gsub("[%[%]%(%)%.%-%+%?%*%%]", "%%%1")
+end
+
+function M.remove_nonindex_value(tbl, val)
+	for i, v in ipairs(tbl) do
+		if v == val then
+			table.remove(tbl, i)
+		end
+	end
 end
 
 return M
