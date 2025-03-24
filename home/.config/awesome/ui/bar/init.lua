@@ -413,7 +413,7 @@ local function tasklist(s)
 	return tasklist_widget
 end
 
-function bar.set_secondary(s)
+function bar.create_secondary(s)
 	local wibar = awful.wibar {
 		position = "bottom",
 		ontop = true,
@@ -444,7 +444,7 @@ function bar.set_secondary(s)
 	return wibar
 end
 
-function bar.set_primary(s)
+function bar.create_primary(s)
 	local wibar = awful.wibar {
 		position = "bottom",
 		ontop = true,

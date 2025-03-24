@@ -134,7 +134,7 @@ return function(c)
 		},
 		{
 			widget = wibox.container.margin,
-			margins = dpi(8),
+			margins = dpi(9),
 			{
 				layout = wibox.layout.fixed.horizontal,
 				spacing = dpi(5),

@@ -63,9 +63,9 @@ end
 
 capi.screen.connect_signal("request::desktop_decoration", function(s)
 	if s == screen.primary then
-		s.bar = bar.set_primary(s)
+		s.bar = bar.create_primary(s)
 	else
-		s.bar = bar.set_secondary(s)
+		s.bar = bar.create_secondary(s)
 	end
 
 	set_wibar_hideaway(s.bar)
