@@ -16,21 +16,24 @@ awful.screen.connect_for_each_screen(function(s)
 	s.notifications = {}
 end)
 
-local function get_preffered_position(popup, screen)
+local function add_notification_popup(popup, screen)
+	if not popup then return end
+
+	for _, other_popup in ipairs(screen.notifications) do
+		if #screen.notifications > 0 then
+			other_popup.y = other_popup.y + popup.height + beautiful.notification_spacing
+		end
+	end
+
+	table.insert(screen.notifications, 1, popup)
+
 	local placement = awful.placement.top_right(popup, {
 		honor_workarea = true,
 		margins = beautiful.notification_margins
 	})
 
-	local x = placement.x
-	local y = placement.y
-
-	if #screen.notifications > 1 then
-		local parent = screen.notifications[#screen.notifications - 1]
-		y = parent.y + parent.height + beautiful.notification_spacing
-	end
-
-	return { x = x, y = y }
+	popup:geometry(placement)
+	popup.visible = true
 end
 
 local function remove_notification_popup(popup, screen)
@@ -203,24 +206,21 @@ local function create_notification_popup(n)
 		end)
 	}
 
-	table.insert(n.screen.notifications, popup_widget)
 	return popup_widget
 end
 
 function notifications:display(n)
-	local popup_widget = create_notification_popup(n)
+	local display_timeout = beautiful.notification_timeout or 5
+	local notification_popup = create_notification_popup(n)
+
+	add_notification_popup(notification_popup, n.screen)
 
 	n:connect_signal("destroyed", function()
-		remove_notification_popup(popup_widget, n.screen)
+		remove_notification_popup(notification_popup, n.screen)
 	end)
 
-	local pos = get_preffered_position(popup_widget, n.screen)
-	popup_widget:geometry(pos)
-	popup_widget.visible = true
-
-	local display_timeout = beautiful.notification_timeout or 5
 	gtimer.start_new(display_timeout, function()
-		remove_notification_popup(popup_widget, n.screen)
+		remove_notification_popup(notification_popup, n.screen)
 	end)
 end
 
