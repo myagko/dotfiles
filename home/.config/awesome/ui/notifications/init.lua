@@ -210,18 +210,23 @@ local function create_notification_popup(n)
 end
 
 function notifications:display(n)
-	local display_timeout = beautiful.notification_timeout or 5
 	local notification_popup = create_notification_popup(n)
+	local display_timer = gtimer {
+		timeout = beautiful.notification_timeout or 5,
+		callback = function()
+			remove_notification_popup(notification_popup, n.screen)
+		end
+	}
 
 	add_notification_popup(notification_popup, n.screen)
 
 	n:connect_signal("destroyed", function()
+		display_timer:stop()
+		display_timer = nil
 		remove_notification_popup(notification_popup, n.screen)
 	end)
 
-	gtimer.start_new(display_timeout, function()
-		remove_notification_popup(notification_popup, n.screen)
-	end)
+	display_timer:start()
 end
 
 function notifications:toggle_silent()
