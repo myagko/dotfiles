@@ -97,7 +97,7 @@ return function()
 	end)
 
 	local on_enter = function()
-		local first_app = filter_apps(apps, app_query:get())[1]
+		local first_app = app_list:get()[1]
 		if first_app then
 			launch_app(first_app)
 			hide_launcher()
