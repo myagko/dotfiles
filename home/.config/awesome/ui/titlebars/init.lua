@@ -1,7 +1,6 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local gtimer = require("gears.timer")
-local common = require("common")
 local beautiful = require("beautiful")
 local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
@@ -33,53 +32,95 @@ return function(c)
 		end)
 	}
 
-	local close_button = common.hover_button {
-		markup = text_icons.cross,
-		forced_width = dpi(25),
-		fg_normal = beautiful.fg_alt,
-		bg_normal = beautiful.bg,
-		fg_hover = beautiful.bg,
-		bg_hover = beautiful.red,
-		shape = beautiful.rrect(dpi(8)),
+	local close_button = wibox.widget {
+		widget = wibox.container.background,
 		buttons = {
 			awful.button({}, 1, function()
 				c:kill()
 			end)
+		},
+		bg = c.active and beautiful.red or beautiful.bg_urg,
+		fg = beautiful.bg,
+		shape = beautiful.crcl(),
+		{
+			widget = wibox.container.margin,
+			margins = dpi(3),
+			{
+				id = "icon",
+				widget = wibox.widget.textbox,
+				font = beautiful.font_h0,
+				markup = text_icons.cross
+			}
 		}
 	}
 
-	local maximize_button = common.hover_button {
-		markup = c.maximized and text_icons.shrink or text_icons.stretch,
-		forced_width = dpi(25),
-		fg_normal = beautiful.fg_alt,
-		bg_normal = beautiful.bg,
-		fg_hover = beautiful.bg,
-		bg_hover = beautiful.yellow,
-		shape = beautiful.rrect(dpi(8)),
+	local max_button = wibox.widget {
+		widget = wibox.container.background,
 		buttons = {
 			awful.button({}, 1, function()
 				c.maximized = not c.maximized
 				c:raise()
 			end)
+		},
+		bg = c.active and beautiful.yellow or beautiful.bg_urg,
+		fg = beautiful.bg,
+		shape = beautiful.crcl(),
+		{
+			widget = wibox.container.margin,
+			margins = dpi(3),
+			{
+				id = "icon",
+				widget = wibox.widget.textbox,
+				font = beautiful.font_h0,
+				markup = c.maximized and text_icons.shrink or text_icons.stretch
+			}
 		}
 	}
 
-	local minimize_button = common.hover_button {
-		markup = text_icons.dash,
-		forced_width = dpi(25),
-		fg_normal = beautiful.fg_alt,
-		bg_normal = beautiful.bg,
-		fg_hover = beautiful.bg,
-		bg_hover = beautiful.green,
-		shape = beautiful.rrect(dpi(8)),
+	local min_button = wibox.widget {
+		widget = wibox.container.background,
 		buttons = {
 			awful.button({}, 1, function()
 				gtimer.delayed_call(function()
 					c.minimized = true
 				end)
 			end)
+		},
+		bg = c.active and beautiful.green or beautiful.bg_urg,
+		fg = beautiful.bg,
+		shape = beautiful.crcl(),
+		{
+			widget = wibox.container.margin,
+			margins = dpi(3),
+			{
+				id = "icon",
+				widget = wibox.widget.textbox,
+				font = beautiful.font_h0,
+				markup = text_icons.dash
+			}
 		}
 	}
+
+	c:connect_signal("property::maximized", function()
+		local max_icon = max_button:get_children_by_id("icon")[1]
+		if c.maximized then
+			max_icon:set_markup(text_icons.shrink)
+		else
+			max_icon:set_markup(text_icons.stretch)
+		end
+	end)
+
+	c:connect_signal("property::active", function()
+		if c.active then
+			close_button:set_bg(beautiful.red)
+			max_button:set_bg(beautiful.yellow)
+			min_button:set_bg(beautiful.green)
+		else
+			close_button:set_bg(beautiful.bg_urg)
+			max_button:set_bg(beautiful.bg_urg)
+			min_button:set_bg(beautiful.bg_urg)
+		end
+	end)
 
 	titlebar:setup {
 		layout = wibox.layout.align.horizontal,
@@ -93,40 +134,14 @@ return function(c)
 		},
 		{
 			widget = wibox.container.margin,
-			margins = dpi(5),
+			margins = dpi(8),
 			{
 				layout = wibox.layout.fixed.horizontal,
-				spacing = dpi(3),
-				minimize_button,
-				maximize_button,
+				spacing = dpi(5),
+				min_button,
+				max_button,
 				close_button
 			}
 		}
 	}
-
-	c:connect_signal("property::maximized", function()
-		if c.maximized then
-			maximize_button:set_text(text_icons.shrink)
-		else
-			maximize_button:set_text(text_icons.stretch)
-		end
-	end)
-
-	c:connect_signal("property::active", function()
-		if c.active then
-			close_button:set_fg_normal(beautiful.fg)
-			close_button:set_fg(beautiful.fg)
-			maximize_button:set_fg_normal(beautiful.fg)
-			maximize_button:set_fg(beautiful.fg)
-			minimize_button:set_fg_normal(beautiful.fg)
-			minimize_button:set_fg(beautiful.fg)
-		else
-			close_button:set_fg_normal(beautiful.fg_alt)
-			close_button:set_fg(beautiful.fg_alt)
-			maximize_button:set_fg_normal(beautiful.fg_alt)
-			maximize_button:set_fg(beautiful.fg_alt)
-			minimize_button:set_fg_normal(beautiful.fg_alt)
-			minimize_button:set_fg(beautiful.fg_alt)
-		end
-	end)
 end
