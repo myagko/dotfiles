@@ -26,9 +26,11 @@ local function launch_app(app)
 	local desktop_app_info = Gio.DesktopAppInfo.new(Gio.AppInfo.get_id(app))
 	local terminal = Gio.DesktopAppInfo.get_string(desktop_app_info, "Terminal") == "true" and true or false
 
+	-- works not for all apps
 	--hyprland:dispatch("exec", (terminal and terminal_cmd or "") .. app:get_executable())
+
 	if terminal and terminal_cmd then
-		hyprland:dispatch("exec", (terminal and terminal_cmd or "") .. app:get_executable())
+		hyprland:dispatch("exec", terminal_cmd .. app:get_executable())
 	else
 		app:launch()
 	end
@@ -43,7 +45,7 @@ local function filter_apps(apps, query)
 		if app:should_show() then
 			local name_match = utf8.lower(utf8.sub(app:get_name(), 1, utf8.len(query))) == utf8.lower(query)
 			local name_match_any = utf8.match(utf8.lower(app:get_name()), utf8.lower(query))
-			local exec_match_any = utf8.match(string.lower(app:get_executable()), utf8.lower(query))
+			local exec_match_any = utf8.match(utf8.lower(app:get_executable()), utf8.lower(query))
 
 			if name_match then
 				table.insert(filtered, app)

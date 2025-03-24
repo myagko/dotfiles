@@ -74,7 +74,7 @@ function launcher:filter()
 		if app:should_show() then
 			local name_match = utf8.lower(utf8.sub(app:get_name(), 1, utf8.len(esc_input))) == utf8.lower(esc_input)
 			local name_match_any = utf8.match(utf8.lower(app:get_name()), utf8.lower(esc_input))
-			local exec_match_any = utf8.match(string.lower(app:get_executable()), utf8.lower(esc_input))
+			local exec_match_any = utf8.match(utf8.lower(app:get_executable()), utf8.lower(esc_input))
 
 			if name_match then
 				table.insert(self.filtered, app)
