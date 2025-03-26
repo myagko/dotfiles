@@ -137,7 +137,7 @@ return function(c)
 			margins = dpi(9),
 			{
 				layout = wibox.layout.fixed.horizontal,
-				spacing = dpi(6),
+				spacing = dpi(9),
 				min_button,
 				max_button,
 				close_button
