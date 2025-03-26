@@ -8,3 +8,10 @@ window decoration {
   padding: 0;
   border: none;
 }
+
+menu,
+.csd .menu,
+.csd .dropdown,
+.csd .context-menu {
+    border-radius: 0;
+}

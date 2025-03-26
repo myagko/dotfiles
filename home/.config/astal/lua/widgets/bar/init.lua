@@ -60,6 +60,7 @@ local function Clients()
 		expand = false,
 		bind(hyprland, "clients"):as(function(cs)
 			return map(cs, function(c)
+				local c_class = c:get_initial_class()
 				return Widget.Button {
 					class_name = bind(hyprland, "focused-client"):as(function(fc)
 						return "client" .. (fc == c and " focused" or "" )
@@ -87,7 +88,7 @@ local function Clients()
 					Widget.Label {
 						max_width_chars = 15,
 						ellipsize = "END",
-						label = c:get_initial_class() or "none"
+						label = (c_class ~= nil and c_class ~= "") and c_class or "untitled"
 					}
 				}
 			end)

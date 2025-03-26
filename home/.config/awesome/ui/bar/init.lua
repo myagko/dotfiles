@@ -378,7 +378,7 @@ local function tasklist(s)
 		local c_pointer = tw:get_children_by_id("c_pointer")[1]
 		local c_text = tw:get_children_by_id("c_text")[1]
 
-		c_text:set_markup(c.class or "untitled")
+		c_text:set_markup((c.class ~= nil and c.class ~= "") and c.class or "untitled")
 		c_background:set_bg(beautiful.bg_alt)
 
 		if c.minimized then
