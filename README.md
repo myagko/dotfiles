@@ -1,7 +1,7 @@
 # AwesomeWM
 
 <p align="center">
-    <img src="assets/awm.png">
+    <img src="assets/awm_preview.png">
 </p>
 
 <details>
@@ -128,11 +128,3 @@ $ cp -r sharp_cursors_dark ~/.icons
 </div>
 
 </details>
-
-# Hyprland (WIP)
-
-<p align="center">
-    <img src="assets/hypr.png">
-</p>
-
-#### Widgets made with [Astal](https://aylur.github.io/astal/)
