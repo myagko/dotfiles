@@ -1,0 +1,26 @@
+[font]
+size = 12
+
+[font.bold]
+family = "Iosevka"
+style = "Regular"
+
+[font.bold_italic]
+family = "Iosevka"
+style = "Regular"
+
+[font.italic]
+family = "Iosevka"
+style = "Regular"
+
+[font.normal]
+family = "Iosevka"
+style = "Regular"
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+[font.offset]
+x = 0
+y = 2
