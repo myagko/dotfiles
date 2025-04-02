@@ -106,7 +106,7 @@ local function create_current(data)
 	return wibox.widget {
 		widget = wibox.container.margin,
 		margins = {
-			left = dpi(15), right = dpi(25),
+			left = dpi(15), right = dpi(15),
 			top = dpi(15), bottom = dpi(10)
 		},
 		{
