@@ -39,7 +39,7 @@ local function new(args)
 		forced_width = args.forced_width,
 		forced_height = args.forced_height,
 		border_width = args.border_width or 0,
-		border_color = args.border_color or
+		border_color = args.border_color_normal or
 			beautiful.bg_urg or "#3d3d3d",
 		bg = args.bg_normal or
 			beautiful.bg_alt or "#272727",

@@ -85,11 +85,11 @@ theme.ac = theme.blue
 
 theme.rounded = true
 
-theme.border_color = theme.bg_urg
-theme.sep_width = dpi(1)
 theme.border_width = dpi(2)
 theme.useless_gap = dpi(3)
+theme.separator_thickness = dpi(1)
 
+theme.separator_color = theme.bg_urg
 theme.bg_normal = theme.bg
 theme.fg_normal = theme.fg
 theme.border_color_normal = theme.bg_urg

@@ -296,10 +296,14 @@ function weather_applet:setup_widget(data)
 		main_layout:add(
 			create_current(data),
 			create_hourly(data),
-			common.separator {
-				vertical = true,
-				margins = {
-					left = dpi(10), right = dpi(10)
+			wibox.widget {
+				widget = wibox.container.margin,
+				forced_width = 1,
+				forced_height = beautiful.separator_thickness,
+				margins = { left = dpi(10), right = dpi(10) },
+				{
+					widget = wibox.widget.separator,
+					orientation = "horizontal"
 				}
 			},
 			create_daily(data)

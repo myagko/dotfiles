@@ -33,9 +33,14 @@ function control_panel:setup_controls()
 	main_layout:reset()
 	main_layout:add(
 		notification_list.main_widget,
-		common.separator {
-			vertical = true,
-			size = beautiful.sep_width
+		wibox.widget {
+			widget = wibox.container.background,
+			forced_width = 1,
+			forced_height = beautiful.separator_thickness,
+			{
+				widget = wibox.widget.separator,
+				orientation = "horizontal"
+			}
 		},
 		audio_sliders.main_widget,
 		wibox.widget {
@@ -92,7 +97,7 @@ local function new()
 		ontop = true,
 		screen = capi.screen.primary,
 		border_width = beautiful.border_width,
-		border_color = beautiful.border_color,
+		border_color = beautiful.border_color_normal,
 		shape = beautiful.rrect(dpi(25)),
 		placement = function(d)
 			awful.placement.bottom_right(d, {

@@ -68,10 +68,14 @@ local function time()
 					format = "%d %b, %a"
 				},
 				{
-					id = "separator",
-					widget = common.separator {
-						size = beautiful.sep_width,
-						margins = { top = dpi(6), bottom = dpi(6) }
+					widget = wibox.container.margin,
+					forced_height = 1,
+					forced_width = beautiful.separator_thickness,
+					margins = { top = dpi(6), bottom = dpi(6) },
+					{
+						id = "separator",
+						widget = wibox.widget.separator,
+						orientation = "vertical"
 					}
 				},
 				{
@@ -420,7 +424,7 @@ function bar.create_secondary(s)
 		screen = s,
 		height = dpi(45),
 		border_width = beautiful.border_width,
-		border_color = beautiful.border_color,
+		border_color = beautiful.border_color_normal,
 		margins = {
 			left = -beautiful.border_width, right = -beautiful.border_width,
 			top = 0, bottom = -beautiful.border_width
@@ -451,7 +455,7 @@ function bar.create_primary(s)
 		screen = s,
 		height = dpi(45),
 		border_width = beautiful.border_width,
-		border_color = beautiful.border_color,
+		border_color = beautiful.border_color_normal,
 		margins = {
 			left = -beautiful.border_width, right = -beautiful.border_width,
 			top = 0, bottom = -beautiful.border_width

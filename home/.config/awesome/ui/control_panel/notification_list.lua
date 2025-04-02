@@ -114,9 +114,14 @@ local function create_notification_widget(n)
 							close
 						}
 					},
-					common.separator {
-						vertical = true,
-						size = beautiful.sep_width
+					{
+						widget = wibox.container.background,
+						forced_width = 1,
+						forced_height = beautiful.separator_thickness,
+						{
+							widget = wibox.widget.separator,
+							orientation = "horizontal"
+						}
 					},
 					{
 						layout = wibox.layout.fixed.horizontal,
@@ -289,9 +294,14 @@ local function new()
 					nil,
 					{
 						layout = wibox.layout.fixed.horizontal,
-						spacing = beautiful.sep_width,
-						spacing_widget = common.separator {
-							margins = { top = dpi(8), bottom = dpi(8) }
+						spacing = beautiful.separator_thickness + dpi(2),
+						spacing_widget = {
+							widget = wibox.container.margin,
+							margins = { top = dpi(8), bottom = dpi(8) },
+							{
+								widget = wibox.widget.separator,
+								orientation = "vertical"
+							}
 						},
 						dnd_button,
 						clear_button

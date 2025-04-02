@@ -142,9 +142,14 @@ local function create_notification_popup(n)
 					close
 				}
 			},
-			common.separator {
-				vertical = true,
-				size = beautiful.sep_width
+			{
+				widget = wibox.container.background,
+				forced_width = 1,
+				forced_height = beautiful.separator_thickness,
+				{
+					widget = wibox.widget.separator,
+					orientation = "horizontal"
+				}
 			},
 			{
 				layout = wibox.layout.fixed.horizontal,
@@ -193,7 +198,7 @@ local function create_notification_popup(n)
 		maximum_height = dpi(280),
 		bg = beautiful.bg,
 		fg = beautiful.fg,
-		border_color = beautiful.border_color,
+		border_color = beautiful.border_color_normal,
 		border_width = beautiful.border_width,
 		shape = beautiful.rrect(dpi(22)),
 		placement = function() return { 0, 0 } end,

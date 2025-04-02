@@ -276,10 +276,14 @@ local function new()
 						nil,
 						{
 							layout = wibox.layout.fixed.vertical,
-							spacing = beautiful.sep_width,
-							spacing_widget = common.separator {
-								vertical = true,
-								margins = { left = dpi(12), right = dpi(12) }
+							spacing = beautiful.separator_thickness + dpi(2),
+							spacing_widget = {
+								widget = wibox.container.margin,
+								margins = { left = dpi(12), right = dpi(12) },
+								{
+									widget = wibox.widget.separator,
+									orientation = "horizontal"
+								}
 							},
 							sidebar_wallpapers_button,
 							sidebar_home_button,
@@ -288,24 +292,23 @@ local function new()
 				},
 				{
 					layout = wibox.layout.fixed.vertical,
-					spacing = dpi(6),
+					spacing = dpi(3),
 					{
 						widget = wibox.container.background,
-						bg = beautiful.border_color,
 						forced_height = dpi(55),
-						forced_width = dpi(55),
 						{
 							widget = wibox.container.margin,
-							margins = { bottom = beautiful.sep_width },
-							{
-								widget = wibox.container.background,
-								bg = beautiful.bg,
-								{
-									widget = wibox.container.margin,
-									margins = { left = dpi(10), right = dpi(10) },
-									input_textbox
-								}
-							}
+							margins = { left = dpi(10), right = dpi(10) },
+							input_textbox
+						}
+					},
+					{
+						widget = wibox.container.background,
+						forced_width = 1,
+						forced_height = beautiful.separator_thickness,
+						{
+							widget = wibox.widget.separator,
+							orientation = "horizontal"
 						}
 					},
 					{
@@ -335,7 +338,7 @@ local function new()
 		visible = false,
 		screen = capi.screen.primary,
 		border_width = beautiful.border_width,
-		border_color = beautiful.border_color,
+		border_color = beautiful.border_color_normal,
 		shape = beautiful.rrect(dpi(20)),
 		placement = function(d)
 			awful.placement.bottom_left(d, {

@@ -177,7 +177,7 @@ local function new()
 		ontop = true,
 		screen = capi.screen.primary,
 		border_width = beautiful.border_width,
-		border_color = beautiful.border_color,
+		border_color = beautiful.border_color_normal,
 		shape = beautiful.rrect(dpi(30)),
 		placement = function(d)
 			awful.placement.centered(d, {

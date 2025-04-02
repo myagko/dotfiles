@@ -237,9 +237,14 @@ local function new()
 				{
 					layout = wibox.layout.fixed.horizontal,
 					{
-						id = "separator",
-						widget = common.separator {
-							margins = { top = dpi(12), bottom = dpi(12) }
+						widget = wibox.container.margin,
+						forced_height = 1,
+						forced_width = beautiful.separator_thickness,
+						margins = { top = dpi(12), bottom = dpi(12) },
+						{
+							id = "separator",
+							widget = wibox.widget.separator,
+							orientation = "vertical"
 						}
 					},
 					{
@@ -294,9 +299,14 @@ local function new()
 			nil,
 			{
 				layout = wibox.layout.fixed.horizontal,
-				spacing = beautiful.sep_width,
-				spacing_widget = common.separator {
-					margins = { top = dpi(12), bottom = dpi(12) }
+				spacing = beautiful.separator_thickness + dpi(2),
+				spacing_widget = {
+					widget = wibox.container.margin,
+					margins = { top = dpi(12), bottom = dpi(12) },
+					{
+						widget = wibox.widget.separator,
+						orientation = "vertical"
+					}
 				},
 				{
 					id = "refresh_button",
@@ -375,8 +385,14 @@ local function new()
 							}
 						}
 					},
-					common.separator {
-						vertical = true,
+					{
+						widget = wibox.container.background,
+						forced_width = 1,
+						forced_height = beautiful.separator_thickness,
+						{
+							widget = wibox.widget.separator,
+							orientation = "horizontal"
+						}
 					},
 					{
 						widget = wibox.container.margin,
