@@ -1,11 +1,11 @@
 local beautiful = require("beautiful")
-local gfilesystem = require("gears.filesystem")
+local gfs = require("gears.filesystem")
 local gshape = require("gears.shape")
 local gcolor = require("gears.color")
 local dpi = beautiful.xresources.apply_dpi
 
 local theme_name = "astel"
-local theme_path = gfilesystem.get_configuration_dir() .. "/themes/" .. theme_name .. "/"
+local theme_path = gfs.get_configuration_dir() .. "/themes/" .. theme_name .. "/"
 local icons_path = theme_path .. "icons/"
 
 local theme = {}
@@ -133,13 +133,13 @@ theme.bg_systray = theme.bg_alt
 function theme.rrect(rad)
 	return theme.rounded and function(cr, w, h)
 		gshape.rounded_rect(cr, w, h, rad)
-	end or nil
+	end
 end
 
 function theme.rbar()
 	return theme.rounded and function(cr, w, h)
 		gshape.rounded_bar(cr, w, h)
-	end or nil
+	end
 end
 
 function theme.prrect(tl, tr, br, bl, rad)

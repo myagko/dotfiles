@@ -1,5 +1,5 @@
 local beautiful = require("beautiful")
-local gfilesystem = require("gears.filesystem")
+local gfs = require("gears.filesystem")
 local user = require("user")
 
 local themes = {
@@ -12,4 +12,4 @@ local themes = {
 }
 
 local theme_name = themes[user.theme] and user.theme or "astel"
-beautiful.init(gfilesystem.get_configuration_dir() .. "themes/" .. theme_name .. "/theme.lua")
+beautiful.init(gfs.get_configuration_dir() .. "themes/" .. theme_name .. "/theme.lua")
