@@ -66,12 +66,8 @@ local function create_client_menu(c)
 		items = {
 			{ "move to tag", move_to_tag_item },
 			{ "toggle on tag", toggle_on_tag_item },
-			{ "toggle titlebar", function()
-				if c.requests_no_titlebar then
-					return
-				else
-					awful.titlebar.toggle(c, "top")
-				end
+			not c.requests_no_titlebar and { "toggle titlebar", function()
+				awful.titlebar.toggle(c, "top")
 			end },
 			{ "move to center", function()
 				awful.placement.centered(c, { honor_workarea = true })
