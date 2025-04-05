@@ -19,8 +19,8 @@ end)
 local function add_notification_popup(popup, screen)
 	if not popup then return end
 
-	for _, other_popup in ipairs(screen.notifications) do
-		if #screen.notifications > 0 then
+	if #screen.notifications > 0 then
+		for _, other_popup in ipairs(screen.notifications) do
 			other_popup.y = other_popup.y + popup.height + beautiful.notification_spacing
 		end
 	end
@@ -38,11 +38,14 @@ end
 
 local function remove_notification_popup(popup, screen)
 	if not popup then return end
+
 	remove_nonindex_value(screen.notifications, popup)
 
-	for _, other_popup in ipairs(screen.notifications) do
-		if #screen.notifications > 0 and other_popup.y > popup.y then
-			other_popup.y = other_popup.y - popup.height - beautiful.notification_spacing
+	if #screen.notifications > 0 then
+		for _, other_popup in ipairs(screen.notifications) do
+			if other_popup.y > popup.y then
+				other_popup.y = other_popup.y - popup.height - beautiful.notification_spacing
+			end
 		end
 	end
 
