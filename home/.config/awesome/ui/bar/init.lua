@@ -235,7 +235,7 @@ local function taglist(s)
 					client.focus:move_to_tag(t)
 				end
 			end),
-            awful.button({ modkey }, 3, function(t)
+			awful.button({ modkey }, 3, function(t)
 				if client.focus then
 					client.focus:toggle_tag(t)
 				end
