@@ -210,5 +210,29 @@ window.control-panel {
         }
       }
     }
+
+    .wifi-button, .bluetooth-button {
+      border-radius: 8px;
+
+      .toggle-button {
+        margin: 0;
+        border-radius: 8px 0 0 8px;
+        padding: 10px;
+
+        label {
+          margin-left: 10px;
+        }
+      }
+
+      .arrow-button {
+        margin: 0;
+        border-radius: 0 8px 8px 0;
+        padding: 10px 0 10px 0;
+
+        icon {
+          min-width: 40px;
+        }
+      }
+    }
   }
 }

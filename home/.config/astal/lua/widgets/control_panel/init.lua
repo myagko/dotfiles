@@ -12,6 +12,74 @@ local function hide()
 	if panel then panel:hide() end
 end
 
+local function WifiButton()
+	return Widget.Box {
+		class_name = "wifi-button",
+		hexpand = true,
+		Widget.Button {
+			class_name = "toggle-button",
+			Widget.Box {
+				hexpand = true,
+				Widget.Icon {
+					icon = "network-wireless-symbolic"
+				},
+				Widget.Label {
+					width_chars = 15,
+					xalign = 0,
+					justify = "FILL",
+					halign = "START",
+					label = "Wifi"
+				}
+			}
+		},
+		Widget.Button {
+			class_name = "arrow-button",
+			Widget.Box {
+				Gtk.Separator {
+					visible = true
+				},
+				Widget.Icon {
+					icon = "arrow-right"
+				}
+			}
+		}
+	}
+end
+
+local function BluetoothButton()
+	return Widget.Box {
+		class_name = "wifi-button",
+		hexpand = true,
+		Widget.Button {
+			class_name = "toggle-button",
+			Widget.Box {
+				hexpand = true,
+				Widget.Icon {
+					icon = "bluetooth-symbolic"
+				},
+				Widget.Label {
+					width_chars = 15,
+					xalign = 0,
+					justify = "FILL",
+					halign = "START",
+					label = "Bluetooth"
+				}
+			}
+		},
+		Widget.Button {
+			class_name = "arrow-button",
+			Widget.Box {
+				Gtk.Separator {
+					visible = true
+				},
+				Widget.Icon {
+					icon = "arrow-right"
+				}
+			}
+		}
+	}
+end
+
 return function()
 	local Anchor = Astal.WindowAnchor
 	return Widget.Window {
@@ -50,7 +118,13 @@ return function()
 					Gtk.Separator {
 						visible = true
 					},
-					AudioSliders()
+					AudioSliders(),
+					Widget.Box {
+						spacing = 8,
+						hexpand = true,
+						WifiButton(),
+						BluetoothButton()
+					}
 				}
 			}
 		}
