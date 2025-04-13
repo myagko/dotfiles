@@ -16,40 +16,31 @@ awful.screen.connect_for_each_screen(function(s)
 	s.notifications = {}
 end)
 
-local function add_notification_popup(popup, screen)
-	if not popup then return end
-
+local function update_positions(screen)
 	if #screen.notifications > 0 then
-		for _, other_popup in ipairs(screen.notifications) do
-			other_popup.y = other_popup.y + popup.height + beautiful.notification_spacing
+		for i = 1, #screen.notifications do
+			screen.notifications[i]:geometry({
+				x = screen.workarea.width - beautiful.notification_margins
+					- screen.notifications[i].width,
+				y = i > 1 and screen.notifications[i - 1].y
+					+ screen.notifications[i - 1].height + beautiful.notification_spacing
+					or screen.workarea.y + beautiful.notification_margins
+			})
 		end
 	end
+end
 
+local function add_popup(popup, screen)
+	if not popup then return end
 	table.insert(screen.notifications, 1, popup)
-
-	local placement = awful.placement.top_right(popup, {
-		honor_workarea = true,
-		margins = beautiful.notification_margins
-	})
-
-	popup:geometry(placement)
+	update_positions(screen)
 	popup.visible = true
 end
 
-local function remove_notification_popup(popup, screen)
+local function remove_popup(popup, screen)
 	if not popup then return end
-
 	remove_nonindex_value(screen.notifications, popup)
-
-	if #screen.notifications > 0 then
-		for _, other_popup in ipairs(screen.notifications) do
-			if other_popup.y > popup.y then
-				other_popup.y = math.max(screen.workarea.y + beautiful.notification_margins,
-					other_popup.y - popup.height - beautiful.notification_spacing)
-			end
-		end
-	end
-
+	update_positions(screen)
 	popup.visible = false
 	popup = nil
 end
@@ -223,19 +214,21 @@ function notifications:display(n)
 	local display_timer = gtimer {
 		timeout = beautiful.notification_timeout or 5,
 		callback = function()
-			remove_notification_popup(notification_popup, n.screen)
+			remove_popup(notification_popup, n.screen)
 		end
 	}
 
-	add_notification_popup(notification_popup, n.screen)
+	add_popup(notification_popup, n.screen)
 
 	n:connect_signal("destroyed", function()
 		display_timer:stop()
 		display_timer = nil
-		remove_notification_popup(notification_popup, n.screen)
+		remove_popup(notification_popup, n.screen)
 	end)
 
-	display_timer:start()
+	if display_timer then
+		display_timer:start()
+	end
 end
 
 function notifications:toggle_silent()

@@ -10,6 +10,15 @@ rnotification.connect_signal("request::rules", function()
 	}
 end)
 
+naughty.connect_signal("request::display_error", function(message, startup)
+	naughty.notification {
+		app_name = "Awesome",
+		urgency = "critical",
+		title = "An error happened" .. (startup and " during startup!" or "!"),
+		message = message
+	}
+end)
+
 capi.awesome.connect_signal("request::restart", function()
 	naughty.destroy_all_notifications(nil, naughty.notification_closed_reason.silent)
 end)

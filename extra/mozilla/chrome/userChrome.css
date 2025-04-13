@@ -188,7 +188,6 @@ toolbar {
 #nav-bar {
 	box-shadow: none !important;
 	border-bottom: 1px solid var(--theme-bg-urg) !important;
-	border-bottom: 1px solid var(--theme-bg-urg) !important;
 }
 
 #navigator-toolbox {
