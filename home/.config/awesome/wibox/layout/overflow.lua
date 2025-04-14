@@ -499,7 +499,7 @@ local function new(dir, ...)
 
 	ret:connect_signal('button::press', function(self, _, _, button)
 		if button == 4 then
-			self:scroll( -1)
+			self:scroll(-1)
 		elseif button == 5 then
 			self:scroll(1)
 		end

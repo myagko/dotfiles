@@ -413,7 +413,8 @@ local function new()
 					id = "devs_layout",
 					layout = wibox.layout.overflow.vertical,
 					scrollbar_enabled = false,
-					step = 40
+					step = 40,
+					spacing = dpi(3)
 				}
 			},
 			ret.bottombar
