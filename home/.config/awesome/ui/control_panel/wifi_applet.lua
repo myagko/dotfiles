@@ -12,8 +12,7 @@ local wifi_applet = {}
 local instance = nil
 
 local function create_ap_widget(ap, self)
-	local active_ap = network.wireless:get_active_access_point()
-	local is_active = active_ap == ap
+	local is_active = ap == network.wireless:get_active_access_point()
 	local ssid = ap:get_ssid()
 	local strength = ap:get_strength()
 
@@ -371,11 +370,14 @@ local function new()
 						{
 							layout = wibox.layout.align.horizontal,
 							{
-								widget = wibox.container.background,
+								widget = wibox.container.constraint,
 								forced_width = dpi(310),
+								strategy = "max",
+								height = dpi(25),
 								{
 									id = "input_textbox",
-									widget = wibox.widget.textbox
+									widget = wibox.widget.textbox,
+									ellipsize = "start"
 								}
 							},
 							nil,

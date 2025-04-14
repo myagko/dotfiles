@@ -180,12 +180,13 @@ local function new()
 	gtable.crush(ret, launcher, true)
 
 	local input_textbox = wibox.widget {
-		widget = wibox.widget.textbox
+		widget = wibox.widget.textbox,
+		ellipsize = "start",
 	}
 
 	ret.text_input = common.text_input {
 		textbox = input_textbox,
-		prompt = text_icons.search .. " ",
+		--prompt = text_icons.search .. " ",
 		placeholder = "Search...",
 		cursor_bg = beautiful.fg,
 		cursor_fg = beautiful.bg,
@@ -294,11 +295,14 @@ local function new()
 					layout = wibox.layout.fixed.vertical,
 					spacing = dpi(3),
 					{
-						widget = wibox.container.background,
+						widget = wibox.container.margin,
+						forced_width = 1,
 						forced_height = dpi(55),
+						margins = dpi(10),
 						{
-							widget = wibox.container.margin,
-							margins = { left = dpi(10), right = dpi(10) },
+							widget = wibox.container.constraint,
+							strategy = "max",
+							height = dpi(25),
 							input_textbox
 						}
 					},

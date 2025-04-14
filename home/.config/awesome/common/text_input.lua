@@ -13,7 +13,6 @@ local function create_markup(args)
 	local text = args.text or ""
 	local cursor_pos = args.cursor_pos or 1
 	local selectall = args.selectall or false
-	local prompt = args.prompt or ""
 	local placeholder = args.placeholder or ""
 	local obscure = args.obscure or false
 	local obscure_char = args.obscure_char or "*"
@@ -58,7 +57,7 @@ local function create_markup(args)
 		text_start, text_end = highlighter(text_start, text_end)
 	end
 
-	markup = prompt .. text_start ..
+	markup = text_start ..
 		"<span foreground='" .. cursor_fg .. "' background='" .. cursor_bg ..  "'>" .. cursor_char .. "</span>" ..
 		(text == "" and "<span foreground='" .. placeholder_fg .. "'>" .. text_end .. "</span>" or text_end) ..
 		spacer
@@ -86,7 +85,6 @@ function text_input:update_textbox()
 		cursor_fg = self.cursor_fg,
 		placeholder_fg = self.placeholder_fg,
 		obscure_char = self.obscure_char,
-		prompt = self.prompt,
 		placeholder = self.placeholder,
 		highlighter = self.highlighter
 	})
@@ -252,7 +250,6 @@ local function new(args)
 
 	ret.textbox = args.textbox
 	ret.obscure = args.obscure or false
-	ret.prompt = args.prompt or ""
 	ret.placeholder = args.placeholder or ""
 	ret.obscure_char = args.obscure_char or "*"
 	ret.cursor_bg = args.cursor_bg or "#ffffff"
