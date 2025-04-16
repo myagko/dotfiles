@@ -5,14 +5,13 @@ local gtable = require("gears.table")
 local gtimer = require("gears.timer")
 local common = require("common")
 local beautiful = require("beautiful")
+local ncr = naughty.notification_closed_reason
 local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
 local create_markup = require("helpers").create_markup
 local remove_nonindex_value = require("helpers").remove_nonindex_value
 
 local notifications = {}
-
-
 
 local function update_positions(screen)
 	if #screen.notifications > 0 then
@@ -148,7 +147,7 @@ local function create_notification_popup(n)
 				layout = wibox.layout.fixed.horizontal,
 				buttons = {
 					awful.button({}, 1, function()
-						n:destroy(naughty.notification_closed_reason.dismissed_by_user)
+						n:destroy(ncr.dismissed_by_user)
 					end)
 				},
 				fill_space = true,
@@ -200,7 +199,7 @@ local function create_notification_popup(n)
 
 	close:buttons {
 		awful.button({}, 1, function()
-			n:destroy(naughty.notification_closed_reason.silent)
+			n:destroy(ncr.silent)
 		end)
 	}
 
