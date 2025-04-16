@@ -19,8 +19,6 @@ local wireless = {}
 local connection = {}
 local access_point = {}
 
-local instance = nil
-
 network.NMState = {
 	UNKNOWN = 0,
 	ASLEEP = 10,
@@ -463,8 +461,14 @@ local function new()
 	return ret
 end
 
-if not instance then
-	instance = new()
+local instance = nil
+local function get_default()
+	if not instance then
+		instance = new()
+	end
+	return instance
 end
 
-return instance
+return {
+	get_default = get_default
+}

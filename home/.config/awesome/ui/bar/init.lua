@@ -5,11 +5,10 @@ local common = require("common")
 local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
 local modkey = "Mod4"
-
-local launcher = require("ui.launcher")
-local control_panel = require("ui.control_panel")
-local day_info_panel = require("ui.day_info_panel")
 local menu = require("ui.menu")
+local launcher = require("ui.launcher").get_default()
+local control_panel = require("ui.control_panel").get_default()
+local day_info_panel = require("ui.day_info_panel").get_default()
 
 local bar = {}
 

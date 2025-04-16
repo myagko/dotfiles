@@ -3,7 +3,6 @@ local gobject = require("gears.object")
 local gtable = require("gears.table")
 
 local audio = {}
-local instance = nil
 
 function audio:get_sink_data(sink)
 	awful.spawn.easy_async_with_shell("LANG=C pactl get-sink-volume " .. sink, function(stdout)
@@ -55,8 +54,14 @@ local function new()
 	return ret
 end
 
-if not instance then
-	instance = new()
+local instance = nil
+local function get_default()
+	if not instance then
+		instance = new()
+	end
+	return instance
 end
 
-return instance
+return {
+	get_default = get_default
+}

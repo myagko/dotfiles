@@ -5,7 +5,6 @@ local json = require("external.json")
 local user = require("user")
 
 local weather = {}
-local instance = nil
 
 function weather:set_remote_watch()
 	local wp = self._private
@@ -41,11 +40,24 @@ local function new(args)
 	return ret
 end
 
-if not instance then
-	instance = new({
-		lat = user.weather_location and user.weather_location[1],
-		lon = user.weather_location and user.weather_location[2]
-	})
+local instance = nil
+local function get_default()
+	if not instance then
+		instance = new {
+			lat = user.weather_location and user.weather_location[1],
+			lon = user.weather_location and user.weather_location[2]
+		}
+	end
+	return instance
 end
 
-return instance
+return setmetatable({
+	get_default = get_default,
+	new = function(...)
+		return new(...)
+	end
+}, {
+	__call = function(...)
+		return new(...)
+	end
+})

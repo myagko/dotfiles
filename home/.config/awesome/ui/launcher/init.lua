@@ -11,12 +11,9 @@ local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
 local lua_escape = require("helpers").lua_escape
 local capi = { screen = screen }
-
-local powermenu = require("ui.powermenu")
+local powermenu = require("ui.powermenu").get_default()
 
 local launcher = {}
-local instance = nil
-
 local rows = 6
 
 local terminal_cmds = {
@@ -356,8 +353,14 @@ local function new()
 	return ret
 end
 
-if not instance then
-	instance = new()
+local instance = nil
+local function get_default()
+	if not instance then
+		instance = new()
+	end
+	return instance
 end
 
-return instance
+return {
+	get_default = get_default
+}

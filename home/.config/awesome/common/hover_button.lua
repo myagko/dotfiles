@@ -28,7 +28,7 @@ function button:set_fg_hover(color)
 	wp.fg_hover = color
 end
 
-local function new(args)
+function button.new(args)
 	args = args or {}
 	local widget
 
@@ -97,6 +97,6 @@ end
 
 return setmetatable(button, {
 	__call = function(_, ...)
-		return new(...)
+		return button.new(...)
 	end
 })

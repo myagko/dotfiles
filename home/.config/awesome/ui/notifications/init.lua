@@ -1,6 +1,7 @@
 local awful = require("awful")
 local naughty = require("naughty")
 local wibox = require("wibox")
+local gtable = require("gears.table")
 local gtimer = require("gears.timer")
 local common = require("common")
 local beautiful = require("beautiful")
@@ -10,11 +11,8 @@ local create_markup = require("helpers").create_markup
 local remove_nonindex_value = require("helpers").remove_nonindex_value
 
 local notifications = {}
-local instance = nil
 
-awful.screen.connect_for_each_screen(function(s)
-	s.notifications = {}
-end)
+
 
 local function update_positions(screen)
 	if #screen.notifications > 0 then
@@ -209,7 +207,7 @@ local function create_notification_popup(n)
 	return popup_widget
 end
 
-function notifications:display(n)
+function notifications.display(n)
 	local notification_popup = create_notification_popup(n)
 	local display_timer = gtimer {
 		timeout = beautiful.notification_timeout or 5,
@@ -231,27 +229,26 @@ function notifications:display(n)
 	end
 end
 
-function notifications:toggle_silent()
-	self.silent = not self.silent
-	if not self.silent then
-		naughty.resume()
-	else
-		naughty.suspend()
-	end
-end
-
 local function new()
-	local ret = notifications
+	local ret = {}
+	gtable.crush(ret, notifications, true)
 
-	ret.silent = false
+	awful.screen.connect_for_each_screen(function(s)
+		s.notifications = {}
+	end)
 
 	require("ui.notifications.screenshots")
-
 	return ret
 end
 
-if not instance then
-	instance = new()
+local instance = nil
+local function get_default()
+	if not instance then
+		instance = new()
+	end
+	return instance
 end
 
-return instance
+return {
+	get_default = get_default
+}

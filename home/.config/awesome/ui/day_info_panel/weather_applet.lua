@@ -1,14 +1,12 @@
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local gtable = require("gears.table")
-local common = require("common")
-local weather = require("services.weather")
 local text_icons = require("beautiful").text_icons
 local dpi = beautiful.xresources.apply_dpi
 local create_markup = require("helpers").create_markup
+local weather = require("services.weather").get_default()
 
 local weather_applet = {}
-local instance = nil
 
 local desc_map = {
 	[0] = "Clear sky",
@@ -348,8 +346,8 @@ local function new()
 	return ret
 end
 
-if not instance then
-	instance = new()
-end
-
-return instance
+return setmetatable({
+	new = new
+}, {
+	__call = new
+})

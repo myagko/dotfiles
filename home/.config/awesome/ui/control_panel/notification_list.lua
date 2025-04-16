@@ -8,10 +8,7 @@ local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
 local create_markup = require("helpers").create_markup
 
-local notifications = require("ui.notifications")
-
 local notification_list = {}
-local instance = nil
 
 local function create_actions_widget(n)
 	if #n.actions == 0 then return nil end
@@ -214,9 +211,20 @@ function notification_list:update_count()
 	end
 end
 
+function notification_list:toggle_dnd()
+	self.dnd_mode = not self.dnd_mode
+	if self.dnd_mode then
+		naughty.suspend()
+	else
+		naughty.resume()
+	end
+end
+
 local function new()
 	local ret = {}
 	gtable.crush(ret, notification_list, true)
+
+	ret.dnd_mode = false
 
 	local dnd_button
 	dnd_button = common.hover_button {
@@ -226,8 +234,8 @@ local function new()
 		shape = beautiful.rrect(dpi(10)),
 		buttons = {
 			awful.button({}, 1, function()
-				notifications:toggle_silent()
-				if notifications.silent then
+				ret:toggle_dnd()
+				if ret.dnd_mode then
 					dnd_button:set_text(text_icons.bell_off)
 				else
 					dnd_button:set_text(text_icons.bell_on)
@@ -329,8 +337,8 @@ local function new()
 	return ret
 end
 
-if not instance then
-	instance = new()
-end
-
-return instance
+return setmetatable({
+	new = new
+}, {
+	__call = new
+})

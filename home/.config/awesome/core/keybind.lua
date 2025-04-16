@@ -1,13 +1,12 @@
 local awful = require("awful")
 local modkey = "Mod4"
-local screenshot = require("services.screenshot")
 local user = require("user")
 local capi = { awesome = awesome, client = client }
-
+local screenshot = require("services.screenshot").get_default()
 local menu = require("ui.menu")
-local launcher = require("ui.launcher")
-local powermenu = require("ui.powermenu")
-local control_panel = require("ui.control_panel")
+local launcher = require("ui.launcher").get_default()
+local powermenu = require("ui.powermenu").get_default()
+local control_panel = require("ui.control_panel").get_default()
 
 awful.mouse.snap.edge_enabled = false
 

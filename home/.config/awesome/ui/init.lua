@@ -3,16 +3,15 @@ local naughty = require("naughty")
 local user = require("user")
 local has_common_values = require("helpers").has_common_values
 local capi = { screen = screen, client = client }
-
-local Titlebar = require("ui.titlebars")
-local Wallpaper = require("ui.wallpaper")
+local create_titlebar = require("ui.titlebars")
+local create_wallpaper = require("ui.wallpaper")
 local bar = require("ui.bar")
-local notifications = require("ui.notifications")
-local launcher = require("ui.launcher")
-local powermenu = require("ui.powermenu")
-local control_panel = require("ui.control_panel")
-local day_info_panel = require("ui.day_info_panel")
 local menu = require("ui.menu")
+local notifications = require("ui.notifications").get_default()
+local launcher = require("ui.launcher").get_default()
+local powermenu = require("ui.powermenu").get_default()
+local control_panel = require("ui.control_panel").get_default()
+local day_info_panel = require("ui.day_info_panel").get_default()
 
 local function set_wibar_hideaway(wibar)
 	local function hide_wibar(client)
@@ -72,7 +71,7 @@ capi.screen.connect_signal("request::desktop_decoration", function(s)
 end)
 
 capi.screen.connect_signal("request::wallpaper", function(s)
-	s.wallpaper = Wallpaper(s)
+	s.wallpaper = create_wallpaper(s)
 
 	if user.wallpaper then
 		s.wallpaper:set(user.wallpaper, true)
@@ -80,11 +79,11 @@ capi.screen.connect_signal("request::wallpaper", function(s)
 end)
 
 capi.client.connect_signal("request::titlebars", function(c)
-	Titlebar(c)
+	create_titlebar(c)
 end)
 
 naughty.connect_signal("request::display", function(n)
-	notifications:display(n)
+	notifications.display(n)
 end)
 
 powermenu:connect_signal("state", function(_, state)

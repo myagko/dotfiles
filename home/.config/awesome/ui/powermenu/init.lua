@@ -8,7 +8,6 @@ local dpi = beautiful.xresources.apply_dpi
 local capi = { awesome = awesome, screen = screen }
 
 local powermenu = {}
-local instance = nil
 
 local keys = {
 	up = { "Up" },
@@ -190,8 +189,14 @@ local function new()
 	return ret
 end
 
-if not instance then
-	instance = new()
+local instance = nil
+local function get_default()
+	if not instance then
+		instance = new()
+	end
+	return instance
 end
 
-return instance
+return {
+	get_default = get_default
+}

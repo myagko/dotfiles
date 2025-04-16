@@ -233,7 +233,7 @@ function text_input:stop_keygrabber()
 	self:update_textbox()
 end
 
-local function new(args)
+function text_input.new(args)
 	local ret = {}
 	gtable.crush(ret, text_input, true)
 
@@ -267,6 +267,6 @@ end
 
 return setmetatable(text_input, {
 	__call = function(_, ...)
-		return new(...)
+		return text_input.new(...)
 	end
 })

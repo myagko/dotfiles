@@ -1,11 +1,9 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local audio = require("services.audio")
 local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
-
-local instance = nil
+local audio = require("services.audio").get_default()
 
 local function new()
 	local ret = {}
@@ -167,8 +165,8 @@ local function new()
 	return ret
 end
 
-if not instance then
-	instance = new()
-end
-
-return instance
+return setmetatable({
+	new = new
+}, {
+	__call = new
+})

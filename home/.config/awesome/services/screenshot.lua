@@ -9,7 +9,6 @@ local user = require("user")
 local file_exists = require("helpers").file_exists
 
 local screenshot = {}
-local instance = nil
 
 function screenshot:take(args)
 	local name = os.date("%F-%H%M%S") .. ".png"
@@ -50,14 +49,18 @@ local function new()
 	local ret = gobject {}
 	gtable.crush(ret, screenshot, true)
 	ret._private = {}
-
 	ret._private.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
-
 	return ret
 end
 
-if not instance then
-	instance = new()
+local instance = nil
+local function get_default()
+	if not instance then
+		instance = new()
+	end
+	return instance
 end
 
-return instance
+return {
+	get_default = get_default
+}

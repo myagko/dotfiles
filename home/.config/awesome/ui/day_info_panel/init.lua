@@ -6,11 +6,9 @@ local gtable = require("gears.table")
 local common = require("common")
 local dpi = beautiful.xresources.apply_dpi
 local capi = { screen = screen }
-
-local weather_applet = require("ui.day_info_panel.weather_applet")
+local weather_applet = require("ui.day_info_panel.weather_applet").new()
 
 local day_info = {}
-local instance = nil
 
 function day_info:open()
 	if self.state then return end
@@ -75,8 +73,14 @@ local function new()
 	return ret
 end
 
-if not instance then
-	instance = new()
+local instance = nil
+local function get_default()
+	if not instance then
+		instance = new()
+	end
+	return instance
 end
 
-return instance
+return {
+	get_default = get_default
+}

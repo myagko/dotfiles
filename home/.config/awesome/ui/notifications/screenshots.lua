@@ -1,6 +1,6 @@
 local awful = require("awful")
 local naughty = require("naughty")
-local screenshot = require("services.screenshot")
+local screenshot = require("services.screenshot").get_default()
 
 screenshot:connect_signal("saved", function(_, dir, name)
 	local view_file = naughty.action { name = "View" }

@@ -4,12 +4,11 @@ local beautiful = require("beautiful")
 local gtable = require("gears.table")
 local gtimer = require("gears.timer")
 local common = require("common")
-local network = require("services.network")
 local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
+local network = require("services.network").get_default()
 
 local wifi_applet = {}
-local instance = nil
 
 local function create_ap_widget(ap, self)
 	local is_active = ap == network.wireless:get_active_access_point()
@@ -519,8 +518,8 @@ local function new()
 	return ret
 end
 
-if not instance then
-	instance = new()
-end
-
-return instance
+return setmetatable({
+	new = new
+}, {
+	__call = new
+})

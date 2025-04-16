@@ -1,20 +1,17 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local common = require("common")
 local gobject = require("gears.object")
 local gtable = require("gears.table")
-local audio = require("services.audio")
 local dpi = beautiful.xresources.apply_dpi
 local capi = { screen = screen }
-
-local notification_list = require("ui.control_panel.notification_list")
-local audio_sliders = require("ui.control_panel.audio_sliders")
-local wifi_applet = require("ui.control_panel.wifi_applet")
-local bluetooth_applet = require("ui.control_panel.bluetooth_applet")
+local audio = require("services.audio").get_default()
+local notification_list = require("ui.control_panel.notification_list").new()
+local audio_sliders = require("ui.control_panel.audio_sliders").new()
+local wifi_applet = require("ui.control_panel.wifi_applet").new()
+local bluetooth_applet = require("ui.control_panel.bluetooth_applet").new()
 
 local control_panel = {}
-local instance = nil
 
 function control_panel:setup_wifi()
 	local main_layout = self.main_widget:get_children_by_id("main_layout")[1]
@@ -135,8 +132,14 @@ local function new()
 	return ret
 end
 
-if not instance then
-	instance = new()
+local instance = nil
+local function get_default()
+	if not instance then
+		instance = new()
+	end
+	return instance
 end
 
-return instance
+return {
+	get_default = get_default
+}
