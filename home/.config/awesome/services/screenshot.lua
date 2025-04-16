@@ -11,9 +11,9 @@ local file_exists = require("helpers").file_exists
 local screenshot = {}
 
 function screenshot:take(args)
+	local folder = user.screenshots_folder or os.getenv("HOME")
+	local dir = string.match(folder, "/$") and folder or folder .. "/"
 	local name = os.date("%F-%H%M%S") .. ".png"
-	local dir = (string.match(user.screenshots_folder, "/$") and
-		user.screenshots_folder or user.screenshots_folder .. "/")
 
 	awful.spawn.easy_async_with_shell("maim " .. args .. " " .. dir .. name, function()
 		if file_exists(dir .. name) then
