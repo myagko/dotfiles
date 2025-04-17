@@ -5,6 +5,10 @@ local GLib = astal.require("GLib")
 
 local M = {}
 
+function M.lua_escape(str)
+	return str:gsub("[%[%]%(%)%.%-%+%?%*%%]", "%%%1")
+end
+
 function M.src(path)
 	local str = debug.getinfo(2, "S").source:sub(2)
 	local src = str:match("(.*/)") or str:match("(.*\\)") or "./"
@@ -58,7 +62,7 @@ function M.varlist(initial)
 		end,
 		subscribe = function(callback)
 			return var:subscribe(callback)
-		end,
+		end
 	}, {
 		__call = function()
 			return var()
@@ -73,18 +77,6 @@ end
 function M.time(time, format)
 	format = format or "%H:%M"
 	return GLib.DateTime.new_from_unix_local(time):format(format)
-end
-
-function M.lua_escape(str)
-	return str:gsub("[%[%]%(%)%.%-%+%?%*%%]", "%%%1")
-end
-
-function M.remove_nonindex_value(tbl, val)
-	for i, v in ipairs(tbl) do
-		if v == val then
-			table.remove(tbl, i)
-		end
-	end
 end
 
 return M
