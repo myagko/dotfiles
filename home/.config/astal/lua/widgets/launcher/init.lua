@@ -1,8 +1,8 @@
 local utf8 = require("lua-utf8")
-local Gio = require("lgi").Gio
 local astal = require("astal")
 local Variable = astal.Variable
 local bind = astal.bind
+local Gio = astal.require("Gio")
 local AstalHyprland = astal.require("AstalHyprland")
 local App = require("astal.gtk3").App
 local Widget = require("astal.gtk3").Widget
@@ -10,11 +10,10 @@ local Astal = require("astal.gtk3").Astal
 local Gdk = require("astal.gtk3").Gdk
 local map = require("lua.lib").map
 local lua_escape = require("lua.lib").lua_escape
-
 local hyprland = AstalHyprland.get_default()
-local TERMINAL = "alacritty"
 
-local terminal_cmds = {
+local TERMINAL = "alacritty"
+local TERMINAL_CMDS = {
 	alacritty = "alacritty -e ",
 	termite = "termite -e ",
 	rxvt = "rxvt -e ",
@@ -22,18 +21,11 @@ local terminal_cmds = {
 }
 
 local function launch_app(app)
-	local terminal_cmd = TERMINAL and terminal_cmds[TERMINAL] or nil
 	local desktop_app_info = Gio.DesktopAppInfo.new(Gio.AppInfo.get_id(app))
+	local terminal_cmd = TERMINAL and TERMINAL_CMDS[TERMINAL] or nil
 	local terminal = Gio.DesktopAppInfo.get_string(desktop_app_info, "Terminal") == "true" and true or false
-
-	-- works not for all apps
-	--hyprland:dispatch("exec", (terminal and terminal_cmd or "") .. app:get_executable())
-
-	if terminal and terminal_cmd then
-		hyprland:dispatch("exec", terminal_cmd .. app:get_executable())
-	else
-		app:launch()
-	end
+	local exec = Gio.DesktopAppInfo.get_string(desktop_app_info, "Exec")
+	hyprland:dispatch("exec", (terminal and terminal_cmd or "") .. string.gsub(exec, "%%%a", ""))
 end
 
 local function filter_apps(apps, query)
@@ -92,11 +84,8 @@ local function AppButton(app)
 end
 
 return function()
-	local apps = Gio.AppInfo.get_all()
-	local app_query = Variable("")
-	local app_list = bind(app_query):as(function(text)
-		return filter_apps(apps, text)
-	end)
+	local apps
+	local app_list = Variable({})
 
 	local on_enter = function()
 		local first_app = app_list:get()[1]
@@ -108,11 +97,8 @@ return function()
 
 	local entry = Widget.Entry {
 		placeholder_text = "Search...",
-		text = bind(app_query):as(function(text)
-			return tostring(text)
-		end),
 		on_changed = function(self)
-			app_query:set(self.text)
+			app_list:set(filter_apps(apps, self:get_text()))
 		end,
 		on_activate = on_enter
 	}
@@ -126,23 +112,18 @@ return function()
 		keymode = "ON_DEMAND",
 		application = App,
 		visible = false,
-		on_show = function()
-			app_query:set("")
-		end,
 		on_key_press_event = function(self, event)
 			if event.keyval == Gdk.KEY_Escape then
 				self:hide()
 			end
 		end,
-		setup = function(self)
-			self:hook(self, "notify::visible", function()
-				if self.visible then
-					apps = Gio.AppInfo.get_all()
-					entry:set_position(-1)
-					entry:select_region(0, -1)
-					entry:grab_focus()
-				end
-			end)
+		on_show = function()
+			apps = Gio.AppInfo.get_all()
+			app_list:set(filter_apps(apps, ""))
+			entry:set_text("")
+			entry:set_position(-1)
+			entry:select_region(0, -1)
+			entry:grab_focus()
 		end,
 		Widget.Box {
 			Widget.Box {
@@ -163,7 +144,7 @@ return function()
 						Widget.Box {
 							vertical = true,
 							spacing = 3,
-							app_list:as(function(list)
+							bind(app_list):as(function(list)
 								return map(list, function(app)
 									return AppButton(app)
 								end)
@@ -173,7 +154,7 @@ return function()
 								halign = "CENTER",
 								valign = "CENTER",
 								expand = true,
-								visible = app_list:as(function(list)
+								visible = bind(app_list):as(function(list)
 									return #list == 0
 								end),
 								Widget.Label {
