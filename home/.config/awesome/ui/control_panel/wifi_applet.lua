@@ -11,9 +11,9 @@ local network = require("services.network").get_default()
 local wifi_applet = {}
 
 local function create_ap_widget(ap, self)
-	local is_active = ap == network.wireless:get_active_access_point()
 	local ssid = ap:get_ssid()
 	local strength = ap:get_strength()
+	local is_active = ap == network.wireless:get_active_access_point()
 
 	local name = wibox.widget {
 		widget = wibox.widget.textbox,

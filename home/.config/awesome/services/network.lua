@@ -141,35 +141,35 @@ local function create_ap_profile(ap, password, auto_connect)
 end
 
 local function create_connection_object(path)
-	if path and path ~= "/" then
-		local connection_object = gobject {}
-		gtable.crush(connection_object, connection, true)
-		connection_object._private = {}
-		connection_object._private.connection_proxy = dbus_proxy.Proxy:new {
-			bus = dbus_proxy.Bus.SYSTEM,
-			name = "org.freedesktop.NetworkManager",
-			interface = "org.freedesktop.NetworkManager.Settings.Connection",
-			path = path
-		}
+	if not path or path == "/" then return end
 
-		return connection_object
-	end
+	local connection_object = gobject {}
+	gtable.crush(connection_object, connection, true)
+	connection_object._private = {}
+	connection_object._private.connection_proxy = dbus_proxy.Proxy:new {
+		bus = dbus_proxy.Bus.SYSTEM,
+		name = "org.freedesktop.NetworkManager",
+		interface = "org.freedesktop.NetworkManager.Settings.Connection",
+		path = path
+	}
+
+	return connection_object
 end
 
 local function create_access_point_object(path)
-	if path and path ~= "/" then
-		local access_point_object = gobject {}
-		gtable.crush(access_point_object, access_point, true)
-		access_point_object._private = {}
-		access_point_object._private.access_point_proxy = dbus_proxy.Proxy:new {
-			bus = dbus_proxy.Bus.SYSTEM,
-			name = "org.freedesktop.NetworkManager",
-			interface = "org.freedesktop.NetworkManager.AccessPoint",
-			path = path
-		}
+	if not path or path == "/" then return end
 
-		return access_point_object
-	end
+	local access_point_object = gobject {}
+	gtable.crush(access_point_object, access_point, true)
+	access_point_object._private = {}
+	access_point_object._private.access_point_proxy = dbus_proxy.Proxy:new {
+		bus = dbus_proxy.Bus.SYSTEM,
+		name = "org.freedesktop.NetworkManager",
+		interface = "org.freedesktop.NetworkManager.AccessPoint",
+		path = path
+	}
+
+	return access_point_object:get_ssid() ~= nil and access_point_object
 end
 
 function network:get_network_state()
@@ -419,23 +419,19 @@ local function new()
 		local access_point_paths = ret.wireless._private.device_proxy:GetAccessPoints()
 		for _, access_point_path in ipairs(access_point_paths) do
 			local access_point_object = create_access_point_object(access_point_path)
-			ret.wireless.access_points[access_point_path] = access_point_object
-		end
-
-		--[[
-		ret.wireless._private.device_proxy:connect_signal("StateChanged", function(_, new_state, old_state, reason)
-			if new_state == network.DeviceState.ACTIVATED then
-				ret.wireless:emit_signal("access_point_connected", ret.wireless:get_active_access_point())
+			if access_point_object then
+				ret.wireless.access_points[access_point_path] = access_point_object
 			end
-		end)
-		]]
+		end
 	end
 
 	if ret.wireless._private.wireless_proxy then
 		ret.wireless._private.wireless_proxy:connect_signal("AccessPointAdded", function(_, path)
 			local access_point_object = create_access_point_object(path)
-			ret.wireless.access_points[path] = access_point_object
-			ret.wireless:emit_signal("access_point_added", path)
+			if access_point_object then
+				ret.wireless.access_points[path] = access_point_object
+				ret.wireless:emit_signal("access_point_added", path)
+			end
 		end)
 
 		ret.wireless._private.wireless_proxy:connect_signal("AccessPointRemoved", function(_, path)
@@ -447,15 +443,6 @@ local function new()
 	gtimer.delayed_call(function()
 		ret:emit_signal("network_state", ret:get_network_state())
 		ret:emit_signal("wireless_state", ret:get_wireless_state())
-
-		--[[
-		if ret:get_wireless_state() and ret.wireless._private.device_proxy then
-			local active_access_point = ret.wireless:get_active_access_point()
-			if active_access_point then
-				ret.wireless:emit_signal("access_point_connected", active_access_point)
-			end
-		end
-		]]
 	end)
 
 	return ret
