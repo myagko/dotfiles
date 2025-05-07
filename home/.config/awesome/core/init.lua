@@ -1,0 +1,6 @@
+require("core.notification")
+require("core.theme")
+require("core.tag")
+require("core.client")
+require("core.keybind")
+require("core.restart")
