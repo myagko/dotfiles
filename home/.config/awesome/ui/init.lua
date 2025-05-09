@@ -15,7 +15,9 @@ local control_panel = require("ui.control_panel").get_default()
 local day_info_panel = require("ui.day_info_panel").get_default()
 
 local function set_wibar_hideaway(wibar)
-	local function hide_wibar(client)
+	if not wibar then return end
+
+	local function on_client_manage(client)
 		local focused_screen = awful.screen.focused({ client = true })
 		if wibar.screen == focused_screen
 		and has_common(client:tags(), focused_screen.selected_tags) then
@@ -27,7 +29,7 @@ local function set_wibar_hideaway(wibar)
 		end
 	end
 
-	local function show_wibar(client)
+	local function on_client_unmanage(client)
 		local focused_screen = awful.screen.focused({ client = true })
 		if wibar.screen == focused_screen then
 			if client.fullscreen then
@@ -37,27 +39,27 @@ local function set_wibar_hideaway(wibar)
 	end
 
 	capi.client.connect_signal("request::manage", function(c)
-		hide_wibar(c)
+		on_client_manage(c)
 	end)
 
 	capi.client.connect_signal("focus", function(c)
-		hide_wibar(c)
+		on_client_manage(c)
 	end)
 
 	capi.client.connect_signal("property::fullscreen", function(c)
-		hide_wibar(c)
+		on_client_manage(c)
 	end)
 
 	capi.client.connect_signal("request::unmanage", function(c)
-		show_wibar(c)
+		on_client_unmanage(c)
 	end)
 
 	capi.client.connect_signal("unfocus", function(c)
-		show_wibar(c)
+		on_client_unmanage(c)
 	end)
 
 	capi.client.connect_signal("property::minimized", function(c)
-		show_wibar(c)
+		on_client_unmanage(c)
 	end)
 end
 

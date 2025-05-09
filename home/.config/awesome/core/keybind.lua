@@ -129,7 +129,7 @@ awful.keyboard.append_global_keybindings {
 	end),
 	awful.key({ modkey }, "Return", function()
 		local app = Gio.AppInfo.get_default_for_uri_scheme('terminal')
-		awful.spawn(app:get_executable())
+		if app then awful.spawn(app:get_executable()) end
 	end),
 	awful.key({ modkey }, "d", function()
 		launcher:open()

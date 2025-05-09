@@ -31,7 +31,9 @@ local function create_desktop_menu()
 						"config",
 						function()
 							local app = Gio.AppInfo.get_default_for_type("inode/directory")
-							awful.spawn(string.format("%s %s", app:get_executable(), gfs.get_configuration_dir()))
+							if app then
+								awful.spawn(string.format("%s %s", app:get_executable(), gfs.get_configuration_dir()))
+							end
 						end
 					},
 					{
@@ -91,21 +93,21 @@ local function create_desktop_menu()
 				"terminal",
 				function()
 					local app = Gio.AppInfo.get_default_for_uri_scheme('terminal')
-					awful.spawn(app:get_executable())
+					if app then awful.spawn(app:get_executable()) end
 				end
 			},
 			{
 				"files",
 				function()
 					local app = Gio.AppInfo.get_default_for_type("inode/directory")
-					awful.spawn(app:get_executable())
+					if app then awful.spawn(app:get_executable()) end
 				end
 			},
 			{
 				"web",
 				function()
 					local app = Gio.AppInfo.get_default_for_type("text/html")
-					awful.spawn(app:get_executable())
+					if app then awful.spawn(app:get_executable()) end
 				end
 			}
 		}

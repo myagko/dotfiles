@@ -60,15 +60,15 @@ $ rsync -avhu ~/dotfiles/home/ ~/
 
 #### 6. Download [JetBrainsMonoSlashed](https://github.com/sharpjs/JetBrainsMonoSlashed/releases) font and put it to `~/.fonts`
 
-</details>
-
-<details>
-<summary><b>Customisation</b></summary>
-
 #### 7. Set `alacritty` as a default terminal
 ```
 $ gio mime x-scheme-handler/terminal Alacritty.desktop
 ```
+
+</details>
+
+<details>
+<summary><b>Customisation</b></summary>
 
 #### 8. Edit `~/.config/awesome/user.lua` as you need
 
