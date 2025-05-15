@@ -4,8 +4,8 @@ local gtimer = require("gears.timer")
 local beautiful = require("beautiful")
 local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
+local capi = { client = client }
 local menu = require("ui.menu").get_default()
-
 awful.titlebar.enable_tooltip = false
 
 local function new(c)
@@ -18,7 +18,7 @@ local function new(c)
 
 	local buttons = {
 		awful.button({}, 1, function()
-			client.focus = c
+			capi.client.focus = c
 			c:raise()
 			awful.mouse.client.move(c)
 		end),
@@ -26,7 +26,7 @@ local function new(c)
 			menu:toggle_client_menu(c)
 		end),
 		awful.button({}, 3, function()
-			client.focus = c
+			capi.client.focus = c
 			c:raise()
 			awful.mouse.client.resize(c)
 		end)

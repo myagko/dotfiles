@@ -50,7 +50,7 @@ local function set_wibar_hideaway(wibar)
 end
 
 capi.screen.connect_signal("request::desktop_decoration", function(s)
-	if s == screen.primary then
+	if s == capi.screen.primary then
 		s.bar = bar.create_primary(s)
 		s.bar:connect_signal("property::visible", function()
 			if control_panel.state == true then

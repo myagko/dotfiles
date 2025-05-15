@@ -7,7 +7,6 @@ local launcher = require("ui.launcher").get_default()
 local powermenu = require("ui.powermenu").get_default()
 local control_panel = require("ui.control_panel").get_default()
 local day_info_panel = require("ui.day_info_panel").get_default()
-
 local modkey = "Mod4"
 awful.mouse.snap.edge_enabled = false
 
@@ -22,21 +21,21 @@ awful.mouse.append_global_mousebindings {
 awful.keyboard.append_global_keybindings {
 	awful.key({ modkey }, "Tab", function()
 		awful.client.focus.byidx(1)
-		if client.focus then
-			client.focus:raise()
+		if capi.client.focus then
+			capi.client.focus:raise()
 		end
 	end),
 	awful.key({ modkey, "Shift" }, "Tab", function()
 		awful.client.focus.byidx(-1)
-		if client.focus then
-			client.focus:raise()
+		if capi.client.focus then
+			capi.client.focus:raise()
 		end
 	end),
 	awful.key({ modkey, "Control" }, "Tab", function ()
 		local restored = awful.client.restore()
 		if restored then
-			client.focus = restored
-			client.focus:raise()
+			capi.client.focus = restored
+			capi.client.focus:raise()
 		end
 	end),
 	awful.key {
@@ -65,10 +64,10 @@ awful.keyboard.append_global_keybindings {
 		modifiers = { modkey, "Shift" },
 		keygroup = "numrow",
 		on_press = function (index)
-			if client.focus then
-				local tag = client.focus.screen.tags[index]
+			if capi.client.focus then
+				local tag = capi.client.focus.screen.tags[index]
 				if tag then
-					client.focus:move_to_tag(tag)
+					capi.client.focus:move_to_tag(tag)
 				end
 			end
 		end
@@ -77,10 +76,10 @@ awful.keyboard.append_global_keybindings {
 		modifiers = { modkey, "Control", "Shift" },
 		keygroup = "numrow",
 		on_press = function (index)
-			if client.focus then
-				local tag = client.focus.screen.tags[index]
+			if capi.client.focus then
+				local tag = capi.client.focus.screen.tags[index]
 				if tag then
-					client.focus:toggle_tag(tag)
+					capi.client.focus:toggle_tag(tag)
 				end
 			end
 		end

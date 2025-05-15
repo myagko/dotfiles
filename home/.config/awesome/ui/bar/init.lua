@@ -4,11 +4,12 @@ local beautiful = require("beautiful")
 local common = require("common")
 local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
-local modkey = "Mod4"
+local capi = { client = client }
 local menu = require("ui.menu").get_default()
 local launcher = require("ui.launcher").get_default()
 local control_panel = require("ui.control_panel").get_default()
 local day_info_panel = require("ui.day_info_panel").get_default()
+local modkey = "Mod4"
 
 local bar = {}
 
@@ -230,13 +231,13 @@ local function taglist(s)
 				awful.tag.viewnext(t.screen)
 			end),
 			awful.button({ modkey }, 1, function(t)
-				if client.focus then
-					client.focus:move_to_tag(t)
+				if capi.client.focus then
+					capi.client.focus:move_to_tag(t)
 				end
 			end),
 			awful.button({ modkey }, 3, function(t)
-				if client.focus then
-					client.focus:toggle_tag(t)
+				if capi.client.focus then
+					capi.client.focus:toggle_tag(t)
 				end
 			end),
 		},
