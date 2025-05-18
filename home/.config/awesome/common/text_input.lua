@@ -3,6 +3,7 @@ local lgi = require("lgi")
 local Gtk = lgi.require("Gtk", "3.0")
 local Gdk = lgi.require("Gdk", "3.0")
 local awful = require("awful")
+local wibox = require("wibox")
 local gtable = require("gears.table")
 local gstring = require("gears.string")
 local gcolor = require("gears.color")
@@ -65,32 +66,7 @@ local function create_markup(args)
 	return markup
 end
 
-function text_input:set_obscure(obscure)
-	self.obscure = obscure
-	self:update_textbox()
-end
-
-function text_input:get_input()
-	return self._private.input
-end
-
-function text_input:update_textbox()
-	local wp = self._private
-	self.textbox:set_markup(create_markup {
-		text = wp.input,
-		cursor_pos = wp.cur_pos,
-		selectall = wp.selectall,
-		obscure = self.obscure,
-		cursor_bg = self.cursor_bg,
-		cursor_fg = self.cursor_fg,
-		placeholder_fg = self.placeholder_fg,
-		obscure_char = self.obscure_char,
-		placeholder = self.placeholder,
-		highlighter = self.highlighter
-	})
-end
-
-function text_input:run_keygrabber()
+local function run_keygrabber(self)
 	local wp = self._private
 	wp.keygrabber = awful.keygrabber.run(function(mods, key, event)
 		local mod = {}
@@ -99,24 +75,20 @@ function text_input:run_keygrabber()
 		end
 
 		if event ~= "press" then
-			if self.keyreleased_callback then
-				self.keyreleased_callback(mod, key, wp.input)
-			end
+			self:emit_signal("key-released", mod, key)
 			return
 		end
 
-		if self.keypressed_callback then
-			self.keypressed_callback(mod, key, wp.input)
-		end
+		self:emit_signal("key-pressed", mod, key)
 
 		if mod.Control then
 			if key == "a" then
-				wp.cur_pos = 1
+				wp.cursor_index = 1
 				wp.selectall = true
 			elseif key == "c" then
 				if wp.selectall then
 					wp.clipboard:set_text(wp.input, -1)
-					wp.cur_pos = utf8.len(wp.input) + 1
+					wp.cursor_index = utf8.len(wp.input) + 1
 					wp.selectall = false
 				end
 			elseif key == "v" then
@@ -126,13 +98,11 @@ function text_input:run_keygrabber()
 							wp.input = text
 							wp.selectall = false
 						else
-							wp.input = utf8.sub(wp.input, 1, wp.cur_pos - 1) ..
-								text .. utf8.sub(wp.input, wp.cur_pos)
+							wp.input = utf8.sub(wp.input, 1, wp.cursor_index - 1) ..
+								text .. utf8.sub(wp.input, wp.cursor_index)
 						end
-						wp.cur_pos = wp.cur_pos + utf8.len(text)
-						if self.changed_callback then
-							self.changed_callback(wp.input)
-						end
+						wp.cursor_index = wp.cursor_index + utf8.len(text)
+						self:emit_signal("input-changed", wp.input)
 						self:update_textbox()
 					end
 				end)
@@ -140,133 +110,178 @@ function text_input:run_keygrabber()
 		else
 			if key == "Escape" then
 				wp.selectall = false
-				self:stop_keygrabber()
-				if self.done_callback then
-					self.done_callback()
-				end
-				return
+				self:unfocus()
 			elseif key == "Return" then
-				if self.exe_callback then
-					self.exe_callback(wp.input)
-				end
 				wp.selectall = false
-				self:stop_keygrabber()
-				if self.done_callback then
-					self.done_callback()
-				end
-				return
+				self:emit_signal("executed", wp.input)
+				self:unfocus()
 			elseif key == "Home" then
 				wp.selectall = false
-				wp.cur_pos = 1
+				wp.cursor_index = 1
 			elseif key == "End" then
 				wp.selectall = false
-				wp.cur_pos = utf8.len(wp.input) + 1
+				wp.cursor_index = utf8.len(wp.input) + 1
 			elseif key == "Left" then
 				wp.selectall = false
-				if wp.cur_pos > 1 then
-					wp.cur_pos = wp.cur_pos - 1
+				if wp.cursor_index > 1 then
+					wp.cursor_index = wp.cursor_index - 1
 				end
 			elseif key == "Right" then
 				if wp.selectall then
 					wp.selectall = false
-					wp.cur_pos = utf8.len(wp.input) + 1
-				elseif wp.cur_pos < utf8.len(wp.input) + 1 then
-					wp.cur_pos = wp.cur_pos + 1
+					wp.cursor_index = utf8.len(wp.input) + 1
+				elseif wp.cursor_index < utf8.len(wp.input) + 1 then
+					wp.cursor_index = wp.cursor_index + 1
 				end
 			elseif key == "Delete" then
 				if wp.selectall then
 					wp.input = ""
 					wp.selectall = false
-					if self.changed_callback then
-						self.changed_callback(wp.input)
-					end
-				elseif wp.cur_pos < utf8.len(wp.input) + 1 then
-					wp.input = utf8.sub(wp.input, 1, wp.cur_pos - 1) ..
-						utf8.sub(wp.input, wp.cur_pos + 1)
-					if self.changed_callback then
-						self.changed_callback(wp.input)
-					end
+					self:emit_signal("input-changed", wp.input)
+				elseif wp.cursor_index < utf8.len(wp.input) + 1 then
+					wp.input = utf8.sub(wp.input, 1, wp.cursor_index - 1) ..
+						utf8.sub(wp.input, wp.cursor_index + 1)
+					self:emit_signal("input-changed", wp.input)
 				end
 			elseif key == "BackSpace" then
 				if wp.selectall then
 					wp.input = ""
 					wp.selectall = false
-					if self.changed_callback then
-						self.changed_callback(wp.input)
-					end
-				elseif wp.cur_pos > 1 then
-					wp.input = utf8.sub(wp.input, 1, wp.cur_pos - 2) ..
-						utf8.sub(wp.input, wp.cur_pos)
-					wp.cur_pos = wp.cur_pos - 1
-					if self.changed_callback then
-						self.changed_callback(wp.input)
-					end
+					self:emit_signal("input-changed", wp.input)
+				elseif wp.cursor_index > 1 then
+					wp.input = utf8.sub(wp.input, 1, wp.cursor_index - 2) ..
+						utf8.sub(wp.input, wp.cursor_index)
+					wp.cursor_index = wp.cursor_index - 1
+					self:emit_signal("input-changed", wp.input)
 				end
 			elseif utf8.len(key) == 1 then
 				if wp.selectall then
 					wp.input = key
 					wp.selectall = false
 				else
-					wp.input = utf8.sub(wp.input, 1, wp.cur_pos - 1) .. key ..
-						utf8.sub(wp.input, wp.cur_pos)
-					wp.cur_pos = wp.cur_pos + 1
+					wp.input = utf8.sub(wp.input, 1, wp.cursor_index - 1) .. key ..
+						utf8.sub(wp.input, wp.cursor_index)
+					wp.cursor_index = wp.cursor_index + 1
 				end
-				if self.changed_callback then
-					self.changed_callback(wp.input)
-				end
+				self:emit_signal("input-changed", wp.input)
 			end
 		end
 
 		self:update_textbox()
 	end)
-
-	wp.cur_pos = 1
-	wp.input = ""
-	self:update_textbox()
 end
 
-function text_input:stop_keygrabber()
+function text_input:update_textbox()
 	local wp = self._private
+	self:set_markup(create_markup {
+		text = wp.input,
+		cursor_pos = wp.cursor_index,
+		selectall = wp.selectall,
+		obscure = wp.obscure,
+		cursor_bg = wp.cursor_bg,
+		cursor_fg = wp.cursor_fg,
+		placeholder_fg = wp.placeholder_fg,
+		obscure_char = wp.obscure_char,
+		placeholder = wp.placeholder,
+		highlighter = wp.highlighter
+	})
+end
+
+function text_input:focus()
+	local wp = self._private
+	if wp.focused then return end
+	wp.focused = true
+	run_keygrabber(self)
+	self:update_textbox()
+	self:emit_signal("focused")
+end
+
+function text_input:unfocus()
+	local wp = self._private
+	if not wp.focused then return end
+	wp.focused = false
 	awful.keygrabber.stop(wp.keygrabber)
-	wp.input = ""
-	wp.cur_pos = 1
+	self:emit_signal("unfocused")
+end
+
+function text_input:get_input()
+	return self._private.input
+end
+
+function text_input:set_input(input)
+	self._private.input = input
 	self:update_textbox()
 end
 
-function text_input.new(args)
-	local ret = {}
-	gtable.crush(ret, text_input, true)
+function text_input:get_cursor_index()
+	return self._private.cursor_index
+end
 
+function text_input:set_cursor_index(index)
+	local wp = self._private
+	wp.cursor_index = math.max(math.min(utf8.len(wp.input), index), 1)
+	self:update_textbox()
+end
+
+function text_input:get_selectall()
+	return self._private.selectall
+end
+
+function text_input:set_selectall(selectall)
+	self._private.selectall = selectall
+	self:update_textbox()
+end
+
+function text_input:get_obscure()
+	return self._private.obscure
+end
+
+function text_input:set_obscure(obscure)
+	self._private.obscure = obscure
+	self:update_textbox()
+end
+
+function text_input:get_focused()
+	return self._private.focused
+end
+
+local function new(args)
 	args = args or {}
-	if not args.textbox then return end
+	local ret = wibox.widget {
+		widget = wibox.widget.textbox,
+		font = args.font,
+		halign = args.halign,
+		valign = args.valign,
+		wrap = args.wrap,
+		justify = args.justify,
+		ellipsize = args.ellipsize or "start"
+	}
 
-	ret._private = {}
+	gtable.crush(ret, text_input, true)
 	local wp = ret._private
 
+	wp.focused = false
+
 	wp.input = ""
-	wp.cur_pos = 1
+	wp.cursor_index = 1
 	wp.selectall = false
+	wp.obscure = args.obscure or false
 	wp.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 
-	ret.textbox = args.textbox
-	ret.obscure = args.obscure or false
-	ret.placeholder = args.placeholder or ""
-	ret.obscure_char = args.obscure_char or "*"
-	ret.cursor_bg = args.cursor_bg or "#ffffff"
-	ret.cursor_fg = args.cursor_fg or "#000000"
-	ret.placeholder_fg = args.placeholder_fg or "#373737"
-	ret.done_callback = args.done_callback
-	ret.exe_callback = args.exe_callback
-	ret.changed_callback = args.changed_callback
-	ret.keyreleased_callback = args.keyreleased_callback
-	ret.keypressed_callback = args.keypressed_callback
-	ret.highlighter = args.highlighter
+	wp.placeholder = args.placeholder or ""
+	wp.obscure_char = args.obscure_char or "*"
+	wp.cursor_bg = args.cursor_bg or "#ffffff"
+	wp.cursor_fg = args.cursor_fg or "#000000"
+	wp.placeholder_fg = args.placeholder_fg or "#373737"
+	wp.highlighter = args.highlighter
 
 	return ret
 end
 
-return setmetatable(text_input, {
+return setmetatable({
+	new = new
+}, {
 	__call = function(_, ...)
-		return text_input.new(...)
+		return new(...)
 	end
 })

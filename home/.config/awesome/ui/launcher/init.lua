@@ -171,7 +171,7 @@ function launcher:show()
 	self.filtered = filter_apps(self.unfiltered, "")
 	self.index_start, self.index_entry = 1, 1
 	self:update_entries()
-	self.text_input:run_keygrabber()
+	self.text_input:focus()
 end
 
 function launcher:hide()
@@ -180,7 +180,7 @@ function launcher:hide()
 	self.unfiltered = {}
 	self.filtered = {}
 	self.index_entry, self.index_entry = 1, 1
-	self.text_input:stop_keygrabber()
+	self.text_input:unfocus()
 	self.popup_widget.visible = false
 	self:emit_signal("state", self.state)
 end
@@ -198,42 +198,6 @@ local function new()
 	gtable.crush(ret, launcher, true)
 
 	ret.rows = 6
-
-	local input_textbox = wibox.widget {
-		widget = wibox.widget.textbox,
-		ellipsize = "start",
-	}
-
-	ret.text_input = common.text_input {
-		textbox = input_textbox,
-		placeholder = "Search...",
-		cursor_bg = beautiful.fg,
-		cursor_fg = beautiful.bg,
-		placeholder_fg = beautiful.fg_alt,
-		done_callback = function()
-			ret:hide()
-		end,
-		changed_callback = function(input)
-			ret.filtered = filter_apps(ret.unfiltered, input)
-			ret.index_start, ret.index_entry = 1, 1
-			ret:update_entries()
-		end,
-		exe_callback = function()
-			local app = ret.filtered[ret.index_entry]
-			if app then
-				launch_app(app)
-			end
-		end,
-		keypressed_callback = function(_, key)
-			if key == "Down" then
-				ret:next()
-				ret:update_entries()
-			elseif key == "Up" then
-				ret:back()
-				ret:update_entries()
-			end
-		end
-	}
 
 	local sidebar_home_button = common.hover_button {
 		markup = text_icons.home,
@@ -285,6 +249,13 @@ local function new()
 		}
 	}
 
+	ret.text_input = common.text_input {
+		placeholder = "Search...",
+		cursor_bg = beautiful.fg,
+		cursor_fg = beautiful.bg,
+		placeholder_fg = beautiful.fg_alt,
+	}
+
 	ret.main_widget = wibox.widget {
 		widget = wibox.container.margin,
 		margins = dpi(10),
@@ -331,7 +302,7 @@ local function new()
 							widget = wibox.container.constraint,
 							strategy = "max",
 							height = dpi(25),
-							input_textbox
+							ret.text_input
 						}
 					},
 					{
@@ -380,6 +351,36 @@ local function new()
 		end,
 		widget = ret.main_widget
 	}
+
+	ret.text_input:connect_signal("focused", function()
+		ret.text_input:set_input("")
+		ret.text_input:set_cursor_index(1)
+	end)
+
+	ret.text_input:connect_signal("unfocused", function()
+		ret:hide()
+	end)
+
+	ret.text_input:connect_signal("input-changed", function(_, input)
+		ret.filtered = filter_apps(ret.unfiltered, input)
+		ret.index_start, ret.index_entry = 1, 1
+		ret:update_entries()
+	end)
+
+	ret.text_input:connect_signal("executed", function()
+		local app = ret.filtered[ret.index_entry]
+		if app then launch_app(app) end
+	end)
+
+	ret.text_input:connect_signal("key-pressed", function(_, _, key)
+		if key == "Down" then
+			ret:next()
+			ret:update_entries()
+		elseif key == "Up" then
+			ret:back()
+			ret:update_entries()
+		end
+	end)
 
 	return ret
 end

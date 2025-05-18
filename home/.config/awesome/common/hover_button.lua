@@ -28,11 +28,9 @@ function button:set_fg_hover(color)
 	wp.fg_hover = color
 end
 
-function button.new(args)
+local function new(args)
 	args = args or {}
-	local widget
-
-	widget = wibox.widget {
+	local widget = wibox.widget {
 		widget = wibox.container.background,
 		shape = args.shape,
 		buttons = args.buttons,
@@ -95,8 +93,10 @@ function button.new(args)
 	return widget
 end
 
-return setmetatable(button, {
+return setmetatable({
+	new = new
+}, {
 	__call = function(_, ...)
-		return button.new(...)
+		return new(...)
 	end
 })

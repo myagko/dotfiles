@@ -122,7 +122,7 @@ function calendar:set_current_date()
 	self:set_date(os.date("*t"))
 end
 
-function calendar.new(args)
+local function new(args)
 	args = args or {}
 	local widget
 
@@ -247,8 +247,10 @@ function calendar.new(args)
 	return widget
 end
 
-return setmetatable(calendar, {
+return setmetatable({
+	new = new
+}, {
 	__call = function(_, ...)
-		return calendar.new(...)
+		return new(...)
 	end
 })

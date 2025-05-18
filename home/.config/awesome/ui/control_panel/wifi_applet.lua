@@ -111,7 +111,7 @@ local function on_state_changed(state, self)
 		aps_layout:reset()
 		aps_layout:add(self.massage_widget)
 		self.massage_widget:set_text("Wifi Disabled")
-		self.passwd_text_input:stop_keygrabber()
+		self.passwd_input:unfocus()
 	end
 end
 
@@ -133,7 +133,7 @@ function wifi_applet:open_ap_menu(ap)
 	connect_widget_obscure:buttons {
 		awful.button({}, 1, function()
 			obscure = not obscure
-			self.passwd_text_input:set_obscure(obscure)
+			self.passwd_input:set_obscure(obscure)
 			if obscure then
 				connect_widget_obscure:set_markup(text_icons.eye_off)
 			else
@@ -158,16 +158,18 @@ function wifi_applet:open_ap_menu(ap)
 		ap_menu_container:set_widget(self.disconnect_widget)
 	else
 		ap_menu_container:set_widget(self.connect_widget)
-		self.passwd_text_input.exe_callback = function(input)
-			network:connect_access_point(ap, input, auto_connect)
-		end
+
 		connect_widget_connect_button:buttons {
 			awful.button({}, 1, function()
-				network:connect_access_point(ap, self.passwd_text_input:get_input(), auto_connect)
+				network:connect_access_point(ap, self.passwd_input:get_input(), auto_connect)
 				self:close_ap_menu()
 			end)
 		}
-		self.passwd_text_input:run_keygrabber()
+
+		self._private.passwd_input_exec = function(_, input)
+			network:connect_access_point(ap, input, auto_connect)
+		end
+		self.passwd_input:focus()
 	end
 end
 
@@ -175,8 +177,8 @@ function wifi_applet:close_ap_menu()
 	local aps_layout = self.main_widget:get_children_by_id("aps_layout")[1]
 
 	if network:get_wireless_state() then
-		self.passwd_text_input:stop_keygrabber()
-		self.passwd_text_input:set_obscure(true)
+		self.passwd_input:unfocus()
+		self.passwd_input:set_obscure(true)
 		aps_layout:reset()
 		for _, ap_widget in ipairs(self.ap_widgets) do
 			if ap_widget.active then
@@ -190,13 +192,14 @@ end
 
 function wifi_applet:refresh()
 	self.ap_widgets = {}
-	self.passwd_text_input:stop_keygrabber()
+	self.passwd_input:unfocus()
 	network.wireless:scan_access_points()
 end
 
 local function new()
 	local ret = {}
 	gtable.crush(ret, wifi_applet, true)
+	ret._private = {}
 	ret.ap_widgets = {}
 
 	ret.control_button = wibox.widget {
@@ -350,6 +353,14 @@ local function new()
 		end
 	}
 
+	ret.passwd_input = common.text_input {
+		placeholder = "Password",
+		cursor_bg = beautiful.fg,
+		cursor_fg = beautiful.bg,
+		placeholder_fg = beautiful.fg_alt,
+		obscure = true
+	}
+
 	ret.connect_widget = wibox.widget {
 		layout = wibox.layout.fixed.vertical,
 		spacing = dpi(15),
@@ -373,11 +384,7 @@ local function new()
 								forced_width = dpi(310),
 								strategy = "max",
 								height = dpi(25),
-								{
-									id = "input_textbox",
-									widget = wibox.widget.textbox,
-									ellipsize = "start"
-								}
+								ret.passwd_input
 							},
 							nil,
 							{
@@ -422,18 +429,6 @@ local function new()
 				markup = "Connect"
 			}
 		}
-	}
-
-	ret.passwd_text_input = common.text_input {
-		textbox = ret.connect_widget:get_children_by_id("input_textbox")[1],
-		placeholder = "Password",
-		cursor_bg = beautiful.fg,
-		cursor_fg = beautiful.bg,
-		placeholder_fg = beautiful.fg_alt,
-		obscure = true,
-		done_callback = function()
-			ret:close_ap_menu()
-		end
 	}
 
 	ret.disconnect_widget = wibox.widget {
@@ -506,6 +501,18 @@ local function new()
 			ret.bottombar
 		}
 	}
+
+	ret.passwd_input:connect_signal("focused", function()
+		ret.passwd_input:set_input("")
+		ret.passwd_input:set_cursor_index(1)
+	end)
+
+	ret.passwd_input:connect_signal("unfocused", function()
+		ret:close_ap_menu()
+	end)
+
+	ret._private.passwd_input_exec = function(_, input) return end
+	ret.passwd_input:connect_signal("executed", ret._private.passwd_input_exec)
 
 	network.wireless:connect_signal("scan-access-points::success", function()
 		on_scan_success(network.wireless:get_access_points(), ret)
