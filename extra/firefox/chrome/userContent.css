@@ -1,14 +1,3 @@
-@font-face {
-  font-family: 'Super Glue';
-  src: url('./assets/fonts/SuperGlue.woff2') format('woff2'),
-      url('./assets/fonts/SuperGlue.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-
-
 :root {
   --shimmer-urlbar-rounding: 100px;
 }
