@@ -294,24 +294,27 @@ local function new()
 					layout = wibox.layout.fixed.vertical,
 					spacing = dpi(3),
 					{
-						widget = wibox.container.margin,
-						forced_width = 1,
-						forced_height = dpi(55),
-						margins = dpi(10),
+						layout = wibox.layout.fixed.vertical,
 						{
-							widget = wibox.container.constraint,
-							strategy = "max",
-							height = dpi(25),
-							ret.text_input
-						}
-					},
-					{
-						widget = wibox.container.background,
-						forced_width = 1,
-						forced_height = beautiful.separator_thickness,
+							widget = wibox.container.margin,
+							forced_width = 1,
+							forced_height = dpi(55),
+							margins = { left = dpi(10) },
+							{
+								widget = wibox.container.constraint,
+								strategy = "max",
+								height = dpi(25),
+								ret.text_input
+							}
+						},
 						{
-							widget = wibox.widget.separator,
-							orientation = "horizontal"
+							widget = wibox.container.background,
+							forced_width = 1,
+							forced_height = beautiful.separator_thickness,
+							{
+								widget = wibox.widget.separator,
+								orientation = "horizontal"
+							}
 						}
 					},
 					{
