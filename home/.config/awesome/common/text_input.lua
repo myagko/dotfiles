@@ -30,12 +30,8 @@ local function create_markup(args)
 		text_start = ""
 		text_end = gstring.xml_escape(utf8.sub(placeholder, 2))
 	elseif selectall then
-		if text == "" then
-			cursor_char = " "
-		else
-			cursor_char = gstring.xml_escape(text)
-		end
 		spacer = " "
+		cursor_char = text == "" and " " or gstring.xml_escape(text)
 		text_start = ""
 		text_end = ""
 	elseif utf8.len(text) < cursor_pos then
@@ -58,10 +54,10 @@ local function create_markup(args)
 		text_start, text_end = highlighter(text_start, text_end)
 	end
 
-	markup = text_start ..
-		"<span foreground='" .. cursor_fg .. "' background='" .. cursor_bg ..  "'>" .. cursor_char .. "</span>" ..
-		(text == "" and "<span foreground='" .. placeholder_fg .. "'>" .. text_end .. "</span>" or text_end) ..
-		spacer
+	markup = text_start
+		.. "<span foreground='" .. cursor_fg .. "' background='" .. cursor_bg ..  "'>" .. cursor_char .. "</span>"
+		.. (text == "" and "<span foreground='" .. placeholder_fg .. "'>" .. text_end .. "</span>" or text_end)
+		.. spacer
 
 	return markup
 end
@@ -83,8 +79,10 @@ local function run_keygrabber(self)
 
 		if mod.Control then
 			if key == "a" then
-				wp.cursor_index = 1
-				wp.selectall = true
+				if wp.input ~= "" then
+					wp.cursor_index = 1
+					wp.selectall = true
+				end
 			elseif key == "c" then
 				if wp.selectall then
 					wp.clipboard:set_text(wp.input, -1)
@@ -187,6 +185,10 @@ function text_input:update_textbox()
 	})
 end
 
+function text_input:get_focused()
+	return self._private.focused
+end
+
 function text_input:focus()
 	local wp = self._private
 	if wp.focused then return end
@@ -239,10 +241,6 @@ end
 function text_input:set_obscure(obscure)
 	self._private.obscure = obscure
 	self:update_textbox()
-end
-
-function text_input:get_focused()
-	return self._private.focused
 end
 
 local function new(args)

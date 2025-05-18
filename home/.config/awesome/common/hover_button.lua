@@ -30,7 +30,7 @@ end
 
 local function new(args)
 	args = args or {}
-	local widget = wibox.widget {
+	local ret = wibox.widget {
 		widget = wibox.container.background,
 		shape = args.shape,
 		buttons = args.buttons,
@@ -56,9 +56,9 @@ local function new(args)
 		}
 	}
 
-	gtable.crush(widget, button, true)
+	gtable.crush(ret, button, true)
+	local wp = ret._private
 
-	local wp = widget._private
 	wp.border_normal = args.border_color or
 		beautiful.bg_urg or "#3d3d3d"
 	wp.border_hover = args.border_hover or
@@ -72,25 +72,25 @@ local function new(args)
 	wp.fg_normal = args.fg_normal or
 		beautiful.fg or "#ffffff"
 
-	widget:connect_signal("mouse::enter", function(w)
+	ret:connect_signal("mouse::enter", function(w)
 		w:set_border_color(wp.border_hover)
 		w:set_bg(wp.bg_hover)
 		w:set_fg(wp.fg_hover)
 	end)
 
-	widget:connect_signal("mouse::leave", function(w)
+	ret:connect_signal("mouse::leave", function(w)
 		w:set_border_color(wp.border_normal)
 		w:set_bg(wp.bg_normal)
 		w:set_fg(wp.fg_normal)
 	end)
 
-	widget:connect_signal("button::press", function(w)
+	ret:connect_signal("button::press", function(w)
 		w:set_border_color(wp.border_normal)
 		w:set_bg(wp.bg_normal)
 		w:set_fg(wp.fg_normal)
 	end)
 
-	return widget
+	return ret
 end
 
 return setmetatable({

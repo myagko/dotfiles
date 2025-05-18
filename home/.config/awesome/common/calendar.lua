@@ -124,9 +124,7 @@ end
 
 local function new(args)
 	args = args or {}
-	local widget
-
-	widget = wibox.widget {
+	local ret = wibox.widget {
 		widget = wibox.container.background,
 		bg = beautiful.bg_alt,
 		shape = args.shape,
@@ -140,11 +138,6 @@ local function new(args)
 					{
 						id = "title_background",
 						widget = wibox.container.background,
-						buttons = {
-							awful.button({}, 1, function()
-								widget:set_current_date()
-							end)
-						},
 						{
 							id = "title_textbox",
 							widget = wibox.widget.textbox,
@@ -158,11 +151,6 @@ local function new(args)
 						{
 							id = "dec_button",
 							widget = wibox.container.background,
-							buttons = {
-								awful.button({}, 1, function()
-									widget:inc(-1)
-								end)
-							},
 							{
 								widget = wibox.widget.textbox,
 								markup = text_icons.arrow_up
@@ -171,11 +159,6 @@ local function new(args)
 						{
 							id = "inc_button",
 							widget = wibox.container.background,
-							buttons = {
-								awful.button({}, 1, function()
-									widget:inc(1)
-								end)
-							},
 							{
 								widget = wibox.widget.textbox,
 								markup = text_icons.arrow_down
@@ -198,33 +181,51 @@ local function new(args)
 		}
 	}
 
-	gtable.crush(widget, calendar, true)
+	gtable.crush(ret, calendar, true)
+	local wp = ret._private
 
-	local wp = widget._private
-	widget._private.sun_start = args.sun_start
-	widget._private.margins = args.margins
-	widget._private.shape = args.shape
-	widget._private.day_shape = args.day_shape
-	widget._private.bg = args.bg or beautiful.bg_alt
-	widget._private.day_fg = args.day_fg or beautiful.fg
-	widget._private.day_bg = args.day_bg or beautiful.bg_alt
-	widget._private.current_day_fg = args.current_day_fg or beautiful.bg
-	widget._private.current_day_bg = args.current_day_bg or beautiful.ac
-	widget._private.current_month_fg = args.current_month_fg or beautiful.fg
-	widget._private.current_month_bg = args.current_month_bg or beautiful.bg_alt
-	widget._private.another_month_fg = args.another_month_fg or beautiful.fg_alt
-	widget._private.another_month_bg = args.another_month_bg or beautiful.bg_alt
-	widget._private.weekend_fg = args.weekend_fg or beautiful.red
+	wp.sun_start = args.sun_start
+	wp.margins = args.margins
+	wp.shape = args.shape
+	wp.day_shape = args.day_shape
+	wp.bg = args.bg or beautiful.bg_alt
+	wp.day_fg = args.day_fg or beautiful.fg
+	wp.day_bg = args.day_bg or beautiful.bg_alt
+	wp.current_day_fg = args.current_day_fg or beautiful.bg
+	wp.current_day_bg = args.current_day_bg or beautiful.ac
+	wp.current_month_fg = args.current_month_fg or beautiful.fg
+	wp.current_month_bg = args.current_month_bg or beautiful.bg_alt
+	wp.another_month_fg = args.another_month_fg or beautiful.fg_alt
+	wp.another_month_bg = args.another_month_bg or beautiful.bg_alt
+	wp.weekend_fg = args.weekend_fg or beautiful.red
 
-	local wdays_layout = widget:get_children_by_id("wdays_layout")[1]
+	local wdays_layout = ret:get_children_by_id("wdays_layout")[1]
 
 	for i = 1, 7 do
-		wdays_layout:add(wp.sun_start and wday_widget(widget, hebr_format[i]) or wday_widget(widget, i))
+		wdays_layout:add(wp.sun_start and wday_widget(ret, hebr_format[i]) or wday_widget(ret, i))
 	end
 
-	local title_background = widget:get_children_by_id("title_background")[1]
-	local dec_button = widget:get_children_by_id("dec_button")[1]
-	local inc_button = widget:get_children_by_id("inc_button")[1]
+	local title_background = ret:get_children_by_id("title_background")[1]
+	local dec_button = ret:get_children_by_id("dec_button")[1]
+	local inc_button = ret:get_children_by_id("inc_button")[1]
+
+	title_background:buttons {
+		awful.button({}, 1, function()
+			ret:set_current_date()
+		end)
+	}
+
+	dec_button:buttons {
+		awful.button({}, 1, function()
+			ret:inc(-1)
+		end)
+	}
+
+	inc_button:buttons {
+		awful.button({}, 1, function()
+			ret:inc(1)
+		end)
+	}
 
 	for _, item in ipairs({
 		title_background,
@@ -242,9 +243,9 @@ local function new(args)
 		end)
 	end
 
-	widget:set_current_date()
+	ret:set_current_date()
 
-	return widget
+	return ret
 end
 
 return setmetatable({
