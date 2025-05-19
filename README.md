@@ -78,8 +78,7 @@ $ gio mime x-scheme-handler/terminal Alacritty.desktop
 
 #### 10. Install cursors (`inkscape` required) ([source](https://github.com/charakterziffer/cursor-toolbox))
 ```
-$ cd ~/dotfiles/extra/cursor_toolbox
-$ ./render-pngs.py ./sharp_cursors.svg
+$ cd ~/dotfiles/extra/cursor-toolbox
 $ ./make_dark.sh
 $ cp -r Sharp-Cursors ~/.icons
 ```

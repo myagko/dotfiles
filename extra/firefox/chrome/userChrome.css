@@ -44,8 +44,6 @@
 	--arrowpanel-menuitem-padding: 4px 8px !important;
 	--arrowpanel-border-radius: 12px !important;
 	--arrowpanel-menuitem-border-radius: calc(var(--arrowpanel-border-radius) / 1.65) !important;
-	/* --var-tab-min-height: 10px !important; */
-	/* --tab-border-radius: var(--shimmer-tab-border-radius) !important; */
 	/*? disable opacity change when tabbed out */
 	--inactive-titlebar-opacity: 1 !important;
 	--splitter-width: var(--shimmer-sidebar-splitter-width) !important;
@@ -90,9 +88,11 @@
 }
 
 /*? slim scrollbars everywhear!!!! */
+/*
 * {
 	scrollbar-width: thin !important;
 }
+*/
 
 @media -moz-pref("shimmer.hide-sidebar-button") {
 	#sidebar-button {
@@ -743,7 +743,7 @@ findbar:not([hidden]) {
 }
 
 #alltabs-button {
-	margin-right: 0.3rem !important;
+	margin-right: 8px !important;
 }
 
 /*? tab on titlebar that's not pinned */
@@ -772,13 +772,10 @@ spacer[part="overflow-end-indicator"], spacer[part="overflow-start-indicator"] {
 	display: none !important;
 }
 
-#tabbrowser-tabs {
-	border: 0 !important;
-	padding-top: 5px !important;
-}
-
 /*? tab height and x button pos */
-#tabbrowser-tabs[orient="vertical"] .tab-background {min-height: 28px !important;}
+#tabbrowser-tabs[orient="vertical"] .tab-background {
+	min-height: 28px !important;
+}
 
 @media not -moz-pref("shimmer.taller-tabs") {
 	.tab-close-button {
@@ -851,10 +848,6 @@ spacer[part="overflow-end-indicator"], spacer[part="overflow-start-indicator"] {
 	padding: 0 !important;
 }
 
-#tabs-newtab-button {
-  padding: 7px !important;
-}
-
 {
 	.tabbrowser-tab[visuallyselected] {
 		.tab-background {
@@ -868,6 +861,11 @@ spacer[part="overflow-end-indicator"], spacer[part="overflow-start-indicator"] {
 }
 
 /*? rounded tabs corners */
+#tabbrowser-tabs {
+	border: 0 !important;
+	padding-top: 5px !important;
+}
+
 .tabbrowser-tab {
 	&[pinned] .tab-content {
 		padding-inline: calc((var(--tab-min-height) - 16px) / 2) !important;
