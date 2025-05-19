@@ -12,7 +12,7 @@ body {
     display: flex;
     width: min(700px, 85%);
     padding: min(15vw, 30px) 0;
-    gap: 10px;
+    gap: 7px;
     box-sizing: border-box;
     min-height: inherit;
     flex-direction: column;
@@ -27,7 +27,7 @@ body {
     align-items: center;
     padding: min(5vw, 10px);
     background-color: var(--theme-bg-alt);
-    border-radius: 0;
+    border-radius: 10px;
     box-shadow: 5px 5px 3px 0px rgba(0, 0, 0, 20%);
     box-sizing: border-box;
     gap: 10px;
@@ -37,7 +37,7 @@ body {
 .button {
     background-color: var(--theme-bg-urg);
     color: var(--theme-fg);
-    border-radius: 0;
+    border-radius: 5px;
     border-style: none;
 }
 
@@ -93,14 +93,14 @@ body {
 #links {
     display: grid;
     font-size: min(7vw, 14px);
-    gap: 10px;
+    gap: 7px;
     grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .link-group {
     padding: min(5vw, 10px);
     background-color: var(--theme-bg-alt);
-    border-radius: 0;
+    border-radius: 10px;
     box-shadow: 5px 5px 3px 0px rgba(0, 0, 0, 20%);
 } 
 
