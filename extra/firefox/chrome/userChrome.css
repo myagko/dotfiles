@@ -886,7 +886,7 @@ spacer[part="overflow-end-indicator"], spacer[part="overflow-start-indicator"] {
 :root {
 	--left-svg: url("assets/tabs/left_corners.svg");
 	--right-svg: url("assets/tabs/right_corners.svg");
-	--tab-first-last-inline-margin: 0px;
+	--tab-first-last-inline-margin: 3px;
 	--tab-selected-shadow-size: 0px !important;
 	--tabstrip-min-height: auto !important;
 }
@@ -999,10 +999,6 @@ spacer[part="overflow-end-indicator"], spacer[part="overflow-start-indicator"] {
 }
 
 /* tab indents */
-:root {
-	--tab-first-last-inline-margin: 3px;
-}
-
 #tabbrowser-tabs:not([overflow]) .tabbrowser-tab:nth-child(1 of .tabbrowser-tab:not([hidden])),
 #tabbrowser-tabs[overflow] .tabbrowser-tab:nth-child(1 of .tabbrowser-tab:not([pinned], [hidden])),
 #tabbrowser-tabs[overflow][haspinnedtabs] {
