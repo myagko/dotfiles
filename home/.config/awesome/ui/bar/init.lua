@@ -118,11 +118,11 @@ local function tray()
 			widget = wibox.container.margin,
 			margins = { left = dpi(8), right = dpi(8) },
 			{
-				id = "items_layout",
+				id = "items-layout",
 				layout = wibox.layout.fixed.horizontal,
 				spacing = dpi(8),
 				{
-					id = "revealer",
+					id = "reveal-button",
 					widget = wibox.widget.textbox,
 					markup = text_icons.arrow_left
 				}
@@ -130,19 +130,19 @@ local function tray()
 		}
 	}
 
-	local items_layout = widget:get_children_by_id("items_layout")[1]
-	local revealer = widget:get_children_by_id("revealer")[1]
+	local items_layout = widget:get_children_by_id("items-layout")[1]
+	local reveal_button = widget:get_children_by_id("reveal-button")[1]
 
-	revealer:buttons {
+	reveal_button:buttons {
 		awful.button({}, 1, function()
 			if not visibility then
 				visibility = true
 				items_layout:insert(2, systray)
-				revealer:set_markup(text_icons.arrow_right)
+				reveal_button:set_markup(text_icons.arrow_right)
 			else
 				visibility = false
 				items_layout:remove(2)
-				revealer:set_markup(text_icons.arrow_left)
+				reveal_button:set_markup(text_icons.arrow_left)
 			end
 		end)
 	}
@@ -246,14 +246,14 @@ local function taglist(s)
 			spacing = dpi(2)
 		},
 		widget_template = {
-			id = "t_background",
+			id = "t-background",
 			widget = wibox.container.background,
 			shape = beautiful.rrect(dpi(5)),
 			{
 				widget = wibox.container.margin,
 				margins = { left = dpi(7), right = dpi(7) },
 				{
-					id = "t_text",
+					id = "t-text",
 					widget = wibox.widget.textbox,
 					align = "center"
 				}
@@ -262,8 +262,8 @@ local function taglist(s)
 	}
 
 	local function t_callback(tw, t)
-		local t_background = tw:get_children_by_id("t_background")[1]
-		local t_text = tw:get_children_by_id("t_text")[1]
+		local t_background = tw:get_children_by_id("t-background")[1]
+		local t_text = tw:get_children_by_id("t-text")[1]
 
 		t_text.markup = t.index
 
@@ -288,7 +288,7 @@ local function taglist(s)
 
 	taglist_widget.widget_template.create_callback = function(tw, t)
 		t_callback(tw, t)
-		local t_background = tw:get_children_by_id("t_background")[1]
+		local t_background = tw:get_children_by_id("t-background")[1]
 
 		tw:connect_signal("mouse::enter", function()
 			if not t.selected then
@@ -339,7 +339,7 @@ local function tasklist(s)
 			spacing = dpi(5),
 		},
 		widget_template = {
-			id = "c_background",
+			id = "c-background",
 			widget = wibox.container.background,
 			shape = beautiful.rrect(dpi(8)),
 			{
@@ -352,7 +352,7 @@ local function tasklist(s)
 						strategy = "max",
 						width = dpi(150),
 						{
-							id = "c_text",
+							id = "c-text",
 							widget = wibox.widget.textbox,
 							align = "center"
 						}
@@ -366,7 +366,7 @@ local function tasklist(s)
 						widget = wibox.container.margin,
 						margins = { left = dpi(12), right = dpi(12) },
 						{
-							id = "c_pointer",
+							id = "c-pointer",
 							widget = wibox.container.background,
 							shape = beautiful.prrect(true, true, false, false, dpi(2)),
 							bg = beautiful.ac
@@ -378,9 +378,9 @@ local function tasklist(s)
 	}
 
 	local function c_callback(tw, c)
-		local c_background = tw:get_children_by_id("c_background")[1]
-		local c_pointer = tw:get_children_by_id("c_pointer")[1]
-		local c_text = tw:get_children_by_id("c_text")[1]
+		local c_background = tw:get_children_by_id("c-background")[1]
+		local c_pointer = tw:get_children_by_id("c-pointer")[1]
+		local c_text = tw:get_children_by_id("c-text")[1]
 
 		c_text:set_markup((c.class ~= nil and c.class ~= "") and c.class or "untitled")
 		c_background:set_bg(beautiful.bg_alt)

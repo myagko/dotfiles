@@ -8,7 +8,7 @@ local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
 local network = require("service.network").get_default()
 
-local wifi_applet = {}
+local wifi_page = {}
 
 local function create_ap_widget(self, ap)
 	local ssid = ap:get_ssid()
@@ -126,7 +126,7 @@ local function on_state_changed(self, state)
 	end
 end
 
-function wifi_applet:open_ap_menu(ap)
+function wifi_page:open_ap_menu(ap)
 	local wp = self._private
 	local aps_layout = self:get_children_by_id("access-points-layout")[1]
 
@@ -287,7 +287,7 @@ function wifi_applet:open_ap_menu(ap)
 	aps_layout:add(ap_menu)
 end
 
-function wifi_applet:close_ap_menu()
+function wifi_page:close_ap_menu()
 	local wp = self._private
 	local aps_layout = self:get_children_by_id("access-points-layout")[1]
 
@@ -305,7 +305,7 @@ function wifi_applet:close_ap_menu()
 	end
 end
 
-function wifi_applet:refresh()
+function wifi_page:refresh()
 	local wp = self._private
 	wp.ap_widgets = {}
 	wp.passwd_input:unfocus()
@@ -381,7 +381,7 @@ local function new()
 		}
 	}
 
-	gtable.crush(ret, wifi_applet, true)
+	gtable.crush(ret, wifi_page, true)
 	local wp = ret._private
 
 	wp.ap_widgets = {}

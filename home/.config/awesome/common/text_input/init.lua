@@ -25,25 +25,25 @@ local function create_markup(args)
 	end
 
 	if text == "" and placeholder ~= "" then
-		spacer = ""
+		text_start = ""
 		cursor_char = gstring.xml_escape(utf8.sub(placeholder, cursor_pos, cursor_pos))
-		text_start = ""
 		text_end = gstring.xml_escape(utf8.sub(placeholder, 2))
-	elseif selectall then
-		spacer = " "
-		cursor_char = text == "" and " " or gstring.xml_escape(text)
-		text_start = ""
-		text_end = ""
-	elseif utf8.len(text) < cursor_pos then
-		cursor_char = " "
 		spacer = ""
-		text_start = gstring.xml_escape(text)
+	elseif selectall then
+		text_start = ""
+		cursor_char = text == "" and " " or gstring.xml_escape(text)
 		text_end = ""
-	else
-		cursor_char = gstring.xml_escape(utf8.sub(text, cursor_pos, cursor_pos))
 		spacer = " "
+	elseif utf8.len(text) < cursor_pos then
+		text_start = gstring.xml_escape(text)
+		cursor_char = " "
+		text_end = ""
+		spacer = ""
+	else
 		text_start = gstring.xml_escape(utf8.sub(text, 1, cursor_pos - 1))
+		cursor_char = gstring.xml_escape(utf8.sub(text, cursor_pos, cursor_pos))
 		text_end = gstring.xml_escape(utf8.sub(text, cursor_pos + 1))
+		spacer = " "
 	end
 
 	local cursor_bg = gcolor.ensure_pango_color(args.cursor_bg)
