@@ -1,9 +1,8 @@
 local awful = require("awful")
 local gtimer = require("gears.timer")
 
-return function(command, interval, output_file, callback)
+local function new(command, interval, output_file, callback)
 	local timer
-
 	timer = gtimer {
 		timeout = interval,
 		call_now = true,
@@ -24,7 +23,9 @@ return function(command, interval, output_file, callback)
 						callback(out)
 					end)
 				else
-					awful.spawn.easy_async_with_shell("cat " .. output_file, function(out) callback(out) end)
+					awful.spawn.easy_async_with_shell("cat " .. output_file, function(out)
+						callback(out)
+					end)
 					timer:stop()
 					gtimer.start_new(interval - diff, function()
 						awful.spawn.easy_async_with_shell(command .. " | tee " .. output_file, function(out)
@@ -39,3 +40,11 @@ return function(command, interval, output_file, callback)
 
 	return timer
 end
+
+return setmetatable({
+	new = new
+}, {
+	__call = function(_, ...)
+		return new(...)
+	end
+})

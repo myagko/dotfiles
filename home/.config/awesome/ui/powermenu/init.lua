@@ -1,7 +1,6 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local gobject = require("gears.object")
 local gtable = require("gears.table")
 local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
@@ -10,53 +9,57 @@ local capi = { awesome = awesome, screen = screen }
 local powermenu = {}
 
 local function run_keygrabber(self)
-	self.keygrabber = awful.keygrabber.run(function(_, key, event)
+	local wp = self._private
+	wp.keygrabber = awful.keygrabber.run(function(_, key, event)
 		if event ~= "press" then return end
-		if gtable.hasitem(self.keys.up, key) then
+		if gtable.hasitem(wp.keys.up, key) then
 			self:next()
 			self:update_elements()
-		elseif gtable.hasitem(self.keys.down, key) then
+		elseif gtable.hasitem(wp.keys.down, key) then
 			self:back()
 			self:update_elements()
-		elseif gtable.hasitem(self.keys.left, key) then
+		elseif gtable.hasitem(wp.keys.left, key) then
 			self:back()
 			self:update_elements()
-		elseif gtable.hasitem(self.keys.right, key) then
+		elseif gtable.hasitem(wp.keys.right, key) then
 			self:next()
 			self:update_elements()
-		elseif gtable.hasitem(self.keys.exec, key) then
-			self.elements[self.index_element].exec()
-		elseif gtable.hasitem(self.keys.close, key) then
+		elseif gtable.hasitem(wp.keys.exec, key) then
+			wp.elements[wp.index_element].exec()
+		elseif gtable.hasitem(wp.keys.close, key) then
 			self:hide()
 		end
 	end)
 end
 
 local function stop_keygrabber(self)
-	awful.keygrabber.stop(self.keygrabber)
+	awful.keygrabber.stop(self._private.keygrabber)
 end
 
 function powermenu:next()
-	if self.index_element ~= #self.elements then
-		self.index_element = self.index_element + 1
+	local wp = self._private
+	if wp.index_element ~= #wp.elements then
+		wp.index_element = wp.index_element + 1
 	else
-		self.index_element = 1
+		wp.index_element = 1
 	end
 end
 
 function powermenu:back()
-	if self.index_element ~= 1 then
-		self.index_element = self.index_element - 1
+	local wp = self._private
+	if wp.index_element ~= 1 then
+		wp.index_element = wp.index_element - 1
 	else
-		self.index_element = #self.elements
+		wp.index_element = #wp.elements
 	end
 end
 
 function powermenu:update_elements()
-	local elements_container = self.main_widget:get_children_by_id("elements_container")[1]
+	local wp = self._private
+	local elements_container = self.widget:get_children_by_id("elements-container")[1]
 	elements_container:reset()
 
-	for i, element in ipairs(self.elements) do
+	for i, element in ipairs(wp.elements) do
 		local element_widget = wibox.widget {
 			widget = wibox.container.background,
 			forced_width = dpi(120),
@@ -64,10 +67,10 @@ function powermenu:update_elements()
 			shape = beautiful.rrect(dpi(10)),
 			buttons = {
 				awful.button({}, 1, function()
-					if self.index_element == i then
+					if wp.index_element == i then
 						element.exec()
 					else
-						self.index_element = i
+						wp.index_element = i
 						self:update_elements()
 					end
 				end)
@@ -80,7 +83,7 @@ function powermenu:update_elements()
 			}
 		}
 
-		if i == self.index_element then
+		if i == wp.index_element then
 			element_widget:set_bg(element.color)
 			element_widget:set_fg(beautiful.bg)
 		else
@@ -98,26 +101,28 @@ function powermenu:update_elements()
 end
 
 function powermenu:show()
-	if self.state then return end
-	self.state = true
-	self.popup_widget.visible = true
-	self:emit_signal("state", self.state)
-	self.index_element = 1
+	local wp = self._private
+	if wp.state then return end
+	wp.state = true
+	self.visible = true
+	self:emit_signal("state", wp.state)
+	wp.index_element = 1
 	self:update_elements()
 	run_keygrabber(self)
 end
 
 function powermenu:hide()
-	if not self.state then return end
-	self.state = false
+	local wp = self._private
+	if not wp.state then return end
+	wp.state = false
 	stop_keygrabber(self)
-	self.index_element = 1
-	self.popup_widget.visible = false
-	self:emit_signal("state", self.state)
+	wp.index_element = 1
+	self.visible = false
+	self:emit_signal("state", wp.state)
 end
 
 function powermenu:toggle()
-	if not self.popup_widget.visible then
+	if not self.visible then
 		self:show()
 	else
 		self:hide()
@@ -125,10 +130,33 @@ function powermenu:toggle()
 end
 
 local function new()
-	local ret = gobject {}
-	gtable.crush(ret, powermenu, true)
+	local ret = awful.popup {
+		visible = false,
+		ontop = true,
+		screen = capi.screen.primary,
+		border_width = beautiful.border_width,
+		border_color = beautiful.border_color_normal,
+		--shape = beautiful.rrect(dpi(20)),
+		placement = awful.placement.centered,
+		widget = {
+			widget = wibox.container.background,
+			bg = beautiful.bg,
+			{
+				widget = wibox.container.margin,
+				margins = dpi(12),
+				{
+					id = "elements-container",
+					spacing = dpi(4),
+					layout = wibox.layout.fixed.horizontal
+				}
+			}
+		}
+	}
 
-	ret.keys = {
+	gtable.crush(ret, powermenu, true)
+	local wp = ret._private
+
+	wp.keys = {
 		up = { "Up" },
 		down = { "Down" },
 		left = { "Left" },
@@ -137,7 +165,7 @@ local function new()
 		close = { "Escape" }
 	}
 
-	ret.elements = {
+	wp.elements = {
 		{
 			exec = function()
 				awful.spawn("poweroff")
@@ -159,31 +187,6 @@ local function new()
 			icon = text_icons.exit,
 			color = beautiful.green
 		}
-	}
-
-	ret.main_widget = wibox.widget {
-		widget = wibox.container.background,
-		bg = beautiful.bg,
-		{
-			widget = wibox.container.margin,
-			margins = dpi(12),
-			{
-				id = "elements_container",
-				spacing = dpi(4),
-				layout = wibox.layout.fixed.horizontal
-			}
-		}
-	}
-
-	ret.popup_widget = awful.popup {
-		visible = false,
-		ontop = true,
-		screen = capi.screen.primary,
-		border_width = beautiful.border_width,
-		border_color = beautiful.border_color_normal,
-		--shape = beautiful.rrect(dpi(20)),
-		placement = awful.placement.centered,
-		widget = ret.main_widget
 	}
 
 	return ret

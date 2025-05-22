@@ -1,36 +1,39 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local gobject = require("gears.object")
 local gtable = require("gears.table")
 local dpi = beautiful.xresources.apply_dpi
 local capi = { screen = screen }
 local notification_list = require("ui.control_panel.notification_list")
 local audio_sliders = require("ui.control_panel.audio_sliders")
-local wifi_applet = require("ui.control_panel.wifi_applet")
-local bluetooth_applet = require("ui.control_panel.bluetooth_applet")
-
+local wifi_button = require("ui.control_panel.wifi_applet.button")
+local wifi_page = require("ui.control_panel.wifi_applet.page")
+local bluetooth_button = require("ui.control_panel.bluetooth_applet.button")
+local bluetooth_page = require("ui.control_panel.bluetooth_applet.page")
 local audio = require("service.audio").get_default()
 
 local control_panel = {}
 
-function control_panel:setup_wifi()
-	local main_layout = self.main_widget:get_children_by_id("main_layout")[1]
+function control_panel:setup_wifi_page()
+	local wp = self._private
+	local main_layout = self.widget:get_children_by_id("main-layout")[1]
 	main_layout:reset()
-	main_layout:add(self.wifi_applet.main_widget)
+	main_layout:add(wp.wifi_page)
 end
 
-function control_panel:setup_bluetooth()
-	local main_layout = self.main_widget:get_children_by_id("main_layout")[1]
+function control_panel:setup_bluetooth_page()
+	local wp = self._private
+	local main_layout = self.widget:get_children_by_id("main-layout")[1]
 	main_layout:reset()
-	main_layout:add(self.bluetooth_applet.main_widget)
+	main_layout:add(wp.bluetooth_page)
 end
 
-function control_panel:setup_controls()
-	local main_layout = self.main_widget:get_children_by_id("main_layout")[1]
+function control_panel:setup_main_page()
+	local wp = self._private
+	local main_layout = self.widget:get_children_by_id("main-layout")[1]
 	main_layout:reset()
 	main_layout:add(
-		self.notification_list.main_widget,
+		wp.notification_list,
 		wibox.widget {
 			widget = wibox.container.background,
 			forced_width = 1,
@@ -40,36 +43,38 @@ function control_panel:setup_controls()
 				orientation = "horizontal"
 			}
 		},
-		self.audio_sliders.main_widget,
+		wp.audio_sliders,
 		wibox.widget {
 			layout = wibox.layout.flex.horizontal,
 			spacing = dpi(6),
-			self.wifi_applet.control_button,
-			self.bluetooth_applet.control_button
+			wp.wifi_button,
+			wp.bluetooth_button
 		}
 	)
 end
 
 function control_panel:show()
-	if self.state then return end
-	self.state = true
+	local wp = self._private
+	if wp.state then return end
+	wp.state = true
 	audio:get_default_sink_data()
 	audio:get_default_source_data()
-	self:setup_controls()
-	self.popup_widget.visible = true
-	self:emit_signal("state", self.state)
+	self:setup_main_page()
+	self.visible = true
+	self:emit_signal("state", wp.state)
 end
 
 function control_panel:hide()
-	if not self.state then return end
-	self.state = false
-	self.wifi_applet:close_ap_menu()
-	self.popup_widget.visible = false
-	self:emit_signal("state", self.state)
+	local wp = self._private
+	if not wp.state then return end
+	wp.state = false
+	wp.wifi_page:close_ap_menu()
+	self.visible = false
+	self:emit_signal("state", wp.state)
 end
 
 function control_panel:toggle()
-	if not self.popup_widget.visible then
+	if not self.visible then
 		self:show()
 	else
 		self:hide()
@@ -77,25 +82,7 @@ function control_panel:toggle()
 end
 
 local function new()
-	local ret = gobject {}
-	gtable.crush(ret, control_panel, true)
-
-	ret.notification_list = notification_list()
-	ret.audio_sliders = audio_sliders()
-	ret.wifi_applet = wifi_applet()
-	ret.bluetooth_applet = bluetooth_applet()
-
-	ret.main_widget = wibox.widget {
-		widget = wibox.container.margin,
-		margins = dpi(12),
-		{
-			id = "main_layout",
-			layout = wibox.layout.fixed.vertical,
-			spacing = dpi(6)
-		}
-	}
-
-	ret.popup_widget = awful.popup {
+	local ret = awful.popup {
 		visible = false,
 		ontop = true,
 		screen = capi.screen.primary,
@@ -108,30 +95,48 @@ local function new()
 				margins = beautiful.useless_gap
 			})
 		end,
-		widget = ret.main_widget
+		widget = {
+			widget = wibox.container.margin,
+			margins = dpi(12),
+			{
+				id = "main-layout",
+				layout = wibox.layout.fixed.vertical,
+				spacing = dpi(6)
+			}
+		}
 	}
 
-	ret.wifi_applet.control_button:get_children_by_id("revealer")[1]:buttons {
+	gtable.crush(ret, control_panel, true)
+	local wp = ret._private
+
+	wp.notification_list = notification_list()
+	wp.audio_sliders = audio_sliders()
+	wp.wifi_button = wifi_button()
+	wp.wifi_page = wifi_page()
+	wp.bluetooth_button = bluetooth_button()
+	wp.bluetooth_page = bluetooth_page()
+
+	wp.wifi_button:get_children_by_id("reveal-button")[1]:buttons {
 		awful.button({}, 1, function()
-			ret:setup_wifi()
+			ret:setup_wifi_page()
 		end)
 	}
 
-	ret.wifi_applet.bottombar:get_children_by_id("close_button")[1]:buttons {
+	wp.wifi_page:get_children_by_id("bottombar-close-button")[1]:buttons {
 		awful.button({}, 1, function()
-			ret:setup_controls()
+			ret:setup_main_page()
 		end)
 	}
 
-	ret.bluetooth_applet.control_button:get_children_by_id("revealer")[1]:buttons {
+	wp.bluetooth_button:get_children_by_id("reveal-button")[1]:buttons {
 		awful.button({}, 1, function()
-			ret:setup_bluetooth()
+			ret:setup_bluetooth_page()
 		end)
 	}
 
-	ret.bluetooth_applet.bottombar:get_children_by_id("close_button")[1]:buttons {
+	wp.bluetooth_page:get_children_by_id("bottombar-close-button")[1]:buttons {
 		awful.button({}, 1, function()
-			ret:setup_controls()
+			ret:setup_main_page()
 		end)
 	}
 

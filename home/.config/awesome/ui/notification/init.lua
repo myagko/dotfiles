@@ -65,7 +65,7 @@ local function create_actions_widget(n)
 			},
 			margins = dpi(5),
 			shape = beautiful.rrect(dpi(8)),
-			markup = action.name
+			label = action.name
 		}
 		actions_layout:add(button)
 	end

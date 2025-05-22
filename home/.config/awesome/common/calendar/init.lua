@@ -65,8 +65,8 @@ end
 
 function calendar:set_date(date)
 	local wp = self._private
-	local days_layout = self:get_children_by_id("days_layout")[1]
-	local title_textbox = self:get_children_by_id("title_textbox")[1]
+	local days_layout = self:get_children_by_id("days-layout")[1]
+	local title_textbox = self:get_children_by_id("title-textbox")[1]
 	days_layout:reset()
 
 	wp.date = date
@@ -136,10 +136,10 @@ local function new(args)
 				{
 					layout = wibox.layout.align.horizontal,
 					{
-						id = "title_background",
+						id = "title-background",
 						widget = wibox.container.background,
 						{
-							id = "title_textbox",
+							id = "title-textbox",
 							widget = wibox.widget.textbox,
 							align = "center"
 						}
@@ -149,7 +149,7 @@ local function new(args)
 						widget = wibox.layout.fixed.horizontal,
 						spacing = dpi(20),
 						{
-							id = "dec_button",
+							id = "dec-button",
 							widget = wibox.container.background,
 							{
 								widget = wibox.widget.textbox,
@@ -157,7 +157,7 @@ local function new(args)
 							}
 						},
 						{
-							id = "inc_button",
+							id = "inc-button",
 							widget = wibox.container.background,
 							{
 								widget = wibox.widget.textbox,
@@ -167,11 +167,11 @@ local function new(args)
 					}
 				},
 				{
-					id = "wdays_layout",
+					id = "wdays-layout",
 					layout = wibox.layout.flex.horizontal
 				},
 				{
-					id = "days_layout",
+					id = "days-layout",
 					layout = wibox.layout.grid,
 					forced_num_cols = 7,
 					expand = true,
@@ -199,15 +199,15 @@ local function new(args)
 	wp.another_month_bg = args.another_month_bg or beautiful.bg_alt
 	wp.weekend_fg = args.weekend_fg or beautiful.red
 
-	local wdays_layout = ret:get_children_by_id("wdays_layout")[1]
+	local wdays_layout = ret:get_children_by_id("wdays-layout")[1]
 
 	for i = 1, 7 do
 		wdays_layout:add(wp.sun_start and wday_widget(ret, hebr_format[i]) or wday_widget(ret, i))
 	end
 
-	local title_background = ret:get_children_by_id("title_background")[1]
-	local dec_button = ret:get_children_by_id("dec_button")[1]
-	local inc_button = ret:get_children_by_id("inc_button")[1]
+	local title_background = ret:get_children_by_id("title-background")[1]
+	local dec_button = ret:get_children_by_id("dec-button")[1]
+	local inc_button = ret:get_children_by_id("inc-button")[1]
 
 	title_background:buttons {
 		awful.button({}, 1, function()

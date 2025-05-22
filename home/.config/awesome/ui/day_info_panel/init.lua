@@ -1,7 +1,6 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local gobject = require("gears.object")
 local gtable = require("gears.table")
 local common = require("common")
 local dpi = beautiful.xresources.apply_dpi
@@ -11,22 +10,24 @@ local weather_applet = require("ui.day_info_panel.weather_applet")
 local day_info = {}
 
 function day_info:show()
-	if self.state then return end
-	self.state = true
-	self.popup_widget.visible = true
-	self.calendar:set_current_date()
-	self:emit_signal("state", self.state)
+	local wp = self._private
+	if wp.state then return end
+	wp.state = true
+	self.visible = true
+	self.widget:get_children_by_id("calendar")[1]:set_current_date()
+	self:emit_signal("state", wp.state)
 end
 
 function day_info:hide()
-	if not self.state then return end
-	self.state = false
-	self.popup_widget.visible = false
-	self:emit_signal("state", self.state)
+	local wp = self._private
+	if not wp.state then return end
+	wp.state = false
+	self.visible = false
+	self:emit_signal("state", wp.state)
 end
 
 function day_info:toggle()
-	if not self.popup_widget.visible then
+	if not self.visible then
 		self:show()
 	else
 		self:hide()
@@ -34,29 +35,7 @@ function day_info:toggle()
 end
 
 local function new()
-	local ret = gobject {}
-	gtable.crush(ret, day_info, true)
-
-	ret.weather_applet = weather_applet()
-
-	ret.calendar = common.calendar {
-		sun_start = false,
-		shape = beautiful.rrect(dpi(10)),
-		day_shape = beautiful.rrect(dpi(8))
-	}
-
-	ret.main_widget = wibox.widget {
-		widget = wibox.container.margin,
-		margins = dpi(12),
-		{
-			layout = wibox.layout.fixed.vertical,
-			spacing = dpi(6),
-			ret.weather_applet.main_widget,
-			ret.calendar
-		}
-	}
-
-	ret.popup_widget = awful.popup {
+	local ret = awful.popup {
 		visible = false,
 		ontop = true,
 		screen = capi.screen.primary,
@@ -69,9 +48,26 @@ local function new()
 				margins = beautiful.useless_gap
 			})
 		end,
-		widget = ret.main_widget
+		widget = wibox.widget {
+			widget = wibox.container.margin,
+			margins = dpi(12),
+			{
+				layout = wibox.layout.fixed.vertical,
+				spacing = dpi(6),
+				weather_applet(),
+				{
+					id = "calendar",
+					widget = common.calendar {
+						sun_start = false,
+						shape = beautiful.rrect(dpi(10)),
+						day_shape = beautiful.rrect(dpi(8))
+					}
+				}
+			}
+		}
 	}
 
+	gtable.crush(ret, day_info, true)
 	return ret
 end
 

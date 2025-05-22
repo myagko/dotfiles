@@ -3,7 +3,6 @@ local Gio = require("lgi").require("Gio")
 local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
-local gobject = require("gears.object")
 local gtable = require("gears.table")
 local gfs = require("gears.filesystem")
 local common = require("common")
@@ -70,40 +69,43 @@ local function filter_apps(apps, query)
 end
 
 function launcher:next()
-	if #self.filtered > 1 and self.index_entry ~= #self.filtered then
-		self.index_entry = self.index_entry + 1
-		if self.index_entry > self.index_start + self.rows - 1 then
-			self.index_start = self.index_start + 1
+	local wp = self._private
+	if #wp.filtered > 1 and wp.index_entry ~= #wp.filtered then
+		wp.index_entry = wp.index_entry + 1
+		if wp.index_entry > wp.index_start + wp.rows - 1 then
+			wp.index_start = wp.index_start + 1
 		end
 	else
-		self.index_entry = 1
-		self.index_start = 1
+		wp.index_entry = 1
+		wp.index_start = 1
 	end
 end
 
 function launcher:back()
-	if #self.filtered > 1 and self.index_entry ~= 1 then
-		self.index_entry = self.index_entry - 1
-		if self.index_entry < self.index_start then
-			self.index_start = self.index_start - 1
+	local wp = self._private
+	if #wp.filtered > 1 and wp.index_entry ~= 1 then
+		wp.index_entry = wp.index_entry - 1
+		if wp.index_entry < wp.index_start then
+			wp.index_start = wp.index_start - 1
 		end
 	else
-		self.index_entry = #self.filtered
-		if #self.filtered < self.rows then
-			self.index_start = 1
+		wp.index_entry = #wp.filtered
+		if #wp.filtered < wp.rows then
+			wp.index_start = 1
 		else
-			self.index_start = #self.filtered - self.rows + 1
+			wp.index_start = #wp.filtered - wp.rows + 1
 		end
 	end
 end
 
 function launcher:update_entries()
-	local entries_container = self.main_widget:get_children_by_id("entries_container")[1]
+	local wp = self._private
+	local entries_container = self.widget:get_children_by_id("entries-container")[1]
 	entries_container:reset()
 
-	if #self.filtered > 0 then
-		for i, app in ipairs(self.filtered) do
-			if i >= self.index_start and i <= self.index_start + self.rows - 1 then
+	if #wp.filtered > 0 then
+		for i, app in ipairs(wp.filtered) do
+			if i >= wp.index_start and i <= wp.index_start + wp.rows - 1 then
 				local entry_widget = wibox.widget {
 					widget = wibox.container.background,
 					forced_height = dpi(55),
@@ -120,17 +122,17 @@ function launcher:update_entries()
 
 				entry_widget:buttons {
 					awful.button({}, 1, function()
-						if self.index_entry == i then
+						if wp.index_entry == i then
 							launch_app(app)
 							self:hide()
 						else
-							self.index_entry = i
+							wp.index_entry = i
 							self:update_entries()
 						end
 					end)
 				}
 
-				if i == self.index_entry then
+				if i == wp.index_entry then
 					entry_widget:set_bg(beautiful.ac)
 					entry_widget:set_fg(beautiful.bg)
 				else
@@ -163,30 +165,32 @@ function launcher:update_entries()
 end
 
 function launcher:show()
-	if self.state then return end
-	self.state = true
-	self.popup_widget.visible = true
-	self:emit_signal("state", self.state)
-	self.unfiltered = Gio.AppInfo.get_all()
-	self.filtered = filter_apps(self.unfiltered, "")
-	self.index_start, self.index_entry = 1, 1
+	local wp = self._private
+	if wp.state then return end
+	wp.state = true
+	self.visible = true
+	self:emit_signal("state", wp.state)
+	wp.unfiltered = Gio.AppInfo.get_all()
+	wp.filtered = filter_apps(wp.unfiltered, "")
+	wp.index_start, wp.index_entry = 1, 1
 	self:update_entries()
-	self.text_input:focus()
+	self.widget:get_children_by_id("text-input")[1]:focus()
 end
 
 function launcher:hide()
-	if not self.state then return end
-	self.state = false
-	self.unfiltered = {}
-	self.filtered = {}
-	self.index_entry, self.index_entry = 1, 1
-	self.text_input:unfocus()
-	self.popup_widget.visible = false
-	self:emit_signal("state", self.state)
+	local wp = self._private
+	if not wp.state then return end
+	wp.state = false
+	wp.unfiltered = {}
+	wp.filtered = {}
+	wp.index_entry, wp.index_entry = 1, 1
+	self.widget:get_children_by_id("text-input")[1]:unfocus()
+	self.visible = false
+	self:emit_signal("state", wp.state)
 end
 
 function launcher:toggle()
-	if not self.popup_widget.visible then
+	if not self.visible then
 		self:show()
 	else
 		self:hide()
@@ -194,152 +198,7 @@ function launcher:toggle()
 end
 
 local function new()
-	local ret = gobject {}
-	gtable.crush(ret, launcher, true)
-
-	ret.rows = 6
-
-	local sidebar_home_button = common.hover_button {
-		markup = text_icons.home,
-		forced_width = dpi(55),
-		forced_height = dpi(55),
-		shape = beautiful.rrect(dpi(10)),
-		buttons = {
-			awful.button({}, 1, function()
-				awful.spawn("xdg-open " .. os.getenv("HOME"))
-				ret:hide()
-			end)
-		}
-	}
-
-	local sidebar_wallpapers_button = common.hover_button {
-		markup = text_icons.image,
-		forced_width = dpi(55),
-		forced_height = dpi(55),
-		shape = beautiful.rrect(dpi(10)),
-		buttons = {
-			awful.button({}, 1, function()
-				awful.spawn.easy_async("zenity --file-selection", function(stdout)
-					stdout = string.gsub(stdout, "\n", "")
-					local formats = { "png", "jpg", "jpeg" }
-					if stdout ~= nil and stdout ~= "" and is_supported(stdout, formats) then
-						for s in capi.screen do
-							s.wallpaper:set_image(stdout)
-						end
-						user.wallpaper = stdout
-						table_to_file(user, gfs.get_configuration_dir() .. "/user.lua")
-					end
-				end)
-				ret:hide()
-			end)
-		}
-	}
-
-	local sidebar_poweroff_button = common.hover_button {
-		markup = text_icons.poweroff,
-		forced_width = dpi(55),
-		forced_height = dpi(55),
-		fg_normal = beautiful.red,
-		bg_hover = beautiful.red,
-		shape = beautiful.rrect(dpi(10)),
-		buttons = {
-			awful.button({}, 1, function()
-				powermenu:show()
-			end)
-		}
-	}
-
-	ret.text_input = common.text_input {
-		placeholder = "Search...",
-		cursor_bg = beautiful.fg,
-		cursor_fg = beautiful.bg,
-		placeholder_fg = beautiful.fg_alt,
-	}
-
-	ret.main_widget = wibox.widget {
-		widget = wibox.container.margin,
-		margins = dpi(10),
-		{
-			widget = wibox.container.background,
-			{
-				layout = wibox.layout.fixed.horizontal,
-				spacing = dpi(6),
-				fill_space = true,
-				{
-					widget = wibox.container.background,
-					forced_width = dpi(55),
-					bg = beautiful.bg_alt,
-					shape = beautiful.rrect(dpi(10)),
-					{
-						layout = wibox.layout.align.vertical,
-						sidebar_poweroff_button,
-						nil,
-						{
-							layout = wibox.layout.fixed.vertical,
-							spacing = beautiful.separator_thickness + dpi(2),
-							spacing_widget = {
-								widget = wibox.container.margin,
-								margins = { left = dpi(12), right = dpi(12) },
-								{
-									widget = wibox.widget.separator,
-									orientation = "horizontal"
-								}
-							},
-							sidebar_wallpapers_button,
-							sidebar_home_button,
-						}
-					}
-				},
-				{
-					layout = wibox.layout.fixed.vertical,
-					spacing = dpi(3),
-					{
-						layout = wibox.layout.fixed.vertical,
-						{
-							widget = wibox.container.margin,
-							forced_width = 1,
-							forced_height = dpi(55),
-							margins = { left = dpi(10) },
-							{
-								widget = wibox.container.constraint,
-								strategy = "max",
-								height = dpi(25),
-								ret.text_input
-							}
-						},
-						{
-							widget = wibox.container.background,
-							forced_width = 1,
-							forced_height = beautiful.separator_thickness,
-							{
-								widget = wibox.widget.separator,
-								orientation = "horizontal"
-							}
-						}
-					},
-					{
-						id = "entries_container",
-						layout = wibox.layout.fixed.vertical,
-						spacing = dpi(3),
-						forced_width = dpi(290),
-						forced_height = dpi(55)*ret.rows + dpi(3)*(ret.rows - 1),
-						buttons = {
-							awful.button({}, 4, function()
-								ret:back()
-								ret:update_entries()
-							end),
-							awful.button({}, 5, function()
-								ret:next()
-								ret:update_entries()
-							end)
-						}
-					}
-				}
-			}
-		}
-	}
-
-	ret.popup_widget = awful.popup {
+	local ret = awful.popup {
 		ontop = true,
 		visible = false,
 		screen = capi.screen.primary,
@@ -352,30 +211,187 @@ local function new()
 				margins = beautiful.useless_gap
 			})
 		end,
-		widget = ret.main_widget
+		widget = {
+			widget = wibox.container.margin,
+			margins = dpi(10),
+			{
+				widget = wibox.container.background,
+				{
+					layout = wibox.layout.fixed.horizontal,
+					spacing = dpi(6),
+					fill_space = true,
+					{
+						widget = wibox.container.background,
+						forced_width = dpi(55),
+						bg = beautiful.bg_alt,
+						shape = beautiful.rrect(dpi(10)),
+						{
+							layout = wibox.layout.align.vertical,
+							{
+								id = "powermenu-button",
+								widget = common.hover_button {
+									label = text_icons.poweroff,
+									forced_width = dpi(55),
+									forced_height = dpi(55),
+									fg_normal = beautiful.red,
+									bg_hover = beautiful.red,
+									shape = beautiful.rrect(dpi(10))
+								}
+							},
+							nil,
+							{
+								layout = wibox.layout.fixed.vertical,
+								spacing = beautiful.separator_thickness + dpi(2),
+								spacing_widget = {
+									widget = wibox.container.margin,
+									margins = { left = dpi(12), right = dpi(12) },
+									{
+										widget = wibox.widget.separator,
+										orientation = "horizontal"
+									}
+								},
+								{
+									id = "wallpaper-button",
+									widget = common.hover_button {
+										label = text_icons.image,
+										forced_width = dpi(55),
+										forced_height = dpi(55),
+										shape = beautiful.rrect(dpi(10))
+									}
+								},
+								{
+									id = "home-button",
+									widget = common.hover_button {
+										label = text_icons.home,
+										forced_width = dpi(55),
+										forced_height = dpi(55),
+										shape = beautiful.rrect(dpi(10))
+									}
+								}
+							}
+						}
+					},
+					{
+						layout = wibox.layout.fixed.vertical,
+						spacing = dpi(3),
+						{
+							layout = wibox.layout.fixed.vertical,
+							{
+								widget = wibox.container.margin,
+								forced_width = 1,
+								forced_height = dpi(55),
+								margins = { left = dpi(10) },
+								{
+									widget = wibox.container.constraint,
+									strategy = "max",
+									height = dpi(25),
+									{
+										id = "text-input",
+										widget = common.text_input {
+											placeholder = "Search...",
+											cursor_bg = beautiful.fg,
+											cursor_fg = beautiful.bg,
+											placeholder_fg = beautiful.fg_alt,
+										}
+									}
+								}
+							},
+							{
+								widget = wibox.container.background,
+								forced_width = 1,
+								forced_height = beautiful.separator_thickness,
+								{
+									widget = wibox.widget.separator,
+									orientation = "horizontal"
+								}
+							}
+						},
+						{
+							id = "entries-container",
+							layout = wibox.layout.fixed.vertical,
+							spacing = dpi(3),
+							forced_width = dpi(290)
+						}
+					}
+				}
+			}
+		}
 	}
 
-	ret.text_input:connect_signal("focused", function()
-		ret.text_input:set_input("")
-		ret.text_input:set_cursor_index(1)
+	gtable.crush(ret, launcher, true)
+	local wp = ret._private
+
+	wp.rows = 6
+
+	local powermenu_button = ret.widget:get_children_by_id("powermenu-button")[1]
+	powermenu_button:buttons {
+		awful.button({}, 1, function()
+			powermenu:show()
+		end)
+	}
+
+	local wallpaper_button = ret.widget:get_children_by_id("wallpaper-button")[1]
+	wallpaper_button:buttons {
+		awful.button({}, 1, function()
+			awful.spawn.easy_async("zenity --file-selection", function(stdout)
+				stdout = string.gsub(stdout, "\n", "")
+				local formats = { "png", "jpg", "jpeg" }
+				if stdout ~= nil and stdout ~= "" and is_supported(stdout, formats) then
+					for s in capi.screen do
+						s.wallpaper:set_image(stdout)
+					end
+					user.wallpaper = stdout
+					table_to_file(user, gfs.get_configuration_dir() .. "/user.lua")
+				end
+			end)
+			ret:hide()
+		end)
+	}
+
+	local home_button = ret.widget:get_children_by_id("home-button")[1]
+	home_button:buttons {
+		awful.button({}, 1, function()
+			awful.spawn("xdg-open " .. os.getenv("HOME"))
+			ret:hide()
+		end)
+	}
+
+	local entries_container = ret.widget:get_children_by_id("entries-container")[1]
+	entries_container:set_forced_height(dpi(55) * wp.rows + dpi(3) * (wp.rows - 1))
+
+	entries_container:buttons {
+		awful.button({}, 4, function()
+			ret:back()
+			ret:update_entries()
+		end),
+		awful.button({}, 5, function()
+			ret:next()
+			ret:update_entries()
+		end)
+	}
+
+	local text_input = ret.widget:get_children_by_id("text-input")[1]
+	text_input:connect_signal("focused", function()
+		text_input:set_input("")
+		text_input:set_cursor_index(1)
 	end)
 
-	ret.text_input:connect_signal("unfocused", function()
+	text_input:connect_signal("unfocused", function()
 		ret:hide()
 	end)
 
-	ret.text_input:connect_signal("input-changed", function(_, input)
-		ret.filtered = filter_apps(ret.unfiltered, input)
-		ret.index_start, ret.index_entry = 1, 1
+	text_input:connect_signal("input-changed", function(_, input)
+		wp.filtered = filter_apps(wp.unfiltered, input)
+		wp.index_start, wp.index_entry = 1, 1
 		ret:update_entries()
 	end)
 
-	ret.text_input:connect_signal("executed", function()
-		local app = ret.filtered[ret.index_entry]
+	text_input:connect_signal("executed", function()
+		local app = wp.filtered[wp.index_entry]
 		if app then launch_app(app) end
 	end)
 
-	ret.text_input:connect_signal("key-pressed", function(_, _, key)
+	text_input:connect_signal("key-pressed", function(_, _, key)
 		if key == "Down" then
 			ret:next()
 			ret:update_entries()

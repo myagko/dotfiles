@@ -35,7 +35,7 @@ local function create_actions_widget(n)
 			margins = dpi(5),
 			bg_normal = beautiful.bg_urg,
 			shape = beautiful.rrect(dpi(8)),
-			markup = action.name
+			label = action.name
 		}
 		actions_layout:add(button)
 	end
@@ -169,98 +169,48 @@ local function create_notification_widget(n)
 	return widget
 end
 
-local function remove_notification(w, self)
-	local notifs_layout = self.main_widget:get_children_by_id("notifs_layout")[1]
+local function remove_notification(self, w)
+	local wp = self._private
+	local notifs_layout = self:get_children_by_id("notifications-layout")[1]
 	notifs_layout:remove_widgets(w)
 	if #notifs_layout.children == 0 then
-		notifs_layout:insert(1, self.empty_massage)
-		self.is_empty = true
+		notifs_layout:insert(1, wibox.widget {
+			widget = wibox.container.background,
+			fg = beautiful.fg_alt,
+			forced_height = dpi(560),
+			{
+				widget = wibox.widget.textbox,
+				align = "center",
+				font = beautiful.font_h2,
+				markup = "No notifications"
+			}
+		})
+		wp.is_empty = true
 	end
 	self:update_count()
 end
 
-local function add_notification(n, self)
+local function add_notification(self, n)
 	if not n then return end
-	local notifs_layout = self.main_widget:get_children_by_id("notifs_layout")[1]
-	if #notifs_layout.children == 1 and self.is_empty then
+	local wp = self._private
+	local notifs_layout = self:get_children_by_id("notifications-layout")[1]
+	if #notifs_layout.children == 1 and wp.is_empty then
 		notifs_layout:reset()
-		self.is_empty = false
+		wp.is_empty = false
 	end
 	local new_notification_widget = create_notification_widget(n)
 	notifs_layout:insert(1, new_notification_widget)
 	n:connect_signal("destroyed", function()
-		remove_notification(new_notification_widget, self)
+		remove_notification(self, new_notification_widget)
 	end)
 	self:update_count()
 end
 
 function notification_list:clear_notifications()
-	local notifs_layout = self.main_widget:get_children_by_id("notifs_layout")[1]
+	local wp = self._private
+	local notifs_layout = self:get_children_by_id("notifications-layout")[1]
 	notifs_layout:reset()
-	notifs_layout:insert(1, self.empty_massage)
-	self.is_empty = true
-	self:update_count()
-	naughty.destroy_all_notifications(nil, ncr.silent)
-end
-
-function notification_list:update_count()
-	local notifs_layout = self.main_widget:get_children_by_id("notifs_layout")[1]
-	local widget_title = self.main_widget:get_children_by_id("widget_title")[1]
-	if not self.is_empty then
-		widget_title:set_markup(string.format("Notifications (%s)", #notifs_layout.children))
-	else
-		widget_title:set_markup("Notifications")
-	end
-end
-
-function notification_list:toggle_dnd()
-	self.dnd_mode = not self.dnd_mode
-	if self.dnd_mode then
-		naughty.suspend()
-	else
-		naughty.resume()
-	end
-end
-
-local function new()
-	local ret = {}
-	gtable.crush(ret, notification_list, true)
-
-	ret.dnd_mode = false
-
-	local dnd_button
-	dnd_button = common.hover_button {
-		markup = text_icons.bell_on,
-		bg_normal = beautiful.bg,
-		margins = { right = dpi(11), left = dpi(11) },
-		shape = beautiful.rrect(dpi(10)),
-		buttons = {
-			awful.button({}, 1, function()
-				ret:toggle_dnd()
-				if ret.dnd_mode then
-					dnd_button:set_text(text_icons.bell_off)
-				else
-					dnd_button:set_text(text_icons.bell_on)
-				end
-			end)
-		}
-	}
-
-	local clear_button = common.hover_button {
-		markup = text_icons.trash,
-		fg_normal = beautiful.red,
-		bg_normal = beautiful.bg,
-		bg_hover = beautiful.red,
-		margins = { right = dpi(11), left = dpi(11) },
-		shape = beautiful.rrect(dpi(10)),
-		buttons = {
-			awful.button({}, 1, function()
-				ret:clear_notifications()
-			end)
-		}
-	}
-
-	ret.empty_massage = wibox.widget {
+	notifs_layout:insert(1, wibox.widget {
 		widget = wibox.container.background,
 		fg = beautiful.fg_alt,
 		forced_height = dpi(560),
@@ -270,9 +220,38 @@ local function new()
 			font = beautiful.font_h2,
 			markup = "No notifications"
 		}
-	}
+	})
+	wp.is_empty = true
+	self:update_count()
+	naughty.destroy_all_notifications(nil, ncr.silent)
+end
 
-	ret.main_widget = wibox.widget {
+function notification_list:update_count()
+	local wp = self._private
+	local notifs_layout = self:get_children_by_id("notifications-layout")[1]
+	local notifs_title = self:get_children_by_id("notifications-title")[1]
+	if not wp.is_empty then
+		notifs_title:set_markup(string.format(
+			"Notifications (%s)",
+			#notifs_layout.children
+		))
+	else
+		notifs_title:set_markup("Notifications")
+	end
+end
+
+function notification_list:toggle_dnd()
+	local wp = self._private
+	wp.dnd_mode = not self.dnd_mode
+	if wp.dnd_mode then
+		naughty.suspend()
+	else
+		naughty.resume()
+	end
+end
+
+local function new()
+	local ret = wibox.widget {
 		widget = wibox.container.background,
 		forced_height = dpi(50) + dpi(560),
 		forced_width = dpi(450),
@@ -288,7 +267,7 @@ local function new()
 						widget = wibox.container.margin,
 						margins = { left = dpi(7) },
 						{
-							id = "widget_title",
+							id = "notifications-title",
 							widget = wibox.widget.textbox,
 							align = "center",
 							markup = "Notifications"
@@ -306,13 +285,31 @@ local function new()
 								orientation = "vertical"
 							}
 						},
-						dnd_button,
-						clear_button
+						{
+							id = "dnd-button",
+							widget = common.hover_button {
+								label = text_icons.bell_on,
+								bg_normal = beautiful.bg,
+								margins = { right = dpi(11), left = dpi(11) },
+								shape = beautiful.rrect(dpi(10))
+							}
+						},
+						{
+							id = "clear-button",
+							widget = common.hover_button {
+								label = text_icons.trash,
+								fg_normal = beautiful.red,
+								bg_normal = beautiful.bg,
+								bg_hover = beautiful.red,
+								margins = { right = dpi(11), left = dpi(11) },
+								shape = beautiful.rrect(dpi(10))
+							}
+						}
 					}
 				}
 			},
 			{
-				id = "notifs_layout",
+				id = "notifications-layout",
 				layout = wibox.layout.overflow.vertical,
 				scrollbar_enabled = false,
 				step = 80,
@@ -321,12 +318,46 @@ local function new()
 		}
 	}
 
-	local notifs_layout = ret.main_widget:get_children_by_id("notifs_layout")[1]
-	ret.is_empty = true
-	notifs_layout:insert(1, ret.empty_massage)
+	gtable.crush(ret, notification_list, true)
+	local wp = ret._private
+
+	wp.is_empty = true
+	wp.dnd_mode = false
+
+	local dnd_button = ret:get_children_by_id("dnd-button")[1]
+	dnd_button:buttons {
+		awful.button({}, 1, function()
+			ret:toggle_dnd()
+			if wp.dnd_mode then
+				dnd_button:set_label(text_icons.bell_off)
+			else
+				dnd_button:set_label(text_icons.bell_on)
+			end
+		end)
+	}
+
+	local clear_button = ret:get_children_by_id("clear-button")[1]
+	clear_button:buttons {
+		awful.button({}, 1, function()
+			ret:clear_notifications()
+		end)
+	}
+
+	local notifs_layout = ret:get_children_by_id("notifications-layout")[1]
+	notifs_layout:insert(1, wibox.widget {
+		widget = wibox.container.background,
+		fg = beautiful.fg_alt,
+		forced_height = dpi(560),
+		{
+			widget = wibox.widget.textbox,
+			align = "center",
+			font = beautiful.font_h2,
+			markup = "No notifications"
+		}
+	})
 
 	naughty.connect_signal("request::display", function(n)
-		add_notification(n, ret)
+		add_notification(ret, n)
 	end)
 
 	return ret

@@ -4,8 +4,8 @@ local beautiful = require("beautiful")
 
 local button = {}
 
-function button:set_text(text)
-	self:get_children_by_id("text_comp")[1]:set_markup(text)
+function button:set_label(label)
+	self:get_children_by_id("label-role")[1]:set_markup(label)
 end
 
 function button:set_bg_normal(color)
@@ -47,11 +47,11 @@ local function new(args)
 			widget = wibox.container.margin,
 			margins = args.margins or 0,
 			{
-				id = "text_comp",
+				id = "label-role",
 				widget = wibox.widget.textbox,
 				font = args.font or beautiful.font,
 				align = args.align or "center",
-				markup = args.markup or args.text or ""
+				markup = args.label or ""
 			}
 		}
 	}

@@ -79,7 +79,7 @@ local function to_direction(deg)
 		"W", "WNW", "NW", "NNW",
 		"N"
 	}
-	return directions[math.floor((deg%360)/22.5) + 1]
+	return directions[math.floor((deg % 360) / 22.5) + 1]
 end
 
 local function create_current(data)
@@ -178,7 +178,7 @@ local function create_hourly(data)
 			step = 40,
 			{
 				widget = wibox.container.background,
-				forced_width = dpi(24*step_width + 23*step_spacing),
+				forced_width = dpi(24 * step_width + 23 * step_spacing),
 				{
 					layout = wibox.layout.fixed.vertical,
 					spacing = dpi(5),
@@ -305,7 +305,7 @@ local function create_daily(data)
 end
 
 function weather_applet:setup_widget(data)
-	local main_layout = self.main_widget:get_children_by_id("main_layout")[1]
+	local main_layout = self:get_children_by_id("main-layout")[1]
 	main_layout:reset()
 	if data then
 		data = data[1] or data
@@ -325,37 +325,36 @@ function weather_applet:setup_widget(data)
 			create_daily(data)
 		)
 	else
-		main_layout:add(self.err_msg)
+		local err_msg = wibox.widget {
+			widget = wibox.container.background,
+			bg = beautiful.bg_alt,
+			fg = beautiful.fg_alt,
+			forced_height = dpi(100),
+			{
+				widget = wibox.widget.textbox,
+				align = "center",
+				font = beautiful.font_h2,
+				markup = "No weather data"
+			}
+		}
+
+		main_layout:add(err_msg)
 	end
 end
 
 local function new()
-	local ret = {}
-	gtable.crush(ret, weather_applet, true)
-
-	ret.err_msg = wibox.widget {
-		widget = wibox.container.background,
-		bg = beautiful.bg_alt,
-		fg = beautiful.fg_alt,
-		forced_height = dpi(100),
-		{
-			widget = wibox.widget.textbox,
-			align = "center",
-			font = beautiful.font_h2,
-			markup = "No weather data"
-		}
-	}
-
-	ret.main_widget = wibox.widget {
+	local ret = wibox.widget {
 		widget = wibox.container.background,
 		forced_width = dpi(370),
 		bg = beautiful.bg_alt,
 		shape = beautiful.rrect(dpi(8)),
 		{
-			id = "main_layout",
+			id = "main-layout",
 			layout = wibox.layout.fixed.vertical
 		}
 	}
+
+	gtable.crush(ret, weather_applet, true)
 
 	weather:connect_signal("data-received", function(_, data)
 		ret:setup_widget(data)

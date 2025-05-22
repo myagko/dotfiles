@@ -26,7 +26,7 @@ local function launcher_button()
 		fg_normal = beautiful.fg,
 		fg_hover = beautiful.fg,
 		shape = beautiful.rrect(dpi(8)),
-		markup = text_icons.menu,
+		label = text_icons.menu,
 	}
 end
 
@@ -43,7 +43,7 @@ local function control_panel_button()
 		fg_normal = beautiful.fg,
 		fg_hover = beautiful.fg,
 		shape = beautiful.rrect(dpi(8)),
-		markup = text_icons.sliders,
+		label = text_icons.sliders,
 	}
 end
 

@@ -53,22 +53,22 @@ capi.screen.connect_signal("request::desktop_decoration", function(s)
 	if s == capi.screen.primary then
 		s.bar = bar.create_primary(s)
 		s.bar:connect_signal("property::visible", function()
-			if control_panel.state == true then
-				awful.placement.bottom_right(control_panel.popup_widget, {
+			if control_panel.visible == true then
+				awful.placement.bottom_right(control_panel, {
 					honor_workarea = true,
 					margins = beautiful.useless_gap
 				})
 			end
 
-			if day_info_panel.state == true then
-				awful.placement.bottom_right(day_info_panel.popup_widget, {
+			if day_info_panel.visible == true then
+				awful.placement.bottom_right(day_info_panel, {
 					honor_workarea = true,
 					margins = beautiful.useless_gap
 				})
 			end
 
-			if launcher.state == true then
-				awful.placement.bottom_left(launcher.popup_widget, {
+			if launcher.visible == true then
+				awful.placement.bottom_left(launcher, {
 					honor_workarea = true,
 					margins = beautiful.useless_gap
 				})
