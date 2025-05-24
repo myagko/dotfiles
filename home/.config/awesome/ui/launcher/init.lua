@@ -70,30 +70,30 @@ end
 
 function launcher:next()
 	local wp = self._private
-	if #wp.filtered > 1 and wp.index_entry ~= #wp.filtered then
-		wp.index_entry = wp.index_entry + 1
-		if wp.index_entry > wp.index_start + wp.rows - 1 then
-			wp.index_start = wp.index_start + 1
+	if #wp.filtered > 1 and wp.select_index ~= #wp.filtered then
+		wp.select_index = wp.select_index + 1
+		if wp.select_index > wp.start_index + wp.rows - 1 then
+			wp.start_index = wp.start_index + 1
 		end
 	else
-		wp.index_entry = 1
-		wp.index_start = 1
+		wp.select_index = 1
+		wp.start_index = 1
 	end
 end
 
 function launcher:back()
 	local wp = self._private
-	if #wp.filtered > 1 and wp.index_entry ~= 1 then
-		wp.index_entry = wp.index_entry - 1
-		if wp.index_entry < wp.index_start then
-			wp.index_start = wp.index_start - 1
+	if #wp.filtered > 1 and wp.select_index ~= 1 then
+		wp.select_index = wp.select_index - 1
+		if wp.select_index < wp.start_index then
+			wp.start_index = wp.start_index - 1
 		end
 	else
-		wp.index_entry = #wp.filtered
+		wp.select_index = #wp.filtered
 		if #wp.filtered < wp.rows then
-			wp.index_start = 1
+			wp.start_index = 1
 		else
-			wp.index_start = #wp.filtered - wp.rows + 1
+			wp.start_index = #wp.filtered - wp.rows + 1
 		end
 	end
 end
@@ -105,7 +105,7 @@ function launcher:update_entries()
 
 	if #wp.filtered > 0 then
 		for i, app in ipairs(wp.filtered) do
-			if i >= wp.index_start and i <= wp.index_start + wp.rows - 1 then
+			if i >= wp.start_index and i <= wp.start_index + wp.rows - 1 then
 				local entry_widget = wibox.widget {
 					widget = wibox.container.background,
 					forced_height = dpi(55),
@@ -122,17 +122,17 @@ function launcher:update_entries()
 
 				entry_widget:buttons {
 					awful.button({}, 1, function()
-						if wp.index_entry == i then
+						if wp.select_index == i then
 							launch_app(app)
 							self:hide()
 						else
-							wp.index_entry = i
+							wp.select_index = i
 							self:update_entries()
 						end
 					end)
 				}
 
-				if i == wp.index_entry then
+				if i == wp.select_index then
 					entry_widget:set_bg(beautiful.ac)
 					entry_widget:set_fg(beautiful.bg)
 				else
@@ -172,7 +172,7 @@ function launcher:show()
 	self:emit_signal("state", wp.state)
 	wp.unfiltered = Gio.AppInfo.get_all()
 	wp.filtered = filter_apps(wp.unfiltered, "")
-	wp.index_start, wp.index_entry = 1, 1
+	wp.start_index, wp.select_index = 1, 1
 	self:update_entries()
 	self.widget:get_children_by_id("text-input")[1]:focus()
 end
@@ -183,7 +183,7 @@ function launcher:hide()
 	wp.state = false
 	wp.unfiltered = {}
 	wp.filtered = {}
-	wp.index_entry, wp.index_entry = 1, 1
+	wp.select_index, wp.select_index = 1, 1
 	self.widget:get_children_by_id("text-input")[1]:unfocus()
 	self.visible = false
 	self:emit_signal("state", wp.state)
@@ -351,8 +351,15 @@ local function new()
 	local home_button = ret.widget:get_children_by_id("home-button")[1]
 	home_button:buttons {
 		awful.button({}, 1, function()
-			awful.spawn("xdg-open " .. os.getenv("HOME"))
-			ret:hide()
+			local app = Gio.AppInfo.get_default_for_type("inode/directory")
+			if app then
+				awful.spawn(string.format(
+					"%s %s",
+					app:get_executable(),
+					os.getenv("HOME")
+				))
+				ret:hide()
+			end
 		end)
 	}
 
@@ -382,12 +389,12 @@ local function new()
 
 	text_input:connect_signal("input-changed", function(_, input)
 		wp.filtered = filter_apps(wp.unfiltered, input)
-		wp.index_start, wp.index_entry = 1, 1
+		wp.start_index, wp.select_index = 1, 1
 		ret:update_entries()
 	end)
 
 	text_input:connect_signal("executed", function()
-		local app = wp.filtered[wp.index_entry]
+		local app = wp.filtered[wp.select_index]
 		if app then launch_app(app) end
 	end)
 
