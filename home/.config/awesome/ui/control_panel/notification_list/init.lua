@@ -12,75 +12,45 @@ local create_markup = require("lib").create_markup
 local notification_list = {}
 
 local function create_actions_widget(n)
-	if #n.actions == 0 then return nil end
-
-	local actions_layout = wibox.widget {
-		layout = wibox.layout.flex.horizontal,
-		spacing = dpi(5)
-	}
+if #n.actions == 0 then return nil end
 
 	local actions_widget = wibox.widget {
 		widget = wibox.container.margin,
 		margins = { top = dpi(5) },
-		actions_layout
+		{
+			id = "main-layout",
+			layout = wibox.layout.flex.horizontal,
+			spacing = dpi(5)
+		}
 	}
 
+	local main_layout = actions_widget:get_children_by_id("main-layout")[1]
 	for _, action in ipairs(n.actions) do
-		local button = common.hover_button {
-			buttons = {
-				awful.button({}, 1, function()
-					action:invoke()
-				end)
-			},
-			margins = dpi(5),
-			bg_normal = beautiful.bg_urg,
-			shape = beautiful.rrect(dpi(8)),
-			label = action.name
-		}
-		actions_layout:add(button)
+		main_layout:add(wibox.widget {
+			widget = wibox.container.constraint,
+			strategy = "max",
+			height = dpi(30),
+			{
+				widget = common.hover_button {
+					label = action.name,
+					font = beautiful.font_h0,
+					margins = dpi(8),
+					bg_normal = beautiful.bg_urg,
+					shape = beautiful.rrect(dpi(8)),
+					buttons = {
+						awful.button({}, 1, function()
+							action:invoke()
+						end)
+					}
+				}
+			}
+		})
 	end
 
 	return actions_widget
 end
 
 local function create_notification_widget(n)
-	local name = wibox.widget {
-		widget = wibox.widget.textbox,
-		markup = create_markup(n.app_name, {
-			fg = n.urgency == "critical" and beautiful.red or beautiful.fg
-		})
-	}
-
-	local title = wibox.widget {
-		widget = wibox.widget.textbox,
-		markup = n.title
-	}
-
-	local massage = wibox.widget {
-		widget = wibox.widget.textbox,
-		font = beautiful.font_h0,
-		markup = n.text or n.massage
-	}
-
-	local icon = wibox.widget {
-		widget = wibox.widget.imagebox,
-		resize = true,
-		halign = "center",
-		valign = "center",
-		clip_shape = beautiful.rrect(dpi(5)),
-		image = n.icon
-	}
-
-	local time = wibox.widget {
-		widget = wibox.widget.textbox,
-		markup = create_markup(os.date("%H:%M"), { fg = beautiful.fg_alt })
-	}
-
-	local close = wibox.widget {
-		widget = wibox.widget.textbox,
-		markup = create_markup(text_icons.cross, { fg = beautiful.red })
-	}
-
 	local widget = wibox.widget {
 		widget = wibox.container.constraint,
 		strategy = "max",
@@ -102,14 +72,26 @@ local function create_notification_widget(n)
 							strategy = "max",
 							width = dpi(150),
 							height = dpi(25),
-							name
+							{
+								widget = wibox.widget.textbox,
+								markup = create_markup(n.app_name, {
+									fg = n.urgency == "critical" and beautiful.red or beautiful.fg
+								})
+							}
 						},
 						nil,
 						{
 							layout = wibox.layout.fixed.horizontal,
 							spacing = dpi(10),
-							time,
-							close
+							{
+								widget = wibox.widget.textbox,
+								markup = create_markup(os.date("%H:%M"), { fg = beautiful.fg_alt })
+							},
+							{
+								id = "close",
+								widget = wibox.widget.textbox,
+								markup = create_markup(text_icons.cross, { fg = beautiful.red })
+							}
 						}
 					},
 					{
@@ -135,7 +117,14 @@ local function create_notification_widget(n)
 							strategy = "max",
 							width = dpi(70),
 							height = dpi(70),
-							icon
+							{
+								widget = wibox.widget.imagebox,
+								resize = true,
+								halign = "center",
+								valign = "top",
+								clip_shape = beautiful.rrect(dpi(5)),
+								image = n.icon
+							}
 						},
 						{
 							layout = wibox.layout.fixed.vertical,
@@ -144,13 +133,20 @@ local function create_notification_widget(n)
 								widget = wibox.container.constraint,
 								strategy = "max",
 								height = dpi(25),
-								title
+								{
+									widget = wibox.widget.textbox,
+									markup = n.title
+								}
 							},
 							{
 								widget = wibox.container.constraint,
 								strategy = "max",
 								height = dpi(80),
-								massage
+								{
+									widget = wibox.widget.textbox,
+									font = beautiful.font_h0,
+									markup = n.text or n.massage
+								}
 							}
 						}
 					},
@@ -160,6 +156,7 @@ local function create_notification_widget(n)
 		}
 	}
 
+	local close = widget:get_children_by_id("close")[1]
 	close:buttons {
 		awful.button({}, 1, function()
 			n:destroy(ncr.silent)

@@ -9,136 +9,135 @@ local bluetooth = require("service.bluetooth").get_default()
 local function create_dev_widget(path)
 	local dev = bluetooth:get_device(path)
 
-	local name = wibox.widget {
-		widget = wibox.widget.textbox
-	}
-
-	local percentage = wibox.widget {
-		widget = wibox.widget.textbox
-	}
-
-	local connect_button = common.hover_button {
-		margins = { left = dpi(15), right = dpi(15) },
-		shape = beautiful.rrect(dpi(10))
-	}
-
-	local pair_button = common.hover_button {
-		margins = { left = dpi(15), right = dpi(15) },
-		shape = beautiful.rrect(dpi(10))
-	}
-
-	local trust_button = common.hover_button {
-		margins = { left = dpi(15), right = dpi(15) },
-		shape = beautiful.rrect(dpi(10))
-	}
-
-	local buttons_widget = wibox.widget {
-		widget = wibox.container.background,
-		forced_height = dpi(50),
-		{
-			widget = wibox.container.margin,
-			margins = { top = dpi(5), bottom = dpi(5) },
-			{
-				layout = wibox.layout.flex.horizontal,
-				spacing = dpi(5),
-				connect_button,
-				pair_button,
-				trust_button
-			}
-		}
-	}
-
-	local dev_widget_header = wibox.widget {
+	local dev_widget = wibox.widget {
+		path = path,
 		widget = wibox.container.background,
 		forced_height = dpi(40),
-		shape = beautiful.rrect(dpi(10)),
 		{
-			widget = wibox.container.margin,
-			margins = { left = dpi(15), right = dpi(15) },
+			layout = wibox.layout.fixed.vertical,
 			{
-				layout = wibox.layout.align.horizontal,
+				id = "header",
+				widget = wibox.container.background,
+				forced_height = dpi(40),
+				shape = beautiful.rrect(dpi(10)),
 				{
-					widget = wibox.container.constraint,
-					width = dpi(200),
-					name
-				},
-				nil,
-				{
-					widget = wibox.container.constraint,
-					width = dpi(130),
+					widget = wibox.container.margin,
+					margins = { left = dpi(15), right = dpi(15) },
 					{
-						widget = wibox.container.constraint,
-						width = dpi(130),
-						percentage
+						layout = wibox.layout.align.horizontal,
+						{
+							widget = wibox.container.constraint,
+							width = dpi(220),
+							{
+								id = "name",
+								widget = wibox.widget.textbox
+							}
+						},
+						nil,
+						{
+							widget = wibox.container.constraint,
+							width = dpi(130),
+							{
+								id = "percentage",
+								widget = wibox.widget.textbox
+							}
+						}
+					}
+				}
+			},
+			{
+				id = "buttons",
+				widget = wibox.container.background,
+				forced_height = dpi(50),
+				{
+					widget = wibox.container.margin,
+					margins = { top = dpi(5) },
+					{
+						layout = wibox.layout.flex.horizontal,
+						spacing = dpi(5),
+						{
+							id = "connect-button",
+							widget = common.hover_button {
+								font = beautiful.font_h0,
+								margins = { left = dpi(15), right = dpi(15) },
+								shape = beautiful.rrect(dpi(10))
+							}
+						},
+						{
+							id = "pair-button",
+							widget = common.hover_button {
+								font = beautiful.font_h0,
+								margins = { left = dpi(15), right = dpi(15) },
+								shape = beautiful.rrect(dpi(10))
+							}
+						},
+						{
+							id = "trust-button",
+							widget = common.hover_button {
+								font = beautiful.font_h0,
+								margins = { left = dpi(15), right = dpi(15) },
+								shape = beautiful.rrect(dpi(10))
+							}
+						}
 					}
 				}
 			}
 		}
 	}
 
-	local dev_widget_layout = wibox.widget {
-		layout = wibox.layout.fixed.vertical,
-		dev_widget_header
-	}
-
-	local dev_widget = wibox.widget {
-		path = path,
-		widget = wibox.container.background,
-		forced_height = dpi(40),
-		dev_widget_layout
-	}
-
-	dev_widget_header:connect_signal("mouse::enter", function(w)
+	local header = dev_widget:get_children_by_id("header")[1]
+	header:connect_signal("mouse::enter", function(w)
 		w:set_bg(beautiful.bg_urg)
 	end)
 
-	dev_widget_header:connect_signal("mouse::leave", function(w)
-		w:set_bg(beautiful.bg)
+	header:connect_signal("mouse::leave", function(w)
+		w:set_bg(nil)
 	end)
 
-	local connect_widget_visible = false
+	local dev_buttons = dev_widget:get_children_by_id("buttons")
 
-	local function set_connect_widget()
-		connect_widget_visible = not connect_widget_visible
-		if connect_widget_visible then
-			dev_widget_layout:add(buttons_widget)
-			dev_widget:set_forced_height(dpi(90))
-		else
-			dev_widget_layout:remove_widgets(buttons_widget)
-			dev_widget:set_forced_height(dpi(40))
-		end
+	local buttons_visible = false
+	local function toggle_buttons()
+		buttons_visible = not buttons_visible
+		dev_widget:set_forced_height(buttons_visible and dpi(80) or dpi(40))
+		dev_buttons.visible = buttons_visible
 	end
 
-	dev_widget_header:buttons {
+	header:buttons {
 		awful.button({}, 1, function()
-			set_connect_widget()
+			toggle_buttons()
 		end)
 	}
 
+	local connect_button = dev_widget:get_children_by_id("connect-button")[1]
 	connect_button:buttons {
 		awful.button({}, 1, function()
 			dev:toggle_connect()
 		end)
 	}
 
+	local pair_button = dev_widget:get_children_by_id("pair-button")[1]
 	pair_button:buttons {
 		awful.button({}, 1, function()
 			dev:toggle_pair()
 		end)
 	}
 
+	local trust_button = dev_widget:get_children_by_id("trust-button")[1]
 	trust_button:buttons {
 		awful.button({}, 1, function()
 			dev:toggle_trust()
 		end)
 	}
 
+	local percentage = dev_widget:get_children_by_id("percentage")[1]
 	dev:connect_signal("property::percentage", function(_, perc)
 		percentage:set_markup(perc ~= nil and string.format("%.0f%%", perc) or "")
 	end)
 
+	local name = dev_widget:get_children_by_id("name")[1]
 	dev:connect_signal("property::connected", function(_, cnd)
-		name:set_markup(dev:get_name() .. (cnd and " " .. text_icons.check or ""))
+		name:set_markup((cnd and text_icons.check .. " " or "") .. dev:get_name())
 		connect_button:set_label(cnd and "Disconnect" or "Connect")
 	end)
 
@@ -150,7 +149,7 @@ local function create_dev_widget(path)
 		trust_button:set_label(trd and "Untrust" or "Trust")
 	end)
 
-	name:set_markup(dev:get_name() .. (dev:get_connected() and " " .. text_icons.check or ""))
+	name:set_markup((dev:get_connected() and text_icons.check .. " " or "") .. dev:get_name())
 	percentage:set_markup(dev:get_percentage() ~= nil and string.format("%.0f%%", dev:get_percentage()) or "")
 	connect_button:set_label(dev:get_connected() and "Disconnect" or "Connect")
 	pair_button:set_label(dev:get_paired() and "Unpair" or "Pair")

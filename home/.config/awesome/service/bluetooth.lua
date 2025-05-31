@@ -188,7 +188,6 @@ local function new()
 		}
 
 		ret.devices = {}
-
 		if ret._private.object_manager_proxy.GetManagedObjects then
 			local object_paths = ret._private.object_manager_proxy:GetManagedObjects()
 			for path, _ in pairs(object_paths) do

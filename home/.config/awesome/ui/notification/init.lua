@@ -45,141 +45,42 @@ end
 local function create_actions_widget(n)
 	if #n.actions == 0 then return nil end
 
-	local actions_layout = wibox.widget {
-		layout = wibox.layout.flex.horizontal,
-		spacing = dpi(5)
-	}
-
 	local actions_widget = wibox.widget {
 		widget = wibox.container.margin,
 		margins = { top = dpi(5) },
-		actions_layout
+		{
+			id = "main-layout",
+			layout = wibox.layout.flex.horizontal,
+			spacing = dpi(5)
+		}
 	}
 
+	local main_layout = actions_widget:get_children_by_id("main-layout")[1]
 	for _, action in ipairs(n.actions) do
-		local button = common.hover_button {
-			buttons = {
-				awful.button({}, 1, function()
-					action:invoke()
-				end)
-			},
-			margins = dpi(5),
-			shape = beautiful.rrect(dpi(8)),
-			label = action.name
-		}
-		actions_layout:add(button)
+		main_layout:add(wibox.widget {
+			widget = wibox.container.constraint,
+			strategy = "max",
+			height = dpi(30),
+			{
+				widget = common.hover_button {
+					label = action.name,
+					font = beautiful.font_h0,
+					margins = dpi(8),
+					shape = beautiful.rrect(dpi(8)),
+					buttons = {
+						awful.button({}, 1, function()
+							action:invoke()
+						end)
+					}
+				}
+			}
+		})
 	end
 
 	return actions_widget
 end
 
 local function create_notification_popup(n)
-	local name = wibox.widget {
-		widget = wibox.widget.textbox,
-		markup = create_markup(n.app_name, {
-			fg = n.urgency == "critical" and beautiful.red or beautiful.fg
-		})
-	}
-
-	local title = wibox.widget {
-		widget = wibox.widget.textbox,
-		markup = n.title
-	}
-
-	local massage = wibox.widget {
-		widget = wibox.widget.textbox,
-		font = beautiful.font_h0,
-		markup = n.text or n.massage
-	}
-
-	local icon = wibox.widget {
-		widget = wibox.widget.imagebox,
-		resize = true,
-		halign = "center",
-		valign = "center",
-		clip_shape = beautiful.rrect(dpi(5)),
-		image = n.icon
-	}
-
-	local time = wibox.widget {
-		widget = wibox.widget.textbox,
-		markup = create_markup(os.date("%H:%M"), { fg = beautiful.fg_alt })
-	}
-
-	local close = wibox.widget {
-		widget = wibox.widget.textbox,
-		markup = create_markup(text_icons.cross, { fg = beautiful.red })
-	}
-
-	local main_widget = wibox.widget {
-		widget = wibox.container.margin,
-		margins = dpi(15),
-		{
-			layout = wibox.layout.fixed.vertical,
-			spacing = dpi(5),
-			{
-				layout = wibox.layout.align.horizontal,
-				{
-					widget = wibox.container.constraint,
-					strategy = "max",
-					width = dpi(150),
-					height = dpi(25),
-					name
-				},
-				nil,
-				{
-					layout = wibox.layout.fixed.horizontal,
-					spacing = dpi(10),
-					time,
-					close
-				}
-			},
-			{
-				widget = wibox.container.background,
-				forced_width = 1,
-				forced_height = beautiful.separator_thickness,
-				{
-					widget = wibox.widget.separator,
-					orientation = "horizontal"
-				}
-			},
-			{
-				layout = wibox.layout.fixed.horizontal,
-				buttons = {
-					awful.button({}, 1, function()
-						n:destroy(ncr.dismissed_by_user)
-					end)
-				},
-				fill_space = true,
-				spacing = dpi(10),
-				{
-					widget = wibox.container.constraint,
-					strategy = "max",
-					width = dpi(70),
-					height = dpi(70),
-					icon
-				},
-				{
-					layout = wibox.layout.fixed.vertical,
-					spacing = dpi(5),
-					{
-						widget = wibox.container.constraint,
-						strategy = "max",
-						height = dpi(25),
-						title
-					},
-					{
-						widget = wibox.container.constraint,
-						strategy = "max",
-						height = dpi(70),
-						massage
-					}
-				}
-			},
-			create_actions_widget(n)
-		}
-	}
-
 	local popup_widget = awful.popup {
 		type = "notification",
 		screen = n.screen,
@@ -195,9 +96,103 @@ local function create_notification_popup(n)
 		border_width = beautiful.border_width,
 		--shape = beautiful.rrect(dpi(20)),
 		placement = function() return { 0, 0 } end,
-		widget = main_widget
+		widget = {
+			widget = wibox.container.margin,
+			margins = dpi(15),
+			{
+				layout = wibox.layout.fixed.vertical,
+				spacing = dpi(5),
+				{
+					layout = wibox.layout.align.horizontal,
+					{
+						widget = wibox.container.constraint,
+						strategy = "max",
+						width = dpi(150),
+						height = dpi(25),
+						{
+							widget = wibox.widget.textbox,
+							markup = create_markup(n.app_name, {
+								fg = n.urgency == "critical" and beautiful.red or beautiful.fg
+							})
+						}
+					},
+					nil,
+					{
+						layout = wibox.layout.fixed.horizontal,
+						spacing = dpi(10),
+						{
+							widget = wibox.widget.textbox,
+							markup = create_markup(os.date("%H:%M"), { fg = beautiful.fg_alt })
+						},
+						{
+							id = "close",
+							widget = wibox.widget.textbox,
+							markup = create_markup(text_icons.cross, { fg = beautiful.red })
+						}
+					}
+				},
+				{
+					widget = wibox.container.background,
+					forced_width = 1,
+					forced_height = beautiful.separator_thickness,
+					{
+						widget = wibox.widget.separator,
+						orientation = "horizontal"
+					}
+				},
+				{
+					layout = wibox.layout.fixed.horizontal,
+					buttons = {
+						awful.button({}, 1, function()
+							n:destroy(ncr.dismissed_by_user)
+						end)
+					},
+					fill_space = true,
+					spacing = dpi(10),
+					{
+						widget = wibox.container.constraint,
+						strategy = "max",
+						width = dpi(70),
+						height = dpi(70),
+						{
+							widget = wibox.widget.imagebox,
+							resize = true,
+							halign = "center",
+							valign = "top",
+							clip_shape = beautiful.rrect(dpi(5)),
+							image = n.icon
+						}
+					},
+					{
+						layout = wibox.layout.fixed.vertical,
+						spacing = dpi(5),
+						{
+							widget = wibox.container.constraint,
+							strategy = "max",
+							height = dpi(25),
+							{
+								widget = wibox.widget.textbox,
+								markup = n.title
+							}
+						},
+						{
+							widget = wibox.container.constraint,
+							strategy = "max",
+							height = dpi(70),
+							{
+								widget = wibox.widget.textbox,
+								font = beautiful.font_h0,
+								markup = n.text or n.massage
+							}
+						}
+					}
+				},
+				create_actions_widget(n)
+			}
+		}
 	}
 
+	local close = popup_widget.widget:get_children_by_id("close")[1]
 	close:buttons {
 		awful.button({}, 1, function()
 			n:destroy(ncr.silent)

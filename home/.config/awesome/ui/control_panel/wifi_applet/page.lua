@@ -11,25 +11,12 @@ local network = require("service.network").get_default()
 local wifi_page = {}
 
 local function create_ap_widget(self, ap)
-	local ssid = ap:get_ssid()
-	local strength = ap:get_strength()
-	local is_active = ap == network.wireless:get_active_access_point()
-
-	local name = wibox.widget {
-		widget = wibox.widget.textbox,
-		markup = is_active and ssid .. " " .. text_icons.check or ssid
-	}
-
-	local strenght = wibox.widget {
-		widget = wibox.widget.textbox,
-		markup = strength > 70 and "▂▄▆█"
-			or strength > 45 and "▂▄▆"
-			or strength > 20 and "▂▄"
-			or "▂"
-	}
+	local ap_ssid = ap:get_ssid()
+	local ap_strength = ap:get_strength()
+	local ap_is_active = ap == network.wireless:get_active_access_point()
 
 	local ap_widget = wibox.widget {
-		active = is_active,
+		active = ap_is_active,
 		widget = wibox.container.background,
 		shape = beautiful.rrect(dpi(10)),
 		{
@@ -41,13 +28,30 @@ local function create_ap_widget(self, ap)
 				{
 					widget = wibox.container.constraint,
 					width = dpi(250),
-					name
+					{
+						id = "name",
+						widget = wibox.widget.textbox
+					}
 				},
 				nil,
-				strenght
+				{
+					id = "strength",
+					widget = wibox.widget.textbox
+				}
 			}
 		}
 	}
+
+	local name = ap_widget:get_children_by_id("name")[1]
+	name:set_markup(ap_is_active and text_icons.check .. " " .. ap_ssid or ap_ssid)
+
+	local strength = ap_widget:get_children_by_id("strength")[1]
+	strength:set_markup(
+		ap_strength > 70 and "▂▄▆█"
+		or ap_strength > 45 and "▂▄▆"
+		or ap_strength > 20 and "▂▄"
+		or "▂"
+	)
 
 	ap_widget:connect_signal("mouse::enter", function(w)
 		w:set_bg(beautiful.bg_urg)

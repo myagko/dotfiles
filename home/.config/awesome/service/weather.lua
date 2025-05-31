@@ -19,12 +19,12 @@ function weather:set_remote_watch()
 
 	local cmd = string.format(
 		curl_mockup,
-		tostring(self.lat),
-		tostring(self.lon),
-		self.imperial_units and "&temperature_unit=fahrenheit" or ""
+		tostring(wp.lat),
+		tostring(wp.lon),
+		wp.imperial_units and "&temperature_unit=fahrenheit" or ""
 	)
 
-	wp.remote_watch = common.remote_watch(cmd, self.interval, self.output_file, function(out)
+	wp.remote_watch = common.remote_watch(cmd, wp.interval, wp.output_file, function(out)
 		local data = out ~= "" and json.decode(out)
 		self:emit_signal("data-received", data)
 	end)
@@ -44,11 +44,12 @@ local function new(args)
 		gtable.crush(ret, weather, true)
 		ret._private = {}
 
-		ret.output_file = args.output_file
-		ret.lat = args.lat or 0
-		ret.lon = args.lon or 0
-		ret.interval = args.interval or 600
-		ret.imperial_units = args.imperial_units
+		local wp = ret._private
+		wp.output_file = args.output_file
+		wp.lat = args.lat or 0
+		wp.lon = args.lon or 0
+		wp.interval = args.interval or 600
+		wp.imperial_units = args.imperial_units
 
 		ret:set_remote_watch()
 	end
