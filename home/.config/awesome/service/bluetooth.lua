@@ -74,12 +74,16 @@ end
 
 function adapter:start_discovery()
 	if not self._private.adapter_proxy then return end
-	self._private.adapter_proxy:StartDiscoveryAsync(nil, {})
+	if self._private.adapter_proxy.Discovering ~= true then
+		self._private.adapter_proxy:StartDiscoveryAsync(nil, {})
+	end
 end
 
 function adapter:stop_discovery()
 	if not self._private.adapter_proxy then return end
-	self._private.adapter_proxy:StopDiscoveryAsync(nil, {})
+	if self._private.adapter_proxy.Discovering == true then
+		self._private.adapter_proxy:StopDiscoveryAsync(nil, {})
+	end
 end
 
 function adapter:get_discovering()
