@@ -227,7 +227,7 @@ function client:connect_access_point(ap, password, auto_connect)
 		self._private.client_proxy:AddAndActivateConnectionAsync(
 			function(_, _, _, failure)
 				if failure ~= nil then
-					self:emit_signal("activate-access-point::failed", tostring(failure), tostring(failure.code))
+					self:emit_signal("activate-access-point::failed", failure)
 					return
 				end
 				self:emit_signal("activate-access-point::success", ap)
@@ -246,7 +246,7 @@ function client:connect_access_point(ap, password, auto_connect)
 		self._private.client_proxy:ActivateConnectionAsync(
 			function(_, _, _, failure)
 				if failure ~= nil then
-					self:emit_signal("activate-access-point::failed", tostring(failure), tostring(failure.code))
+					self:emit_signal("activate-access-point::failed", failure)
 					return
 				end
 				self:emit_signal("activate-access-point::success", ap)
@@ -300,10 +300,10 @@ function wireless:scan_access_points()
 	self._private.device_proxy:RequestScanAsync(
 		function(_, _, _, failure)
 			if failure ~= nil then
-				self:emit_signal("scan-access-points::failed", tostring(failure), tostring(failure.code))
+				self:emit_signal("scan-access-points::failed", failure)
 				return
 			end
-			self:emit_signal("scan-access-points::success", self.access_points)
+			self:emit_signal("scan-access-points::success")
 		end,
 		{},
 		{}

@@ -112,21 +112,29 @@ local function create_dev_widget(path)
 	local connect_button = dev_widget:get_children_by_id("connect-button")[1]
 	connect_button:buttons {
 		awful.button({}, 1, function()
-			dev:toggle_connect()
+			if not dev:get_connected() then
+				dev:connect()
+			else
+				dev:disconnect()
+			end
 		end)
 	}
 
 	local pair_button = dev_widget:get_children_by_id("pair-button")[1]
 	pair_button:buttons {
 		awful.button({}, 1, function()
-			dev:toggle_pair()
+			if not dev:get_paired() then
+				dev:pair()
+			else
+				dev:cancel_pairing()
+			end
 		end)
 	}
 
 	local trust_button = dev_widget:get_children_by_id("trust-button")[1]
 	trust_button:buttons {
 		awful.button({}, 1, function()
-			dev:toggle_trust()
+			dev:set_trusted(not dev:get_trusted())
 		end)
 	}
 
@@ -137,7 +145,7 @@ local function create_dev_widget(path)
 
 	local name = dev_widget:get_children_by_id("name")[1]
 	dev:connect_signal("property::connected", function(_, cnd)
-		name:set_markup((cnd and text_icons.check .. " " or "") .. (dev:get_name() or "Unnamed device"))
+		name:set_markup((cnd and text_icons.check .. " " or "") .. (dev:get_name() or dev:get_address()))
 		connect_button:set_label(cnd and "Disconnect" or "Connect")
 	end)
 
@@ -149,7 +157,7 @@ local function create_dev_widget(path)
 		trust_button:set_label(trd and "Untrust" or "Trust")
 	end)
 
-	name:set_markup((dev:get_connected() and text_icons.check .. " " or "") .. (dev:get_name() or "Unnamed device"))
+	name:set_markup((dev:get_connected() and text_icons.check .. " " or "") .. (dev:get_name() or dev:get_address()))
 	percentage:set_markup(dev:get_percentage() and string.format("%.0f%%", dev:get_percentage()) or "")
 	connect_button:set_label(dev:get_connected() and "Disconnect" or "Connect")
 	pair_button:set_label(dev:get_paired() and "Unpair" or "Pair")

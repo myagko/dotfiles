@@ -94,37 +94,42 @@ function adapter:get_device(path)
 	return self.devices[path]
 end
 
-function device:toggle_connect()
-	if self._private.device_proxy.Connected == true then
-		self._private.device_proxy:DisconnectAsync(nil, {})
-	else
+function device:connect()
+	if self._private.device_proxy.Connected ~= true then
 		self._private.device_proxy:ConnectAsync(nil, {})
 	end
 end
 
-function device:toggle_trust()
-	local trusted = self._private.device_proxy.Trusted
-	if self._private.device_proxy.SetAsync then
-		self._private.device_proxy:SetAsync(
-			nil,
-			{},
-			self._private.device_proxy.interface,
-			"Trusted",
-			lgi.GLib.Variant("b", not trusted)
-		)
-		self._private.device_proxy.Trusted = {
-			signature = "b",
-			value = not trusted
-		}
+function device:disconnect()
+	if self._private.device_proxy.Connected == true then
+		self._private.device_proxy:DisconnectAsync(nil, {})
 	end
 end
 
-function device:toggle_pair()
-	if self._private.device_proxy.Paired == true then
+function device:pair()
+	if self._private.device_proxy.Paired ~= true then
 		self._private.device_proxy:PairAsync(nil, {})
-	else
+	end
+end
+
+function device:cancel_pairing()
+	if self._private.device_proxy.Paired == true then
 		self._private.device_proxy:CancelPairingAsync(nil, {})
 	end
+end
+
+function device:set_trusted(trusted)
+	self._private.device_proxy:SetAsync(
+		nil,
+		{},
+		self._private.device_proxy.interface,
+		"Trusted",
+		lgi.GLib.Variant("b", trusted)
+	)
+	self._private.device_proxy.Trusted = {
+		signature = "b",
+		value = trusted
+	}
 end
 
 function device:get_connected()
@@ -190,21 +195,21 @@ local function new()
 		if ret._private.object_manager_proxy.GetManagedObjects then
 			local object_paths = ret._private.object_manager_proxy:GetManagedObjects()
 			for path, _ in pairs(object_paths) do
-				if path ~= nil and path:match("^/org/bluez/hci0/dev_%w%w_%w%w_%w%w_%w%w_%w%w_%w%w$") then
+				if path:match("^/org/bluez/hci0/dev_%w%w_%w%w_%w%w_%w%w_%w%w_%w%w$") then
 					ret.devices[path] = create_device_object(path)
 				end
 			end
 		end
 
 		ret._private.object_manager_proxy:connect_signal("InterfacesAdded", function(_, path)
-			if path ~= nil and path:match("^/org/bluez/hci0/dev_%w%w_%w%w_%w%w_%w%w_%w%w_%w%w$") then
+			if path:match("^/org/bluez/hci0/dev_%w%w_%w%w_%w%w_%w%w_%w%w_%w%w$") then
 				ret.devices[path] = create_device_object(path)
 				ret:emit_signal("device-added", path)
 			end
 		end)
 
 		ret._private.object_manager_proxy:connect_signal("InterfacesRemoved", function(_, path)
-			if path ~= nil and path:match("^/org/bluez/hci0/dev_%w%w_%w%w_%w%w_%w%w_%w%w_%w%w$")then
+			if path:match("^/org/bluez/hci0/dev_%w%w_%w%w_%w%w_%w%w_%w%w_%w%w$")then
 				ret.devices[path] = nil
 				ret:emit_signal("device-removed", path)
 			end
