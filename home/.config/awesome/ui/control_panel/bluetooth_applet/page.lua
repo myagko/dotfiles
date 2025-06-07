@@ -184,9 +184,9 @@ end
 
 local function on_device_removed(self, path)
 	local devs_layout = self:get_children_by_id("devices-layout")[1]
-	for _, dev_w in ipairs(devs_layout.children) do
-		if dev_w.path == path then
-			devs_layout:remove_widgets(dev_w)
+	for _, dev_widget in ipairs(devs_layout.children) do
+		if dev_widget.path == path then
+			devs_layout:remove_widgets(dev_widget)
 		end
 	end
 
