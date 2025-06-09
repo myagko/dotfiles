@@ -3,15 +3,15 @@ local _NM_status, NM = pcall(function() return require("lgi").NM end)
 local dbus_proxy = require("external.dbus_proxy")
 local gobject = require("gears.object")
 local gtable = require("gears.table")
-local gtimer = require("gears.timer")
 
 local network = {}
 local client = {}
+local connection = {}
 local wired = {}
 local wireless = {}
-local connection = {}
 local access_point = {}
 
+--[[
 network.NMState = {
 	UNKNOWN = 0,
 	ASLEEP = 10,
@@ -22,6 +22,7 @@ network.NMState = {
 	CONNECTED_SITE = 60,
 	CONNECTED_GLOBAL = 70,
 }
+]]
 
 network.DeviceType = {
 	ETHERNET = 1,
@@ -267,20 +268,36 @@ function client:disconnect_active_access_point()
 	)
 end
 
+function connection:get_filename()
+	return self._private.connection_proxy.Filename
+end
+
+function connection:get_path()
+	return self._private.connection_proxy.object_path
+end
+
 function wired:get_hw_address()
-	return self._private.device_proxy.HwAddress
+	if self._private.device_proxy then
+		return self._private.device_proxy.HwAddress
+	end
 end
 
 function wired:get_device_state()
-	return self._private.device_proxy.State
+	if self._private.device_proxy then
+		return self._private.device_proxy.State
+	end
 end
 
 function wireless:get_hw_address()
-	return self._private.device_proxy.HwAddress
+	if self._private.device_proxy then
+		return self._private.device_proxy.HwAddress
+	end
 end
 
 function wireless:get_device_state()
-	return self._private.device_proxy.State
+	if self._private.device_proxy then
+		return self._private.device_proxy.State
+	end
 end
 
 function wireless:get_access_points()
@@ -296,26 +313,19 @@ function wireless:get_active_access_point()
 end
 
 function wireless:scan_access_points()
-	if self._private.device_proxy == nil then return end
-	self._private.device_proxy:RequestScanAsync(
-		function(_, _, _, failure)
-			if failure ~= nil then
-				self:emit_signal("scan-access-points::failed", failure)
-				return
-			end
-			self:emit_signal("scan-access-points::success")
-		end,
-		{},
-		{}
-	)
-end
-
-function connection:get_filename()
-	return self._private.connection_proxy.Filename
-end
-
-function connection:get_path()
-	return self._private.connection_proxy.object_path
+	if self._private.wireless_proxy then
+		self._private.wireless_proxy:RequestScanAsync(
+			function(_, _, _, failure)
+				if failure ~= nil then
+					self:emit_signal("scan-access-points::failed", failure)
+					return
+				end
+				self:emit_signal("scan-access-points::success")
+			end,
+			{},
+			{}
+		)
+	end
 end
 
 function access_point:get_ssid()
@@ -368,6 +378,12 @@ local function new()
 		path = "/org/freedesktop/NetworkManager"
 	}
 
+	--[[
+	ret._private.client_proxy:connect_signal("StateChanged", function(_, state)
+		ret:emit_signal("nm-state", state)
+	end)
+	]]
+
 	ret._private.properties_proxy:connect_signal("PropertiesChanged", function(_, _, props)
 		if props.NetworkingEnabled ~= nil then
 			ret:emit_signal("property::networking-enabled", props.NetworkingEnabled)
@@ -378,12 +394,6 @@ local function new()
 	end)
 
 	ret.connections = {}
-	local connection_paths = ret._private.settings_proxy:ListConnections()
-	for _, connection_path in ipairs(connection_paths) do
-		local connection_object = create_connection_object(connection_path)
-		ret.connections[connection_path] = connection_object
-	end
-
 	ret._private.settings_proxy:connect_signal("NewConnection", function(_, path)
 		local connection_object = create_connection_object(path)
 		ret.connections[path] = connection_object
@@ -394,6 +404,12 @@ local function new()
 		ret.connections[path] = nil
 		ret:emit_signal("connection-removed", path)
 	end)
+
+	local connection_paths = ret._private.settings_proxy:ListConnections()
+	for _, connection_path in ipairs(connection_paths) do
+		local connection_object = create_connection_object(connection_path)
+		ret.connections[connection_path] = connection_object
+	end
 
 	ret.wired = gobject {}
 	gtable.crush(ret.wired, wired, true)
@@ -412,36 +428,40 @@ local function new()
 			path = device_path
 		}
 
-		if device_proxy.DeviceType == network.DeviceType.ETHERNET then
-			ret.wired._private.device_proxy = device_proxy
-			ret.wired._private.wired_proxy = dbus_proxy.Proxy:new {
-				bus = dbus_proxy.Bus.SYSTEM,
-				name = "org.freedesktop.NetworkManager",
-				interface = "org.freedesktop.NetworkManager.Device.Wired",
-				path = device_path,
-			}
-		elseif device_proxy.DeviceType == network.DeviceType.WIFI then
-			ret.wireless._private.device_proxy = device_proxy
-			ret.wireless._private.wireless_proxy = dbus_proxy.Proxy:new {
-				bus = dbus_proxy.Bus.SYSTEM,
-				name = "org.freedesktop.NetworkManager",
-				interface = "org.freedesktop.NetworkManager.Device.Wireless",
-				path = device_path,
-			}
-			ret.wireless.access_points = {}
-		end
-	end
-
-	if ret.wireless._private.device_proxy then
-		local access_point_paths = ret.wireless._private.device_proxy:GetAccessPoints()
-		for _, access_point_path in ipairs(access_point_paths) do
-			local access_point_object = create_access_point_object(access_point_path)
-			if access_point_object then
-				ret.wireless.access_points[access_point_path] = access_point_object
+		if device_proxy then
+			if device_proxy.DeviceType == network.DeviceType.ETHERNET then
+				ret.wired._private.device_proxy = device_proxy
+				ret.wired._private.wired_proxy = dbus_proxy.Proxy:new {
+					bus = dbus_proxy.Bus.SYSTEM,
+					name = "org.freedesktop.NetworkManager",
+					interface = "org.freedesktop.NetworkManager.Device.Wired",
+					path = device_path,
+				}
+			elseif device_proxy.DeviceType == network.DeviceType.WIFI then
+				ret.wireless._private.device_proxy = device_proxy
+				ret.wireless._private.wireless_proxy = dbus_proxy.Proxy:new {
+					bus = dbus_proxy.Bus.SYSTEM,
+					name = "org.freedesktop.NetworkManager",
+					interface = "org.freedesktop.NetworkManager.Device.Wireless",
+					path = device_path,
+				}
 			end
 		end
 	end
 
+	if ret.wired._private.device_proxy then
+		ret.wired._private.device_proxy:connect_signal("StateChanged", function(_, new_state, old_state, reason)
+			ret.wired:emit_signal("device-state", new_state, old_state, reason)
+		end)
+	end
+
+	if ret.wireless._private.device_proxy then
+		ret.wireless._private.device_proxy:connect_signal("StateChanged", function(_, new_state, old_state, reason)
+			ret.wireless:emit_signal("device-state", new_state, old_state, reason)
+		end)
+	end
+
+	ret.wireless.access_points = {}
 	if ret.wireless._private.wireless_proxy then
 		ret.wireless._private.wireless_proxy:connect_signal("AccessPointAdded", function(_, path)
 			local access_point_object = create_access_point_object(path)
@@ -453,12 +473,15 @@ local function new()
 			ret.wireless.access_points[path] = nil
 			ret.wireless:emit_signal("access-point-removed", path)
 		end)
-	end
 
-	gtimer.delayed_call(function()
-		ret:emit_signal("property::networking-enabled", ret:get_networking_enabled())
-		ret:emit_signal("property::wireless-enabled", ret:get_wireless_enabled())
-	end)
+		local access_point_paths = ret.wireless._private.wireless_proxy:GetAccessPoints()
+		for _, access_point_path in ipairs(access_point_paths) do
+			local access_point_object = create_access_point_object(access_point_path)
+			if access_point_object then
+				ret.wireless.access_points[access_point_path] = access_point_object
+			end
+		end
+	end
 
 	return ret
 end

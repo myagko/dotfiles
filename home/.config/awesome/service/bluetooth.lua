@@ -2,7 +2,6 @@ local lgi = require("lgi")
 local dbus_proxy = require("external.dbus_proxy")
 local gobject = require("gears.object")
 local gtable = require("gears.table")
-local gtimer = require("gears.timer")
 
 local adapter = {}
 local device = {}
@@ -195,16 +194,16 @@ local function new()
 			path = "/org/bluez/hci0"
 		}
 
-		ret.devices = {}
-		if ret._private.object_manager_proxy.GetManagedObjects then
-			local object_paths = ret._private.object_manager_proxy:GetManagedObjects()
-			for path, _ in pairs(object_paths) do
-				if path:match("^/org/bluez/hci0/dev_%w%w_%w%w_%w%w_%w%w_%w%w_%w%w$") then
-					ret.devices[path] = create_device_object(path)
-				end
+		ret._private.properties_proxy:connect_signal("PropertiesChanged", function(_, _, props)
+			if props.Powered ~= nil then
+				ret:emit_signal("property::powered", props.Powered)
 			end
-		end
+			if props.Discovering ~= nil then
+				ret:emit_signal("property::discovering", props.Discovering)
+			end
+		end)
 
+		ret.devices = {}
 		ret._private.object_manager_proxy:connect_signal("InterfacesAdded", function(_, path)
 			if path:match("^/org/bluez/hci0/dev_%w%w_%w%w_%w%w_%w%w_%w%w_%w%w$") then
 				ret.devices[path] = create_device_object(path)
@@ -219,19 +218,15 @@ local function new()
 			end
 		end)
 
-		ret._private.properties_proxy:connect_signal("PropertiesChanged", function(_, _, props)
-			if props.Powered ~= nil then
-				ret:emit_signal("property::powered", props.Powered)
+		if ret._private.object_manager_proxy.GetManagedObjects then
+			local object_paths = ret._private.object_manager_proxy:GetManagedObjects()
+			for path, _ in pairs(object_paths) do
+				if path:match("^/org/bluez/hci0/dev_%w%w_%w%w_%w%w_%w%w_%w%w_%w%w$") then
+					ret.devices[path] = create_device_object(path)
+				end
 			end
-			if props.Discovering ~= nil then
-				ret:emit_signal("property::discovering", props.Discovering)
-			end
-		end)
+		end
 	end
-
-	gtimer.delayed_call(function()
-		ret:emit_signal("property::powered", ret:get_powered())
-	end)
 
 	return ret
 end

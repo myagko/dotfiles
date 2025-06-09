@@ -454,7 +454,17 @@ local function new()
 		on_wireless_enabled(ret, enabled)
 	end)
 
+	network.wireless:connect_signal("device-state", function(_, new_state)
+		if new_state == Network.DeviceState.ACTIVATED then
+			ret:refresh()
+		end
+	end)
+
 	on_wireless_enabled(ret, network:get_wireless_enabled())
+
+	if network.wireless:get_device_state() == Network.DeviceState.ACTIVATED then
+		ret:refresh()
+	end
 
 	return ret
 end

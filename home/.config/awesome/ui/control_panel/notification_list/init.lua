@@ -193,7 +193,7 @@ local function add_notification(self, n)
 	if #notifs_layout.children == 1 and not notifs_layout.children[1].is_notification then
 		notifs_layout:reset()
 	end
-	notifs_layout:add(new_notification_widget)
+	notifs_layout:insert(1, new_notification_widget)
 	n:connect_signal("destroyed", function()
 		remove_notification(self, new_notification_widget)
 	end)
