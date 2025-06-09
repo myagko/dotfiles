@@ -2,7 +2,6 @@ local awful = require("awful")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local gtable = require("gears.table")
---local gtimer = require("gears.timer")
 local common = require("common")
 local text_icons = beautiful.text_icons
 local dpi = beautiful.xresources.apply_dpi
@@ -94,7 +93,6 @@ local function on_wireless_enabled(self, enabled)
 	local wp = self._private
 	local aps_layout = self:get_children_by_id("access-points-layout")[1]
 	local bottombar_toggle_button = self:get_children_by_id("bottombar-toggle-button")[1]
-	--local scan_timer
 	wp.ap_widgets = {}
 
 	if enabled then
@@ -111,19 +109,6 @@ local function on_wireless_enabled(self, enabled)
 				markup = text_icons.wait
 			}
 		})
-		--[[ i thought this would work but its not
-		scan_timer = gtimer.new {
-			timeout = 0.5,
-			autostart = true,
-			callback = function()
-				if network.wireless:get_device_state() == Network.DeviceState.ACTIVATED then
-					network.wireless:scan_access_points()
-					scan_timer:stop()
-					scan_timer = nil
-				end
-			end
-		}
-		]]
 	else
 		bottombar_toggle_button:set_label(text_icons.switch_off)
 		aps_layout:reset()
