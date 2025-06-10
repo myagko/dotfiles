@@ -19,11 +19,6 @@ for i = 1, 9 do
 	)
 end
 
--- other
-map("n", "<leader>Q", ":qall<CR>")
-map("n", "<leader>u", ":undo<CR>")
-map("n", "<leader>r", ":redo<CR>")
-
 -- LSP
 map('n', '<leader>df', vim.diagnostic.open_float)
 map('n', '[d', vim.diagnostic.goto_prev)
