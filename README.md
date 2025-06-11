@@ -76,7 +76,7 @@ $ gio mime x-scheme-handler/terminal Alacritty.desktop
 1. Install `themix-full-git` from aur
 2. Export icons and theme from user presets
 
-#### 10. Install cursors (`inkscape` required) ([source](https://github.com/charakterziffer/cursor-toolbox))
+#### 10. Install cursors ([source](https://github.com/charakterziffer/cursor-toolbox))
 ```
 $ cd ~/dotfiles/extra/cursor-toolbox
 $ ./make_dark.sh
