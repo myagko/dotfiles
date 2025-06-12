@@ -30,7 +30,7 @@ local function new()
 					{
 						widget = wibox.container.background,
 						forced_width = dpi(310),
-						forced_height = dpi(35),
+						forced_height = dpi(40),
 						{
 							id = "speaker-slider",
 							widget = wibox.widget.slider,
@@ -64,7 +64,7 @@ local function new()
 					{
 						widget = wibox.container.background,
 						forced_width = dpi(310),
-						forced_height = dpi(35),
+						forced_height = dpi(40),
 						{
 							id = "microphone-slider",
 							widget = wibox.widget.slider,

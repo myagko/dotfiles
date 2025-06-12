@@ -7,25 +7,25 @@ local bluetooth = require("service.bluetooth").get_default()
 
 local function on_powered(self, powered)
 	local separator = self:get_children_by_id("separator")[1]
-	local label = self:get_children_by_id("label")[1]
+	local description = self:get_children_by_id("description")[1]
 
 	if powered then
 		self:set_bg(beautiful.ac)
 		self:set_fg(beautiful.bg)
 		separator:set_color(beautiful.bg)
-		label:set_markup("Enabled")
+		description:set_markup("Enabled")
 	else
 		self:set_bg(beautiful.bg_alt)
 		self:set_fg(beautiful.fg)
 		separator:set_color(beautiful.bg_urg)
-		label:set_markup("Disabled")
+		description:set_markup("Disabled")
 	end
 end
 
 local function new()
 	local ret = wibox.widget {
 		widget = wibox.container.background,
-		forced_height = dpi(55),
+		forced_height = dpi(60),
 		bg = beautiful.bg_alt,
 		fg = beautiful.fg,
 		shape = beautiful.rrect(dpi(10)),
@@ -40,14 +40,27 @@ local function new()
 					forced_width = dpi(150),
 					{
 						layout = wibox.layout.fixed.horizontal,
-						spacing = dpi(10),
+						spacing = dpi(15),
 						{
 							widget = wibox.widget.textbox,
 							markup = text_icons.bluetooth
 						},
 						{
-							id = "label",
-							widget = wibox.widget.textbox
+							widget = wibox.container.place,
+							valign = "center",
+							{
+								layout = wibox.layout.fixed.vertical,
+								{
+									id = "label",
+									widget = wibox.widget.textbox,
+									markup = "Bluetooth"
+								},
+								{
+									id = "description",
+									widget = wibox.widget.textbox,
+									font = beautiful.font_h0
+								}
+							}
 						}
 					}
 				},

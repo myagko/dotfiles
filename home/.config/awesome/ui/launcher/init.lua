@@ -108,14 +108,37 @@ function launcher:update_entries()
 			if i >= wp.start_index and i <= wp.start_index + wp.rows - 1 then
 				local entry_widget = wibox.widget {
 					widget = wibox.container.background,
-					forced_height = dpi(55),
+					forced_height = dpi(60),
 					shape = beautiful.rrect(dpi(10)),
 					{
 						widget = wibox.container.margin,
-						margins = dpi(15),
+						margins = { left = dpi(15), right = dpi(15) },
 						{
-							widget = wibox.widget.textbox,
-							markup = app:get_name()
+							widget = wibox.container.place,
+							halign = "left",
+							valign = "center",
+							{
+								layout = wibox.layout.fixed.vertical,
+								{
+									widget = wibox.container.constraint,
+									strategy = "max",
+									height = 25,
+									{
+										widget = wibox.widget.textbox,
+										markup = app:get_name()
+									}
+								},
+								{
+									widget = wibox.container.constraint,
+									strategy = "max",
+									height = 25,
+									{
+										widget = wibox.widget.textbox,
+										font = beautiful.font_h0,
+										markup = app:get_description()
+									}
+								}
+							}
 						}
 					}
 				}
@@ -221,7 +244,7 @@ local function new()
 					fill_space = true,
 					{
 						widget = wibox.container.background,
-						forced_width = dpi(55),
+						forced_width = dpi(50),
 						bg = beautiful.bg_alt,
 						shape = beautiful.rrect(dpi(10)),
 						{
@@ -230,8 +253,8 @@ local function new()
 								id = "powermenu-button",
 								widget = common.hover_button {
 									label = text_icons.poweroff,
-									forced_width = dpi(55),
-									forced_height = dpi(55),
+									forced_width = dpi(50),
+									forced_height = dpi(50),
 									fg_normal = beautiful.red,
 									bg_hover = beautiful.red,
 									shape = beautiful.rrect(dpi(10))
@@ -253,8 +276,8 @@ local function new()
 									id = "wallpaper-button",
 									widget = common.hover_button {
 										label = text_icons.image,
-										forced_width = dpi(55),
-										forced_height = dpi(55),
+										forced_width = dpi(50),
+										forced_height = dpi(50),
 										shape = beautiful.rrect(dpi(10))
 									}
 								},
@@ -262,8 +285,8 @@ local function new()
 									id = "home-button",
 									widget = common.hover_button {
 										label = text_icons.home,
-										forced_width = dpi(55),
-										forced_height = dpi(55),
+										forced_width = dpi(50),
+										forced_height = dpi(50),
 										shape = beautiful.rrect(dpi(10))
 									}
 								}
@@ -278,19 +301,24 @@ local function new()
 							{
 								widget = wibox.container.margin,
 								forced_width = 1,
-								forced_height = dpi(55),
-								margins = { left = dpi(10) },
+								forced_height = dpi(50),
+								margins = { left = dpi(10), right = dpi(10) },
 								{
-									widget = wibox.container.constraint,
-									strategy = "max",
-									height = dpi(25),
+									widget = wibox.container.place,
+									halign = "left",
+									valign = "center",
 									{
-										id = "text-input",
-										widget = common.text_input {
-											placeholder = "Search...",
-											cursor_bg = beautiful.fg,
-											cursor_fg = beautiful.bg,
-											placeholder_fg = beautiful.fg_alt,
+										widget = wibox.container.constraint,
+										strategy = "max",
+										height = dpi(25),
+										{
+											id = "text-input",
+											widget = common.text_input {
+												placeholder = "Search...",
+												cursor_bg = beautiful.fg,
+												cursor_fg = beautiful.bg,
+												placeholder_fg = beautiful.fg_alt,
+											}
 										}
 									}
 								}
@@ -309,7 +337,7 @@ local function new()
 							id = "entries-container",
 							layout = wibox.layout.fixed.vertical,
 							spacing = dpi(3),
-							forced_width = dpi(290)
+							forced_width = dpi(300)
 						}
 					}
 				}
@@ -363,7 +391,7 @@ local function new()
 	}
 
 	local entries_container = ret.widget:get_children_by_id("entries-container")[1]
-	entries_container:set_forced_height(dpi(55) * wp.rows + dpi(3) * (wp.rows - 1))
+	entries_container:set_forced_height(dpi(60) * wp.rows + dpi(3) * (wp.rows - 1))
 
 	entries_container:buttons {
 		awful.button({}, 4, function()

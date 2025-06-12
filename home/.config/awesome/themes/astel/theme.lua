@@ -85,7 +85,7 @@ theme.ac = theme.blue
 
 theme.rounded = true
 
-theme.border_width = dpi(2)
+theme.border_width = dpi(1)
 theme.separator_thickness = dpi(1)
 theme.useless_gap = dpi(5)
 

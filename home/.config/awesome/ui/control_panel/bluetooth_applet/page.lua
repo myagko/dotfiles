@@ -277,7 +277,7 @@ local function new()
 			},
 			{
 				widget = wibox.container.background,
-				forced_height = dpi(55),
+				forced_height = dpi(50),
 				bg = beautiful.bg_alt,
 				shape = beautiful.rrect(dpi(10)),
 				{
@@ -296,8 +296,8 @@ local function new()
 						{
 							id = "bottombar-toggle-button",
 							widget = common.hover_button {
-								forced_width = dpi(55),
-								forced_height = dpi(55),
+								forced_width = dpi(50),
+								forced_height = dpi(50),
 								shape = beautiful.rrect(dpi(10))
 							}
 						},
@@ -305,8 +305,8 @@ local function new()
 							id = "bottombar-discover-button",
 							widget = common.hover_button {
 								label = text_icons.search,
-								forced_width = dpi(55),
-								forced_height = dpi(55),
+								forced_width = dpi(50),
+								forced_height = dpi(50),
 								shape = beautiful.rrect(dpi(10))
 							}
 						}
@@ -316,8 +316,8 @@ local function new()
 						id = "bottombar-close-button",
 						widget = common.hover_button {
 							label = text_icons.arrow_left,
-							forced_width = dpi(55),
-							forced_height = dpi(55),
+							forced_width = dpi(50),
+							forced_height = dpi(50),
 							shape = beautiful.rrect(dpi(10))
 						}
 					}
