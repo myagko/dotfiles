@@ -29,12 +29,14 @@ if #n.actions == 0 then return nil end
 		main_layout:add(wibox.widget {
 			widget = wibox.container.constraint,
 			strategy = "max",
-			height = dpi(30),
+			height = dpi(40),
 			{
 				widget = common.hover_button {
 					label = action.name,
-					font = beautiful.font_h0,
-					margins = dpi(8),
+					margins = {
+						left = dpi(10), right = dpi(10),
+						top = dpi(5), bottom = dpi(5)
+					},
 					bg_normal = beautiful.bg_urg,
 					shape = beautiful.rrect(dpi(8)),
 					buttons = {

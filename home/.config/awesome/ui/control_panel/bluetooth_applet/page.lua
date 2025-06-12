@@ -58,7 +58,6 @@ local function create_dev_widget(path)
 						{
 							id = "connect-button",
 							widget = common.hover_button {
-								font = beautiful.font_h0,
 								margins = { left = dpi(15), right = dpi(15) },
 								shape = beautiful.rrect(dpi(10))
 							}
@@ -66,7 +65,6 @@ local function create_dev_widget(path)
 						{
 							id = "pair-button",
 							widget = common.hover_button {
-								font = beautiful.font_h0,
 								margins = { left = dpi(15), right = dpi(15) },
 								shape = beautiful.rrect(dpi(10))
 							}
@@ -74,7 +72,6 @@ local function create_dev_widget(path)
 						{
 							id = "trust-button",
 							widget = common.hover_button {
-								font = beautiful.font_h0,
 								margins = { left = dpi(15), right = dpi(15) },
 								shape = beautiful.rrect(dpi(10))
 							}
