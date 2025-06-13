@@ -224,9 +224,7 @@ local function new()
 		ontop = true,
 		visible = false,
 		screen = capi.screen.primary,
-		border_width = beautiful.border_width,
-		border_color = beautiful.border_color_normal,
-		--shape = beautiful.rrect(dpi(20)),
+		bg = "#00000000",
 		placement = function(d)
 			awful.placement.bottom_left(d, {
 				honor_workarea = true,
@@ -234,10 +232,14 @@ local function new()
 			})
 		end,
 		widget = {
-			widget = wibox.container.margin,
-			margins = dpi(10),
+			widget = wibox.container.background,
+			bg = beautiful.bg,
+			border_width = beautiful.border_width,
+			border_color = beautiful.border_color_normal,
+			shape = beautiful.rrect(dpi(18)),
 			{
-				widget = wibox.container.background,
+				widget = wibox.container.margin,
+				margins = dpi(10),
 				{
 					layout = wibox.layout.fixed.horizontal,
 					spacing = dpi(6),

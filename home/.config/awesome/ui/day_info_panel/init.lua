@@ -39,9 +39,7 @@ local function new()
 		visible = false,
 		ontop = true,
 		screen = capi.screen.primary,
-		border_width = beautiful.border_width,
-		border_color = beautiful.border_color_normal,
-		--shape = beautiful.rrect(dpi(20)),
+		bg = "#00000000",
 		placement = function(d)
 			awful.placement.bottom_right(d, {
 				honor_workarea = true,
@@ -49,18 +47,25 @@ local function new()
 			})
 		end,
 		widget = wibox.widget {
-			widget = wibox.container.margin,
-			margins = dpi(12),
+			widget = wibox.container.background,
+			bg = beautiful.bg,
+			border_width = beautiful.border_width,
+			border_color = beautiful.border_color_normal,
+			shape = beautiful.rrect(dpi(20)),
 			{
-				layout = wibox.layout.fixed.vertical,
-				spacing = dpi(6),
-				weather_applet(),
+				widget = wibox.container.margin,
+				margins = dpi(12),
 				{
-					id = "calendar",
-					widget = common.calendar {
-						sun_start = false,
-						shape = beautiful.rrect(dpi(10)),
-						day_shape = beautiful.rrect(dpi(8))
+					layout = wibox.layout.fixed.vertical,
+					spacing = dpi(6),
+					weather_applet(),
+					{
+						id = "calendar",
+						widget = common.calendar {
+							sun_start = false,
+							shape = beautiful.rrect(dpi(10)),
+							day_shape = beautiful.rrect(dpi(8))
+						}
 					}
 				}
 			}

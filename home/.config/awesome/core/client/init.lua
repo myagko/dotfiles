@@ -1,9 +1,6 @@
 local awful = require("awful")
 local rclient = require("ruled.client")
 local capi = { client = client }
---local beautiful = require("beautiful")
---local dpi = beautiful.xresources.apply_dpi
-
 require("awful.autofocus")
 
 capi.client.connect_signal("request::manage", function(c)
@@ -15,19 +12,6 @@ capi.client.connect_signal("request::manage", function(c)
 		awful.placement.centered(c, { parent = c.transient_for })
 		awful.placement.no_offscreen(c)
 	end
-
-	--[[
-	local cshape = beautiful.rrect(dpi(15))
-	c:connect_signal("property::maximized", function()
-		c:set_shape(not (c.maximized or c.fullscreen) and cshape or nil)
-	end)
-
-	c:connect_signal("property::fullscreen", function()
-		c:set_shape(not (c.fullscreen or c.maximized) and cshape or nil)
-	end)
-
-	c:set_shape(not (c.maximized or c.fullscreen) and cshape or nil)
-	]]
 end)
 
 rclient.connect_signal("request::rules", function()

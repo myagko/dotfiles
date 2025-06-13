@@ -423,23 +423,31 @@ function bar.create_secondary(s)
 		ontop = true,
 		screen = s,
 		height = dpi(45),
-		border_width = beautiful.border_width,
-		border_color = beautiful.border_color_normal,
-		margins = {
-			left = -beautiful.border_width, right = -beautiful.border_width,
-			top = 0, bottom = -beautiful.border_width
-		},
+		bg = "#00000000",
 		widget = {
-			layout = wibox.layout.fixed.horizontal,
+			widget = wibox.container.background,
+			bg = beautiful.border_color_normal,
 			{
 				widget = wibox.container.margin,
-				margins = dpi(7),
+				margins = { top = beautiful.border_width },
 				{
-					layout = wibox.layout.fixed.horizontal,
-					spacing = dpi(5),
-					--layoutbox(s),
-					taglist(s),
-					tasklist(s)
+					widget = wibox.container.background,
+					bg = beautiful.bg,
+					fg = beautiful.fg,
+					{
+						layout = wibox.layout.fixed.horizontal,
+						{
+							widget = wibox.container.margin,
+							margins = dpi(7),
+							{
+								layout = wibox.layout.fixed.horizontal,
+								spacing = dpi(5),
+								--layoutbox(s),
+								taglist(s),
+								tasklist(s)
+							}
+						}
+					}
 				}
 			}
 		}
@@ -452,40 +460,48 @@ function bar.create_primary(s)
 		ontop = true,
 		screen = s,
 		height = dpi(45),
-		border_width = beautiful.border_width,
-		border_color = beautiful.border_color_normal,
-		margins = {
-			left = -beautiful.border_width, right = -beautiful.border_width,
-			top = 0, bottom = -beautiful.border_width
-		},
+		bg = "#00000000",
 		widget = {
-			layout = wibox.layout.align.horizontal,
-			nil,
+			widget = wibox.container.background,
+			bg = beautiful.border_color_normal,
 			{
 				widget = wibox.container.margin,
-				margins = dpi(7),
+				margins = { top = beautiful.border_width },
 				{
-					layout = wibox.layout.fixed.horizontal,
-					spacing = dpi(5),
-					launcher_button(),
-					--layoutbox(s),
-					taglist(s),
-					tasklist(s)
-				}
-			},
-			{
-				widget = wibox.container.margin,
-				margins = {
-					top = dpi(7), bottom = dpi(7),
-					left = 0, right = dpi(7)
-				},
-				{
-					layout = wibox.layout.fixed.horizontal,
-					spacing = dpi(5),
-					tray(),
-					kblayout(),
-					time(),
-					control_panel_button()
+					widget = wibox.container.background,
+					bg = beautiful.bg,
+					fg = beautiful.fg,
+					{
+						layout = wibox.layout.align.horizontal,
+						nil,
+						{
+							widget = wibox.container.margin,
+							margins = dpi(7),
+							{
+								layout = wibox.layout.fixed.horizontal,
+								spacing = dpi(5),
+								launcher_button(),
+								--layoutbox(s),
+								taglist(s),
+								tasklist(s)
+							}
+						},
+						{
+							widget = wibox.container.margin,
+							margins = {
+								top = dpi(7), bottom = dpi(7),
+								left = 0, right = dpi(7)
+							},
+							{
+								layout = wibox.layout.fixed.horizontal,
+								spacing = dpi(5),
+								tray(),
+								kblayout(),
+								time(),
+								control_panel_button()
+							}
+						}
+					}
 				}
 			}
 		}

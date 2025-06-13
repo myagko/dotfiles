@@ -92,104 +92,108 @@ local function create_notification_popup(n)
 		maximum_width = dpi(450),
 		minimum_height = dpi(100),
 		maximum_height = dpi(280),
-		bg = beautiful.bg,
-		fg = beautiful.fg,
-		border_color = beautiful.border_color_normal,
-		border_width = beautiful.border_width,
-		--shape = beautiful.rrect(dpi(20)),
+		bg = "#00000000",
 		placement = function() return { 0, 0 } end,
 		widget = {
-			widget = wibox.container.margin,
-			margins = dpi(15),
+			widget = wibox.container.background,
+			bg = beautiful.bg,
+			fg = beautiful.fg,
+			border_color = beautiful.border_color_normal,
+			border_width = beautiful.border_width,
+			shape = beautiful.rrect(dpi(20)),
 			{
-				layout = wibox.layout.fixed.vertical,
-				spacing = dpi(5),
+				widget = wibox.container.margin,
+				margins = dpi(15),
 				{
-					layout = wibox.layout.align.horizontal,
+					layout = wibox.layout.fixed.vertical,
+					spacing = dpi(5),
 					{
-						widget = wibox.container.constraint,
-						strategy = "max",
-						width = dpi(150),
-						height = dpi(25),
-						{
-							widget = wibox.widget.textbox,
-							markup = create_markup(n.app_name, {
-								fg = n.urgency == "critical" and beautiful.red or beautiful.fg
-							})
-						}
-					},
-					nil,
-					{
-						layout = wibox.layout.fixed.horizontal,
-						spacing = dpi(10),
-						{
-							widget = wibox.widget.textbox,
-							markup = create_markup(os.date("%H:%M"), { fg = beautiful.fg_alt })
-						},
-						{
-							id = "close",
-							widget = wibox.widget.textbox,
-							markup = create_markup(text_icons.cross, { fg = beautiful.red })
-						}
-					}
-				},
-				{
-					widget = wibox.container.background,
-					forced_width = 1,
-					forced_height = beautiful.separator_thickness,
-					{
-						widget = wibox.widget.separator,
-						orientation = "horizontal"
-					}
-				},
-				{
-					layout = wibox.layout.fixed.horizontal,
-					buttons = {
-						awful.button({}, 1, function()
-							n:destroy(ncr.dismissed_by_user)
-						end)
-					},
-					fill_space = true,
-					spacing = dpi(10),
-					{
-						widget = wibox.container.constraint,
-						strategy = "max",
-						width = dpi(70),
-						height = dpi(70),
-						{
-							widget = wibox.widget.imagebox,
-							resize = true,
-							halign = "center",
-							valign = "top",
-							clip_shape = beautiful.rrect(dpi(5)),
-							image = n.icon
-						}
-					},
-					{
-						layout = wibox.layout.fixed.vertical,
-						spacing = dpi(5),
+						layout = wibox.layout.align.horizontal,
 						{
 							widget = wibox.container.constraint,
 							strategy = "max",
+							width = dpi(150),
 							height = dpi(25),
 							{
 								widget = wibox.widget.textbox,
-								markup = n.title
+								markup = create_markup(n.app_name, {
+									fg = n.urgency == "critical" and beautiful.red or beautiful.fg
+								})
 							}
 						},
+						nil,
+						{
+							layout = wibox.layout.fixed.horizontal,
+							spacing = dpi(10),
+							{
+								widget = wibox.widget.textbox,
+								markup = create_markup(os.date("%H:%M"), { fg = beautiful.fg_alt })
+							},
+							{
+								id = "close",
+								widget = wibox.widget.textbox,
+								markup = create_markup(text_icons.cross, { fg = beautiful.red })
+							}
+						}
+					},
+					{
+						widget = wibox.container.background,
+						forced_width = 1,
+						forced_height = beautiful.separator_thickness,
+						{
+							widget = wibox.widget.separator,
+							orientation = "horizontal"
+						}
+					},
+					{
+						layout = wibox.layout.fixed.horizontal,
+						buttons = {
+							awful.button({}, 1, function()
+								n:destroy(ncr.dismissed_by_user)
+							end)
+						},
+						fill_space = true,
+						spacing = dpi(10),
 						{
 							widget = wibox.container.constraint,
 							strategy = "max",
+							width = dpi(70),
 							height = dpi(70),
 							{
-								widget = wibox.widget.textbox,
-								font = beautiful.font_h0,
-								markup = n.text or n.massage
+								widget = wibox.widget.imagebox,
+								resize = true,
+								halign = "center",
+								valign = "top",
+								clip_shape = beautiful.rrect(dpi(5)),
+								image = n.icon
+							}
+						},
+						{
+							layout = wibox.layout.fixed.vertical,
+							spacing = dpi(5),
+							{
+								widget = wibox.container.constraint,
+								strategy = "max",
+								height = dpi(25),
+								{
+									widget = wibox.widget.textbox,
+									markup = n.title
+								}
+							},
+							{
+								widget = wibox.container.constraint,
+								strategy = "max",
+								height = dpi(70),
+								{
+									widget = wibox.widget.textbox,
+									font = beautiful.font_h0,
+									markup = n.text or n.massage
+								}
 							}
 						}
-					}
-				},
-				create_actions_widget(n)
+					},
+					create_actions_widget(n)
+				}
 			}
 		}
 	}
